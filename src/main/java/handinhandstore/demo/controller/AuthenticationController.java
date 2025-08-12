@@ -28,6 +28,11 @@ public class AuthenticationController {
         boolean isAuthenticated = authService.login(id, password);
         return isAuthenticated;
     }
+
+    @PostMapping("/UserRegisteration")
+    public User register(@RequestBody User user) {
+        return authService.userRegisteration(user);
+    }
 }
 
 

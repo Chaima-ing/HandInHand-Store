@@ -14,7 +14,7 @@ public class AuthenticationService {
         this.authRepo = authRepo;
     }
 
-    public User register(User user) {
+    public User userRegisteration(User user) {
         return authRepo.save(user);
     }
 
