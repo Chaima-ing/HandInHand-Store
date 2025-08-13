@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {useLocation, useNavigate} from "react-router-dom";
-import axios from 'axios';
+import api from "../api/api";
+import {loginUser, registerUser} from "../api/authService.js"
 
 const Auth = () => {
     const { t, i18n } = useTranslation();
@@ -32,6 +33,83 @@ const Auth = () => {
         document.documentElement.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
     };
 
+    const handleLogin = async () => {
+        if(!email.trim()){
+            setError(t("error_email_required"));
+            setLoading(false);
+            return;
+        }
+        if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+            setError(t("error_invalid_email"));
+            setLoading(false);
+            return;
+        }
+        if(!password.trim()){
+            setError(t("error_password_required"))
+            setLoading(false);
+            return;
+        }
+
+        try{
+            const response = await loginUser(email,password);
+            console.log(response.data);
+            localStorage.setItem("token", response.data.token);
+            navigate("/dashboard");
+
+        }catch(error){
+            setError("Server error: "+ error.message);
+        }
+    };
+
+    const handleRegisteration = async () => {
+        if(!username.trim()){
+            setError(t("error_username_required"));
+            setLoading(false);
+            return;
+        }
+        if(!email.trim()){
+            setError(t("error_email_required"));
+            setLoading(false);
+            return;
+        }
+        if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+            setError(t("error_invalid_email"));
+            setLoading(false);
+            return;
+        }
+        if(!phoneNumber.trim()){
+            setError(t("error_phone_required"));
+            setLoading(false);
+            return;
+        }
+        if(!password.trim()){
+            setError(t("error_password_required"));
+            setLoading(false);
+            return;
+        }
+        if (password.length < 6) {
+            setError(t("error_password_length"));
+            setLoading(false);
+            return;
+        }
+        if (password !== confirmPassword) {
+            setError(t("error_password_mismatch"));
+            setLoading(false);
+            return;
+        }
+
+        try{
+            const response = await registerUser({username,
+            email,
+            password,
+            confirmPassword,
+            phoneNumber});
+            console.log(response.data);
+            navigate("/dashboard");
+        }catch(error){
+            setError(`Sever error occured: ${error.message}`);
+        }
+    }
     useEffect(() => {
         document.documentElement.setAttribute("dir", language === "ar" ? "rtl" : "ltr");
     }, [language]);
@@ -47,75 +125,12 @@ const Auth = () => {
 
 
         if(action === "login"){
-            if(!email.trim()){
-                setError(t("error_email_required"));
-                setLoading(false);
-                return;
-            }
-            if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
-                setError(t("error_invalid_email"));
-                setLoading(false);
-                return;
-            }
-            if(!password.trim()){
-                setError(t("error_password_required"))
-                setLoading(false);
-                return;
-            }
-            try {
-                await axios.post("/users/login", { email, password });
-                navigate("/dashboard"); // Redirect after login
-            } catch (err) {
-                setError(t("error_login_failed") + (err.message ? `: ${err.message}` : ""));
-            }
+            await handleLogin();
+
         }else if(action === "register"){
-            if(!username.trim()){
-                setError(t("error_username_required"));
-                setLoading(false);
-                return;
-            }
-            if(!email.trim()){
-                setError(t("error_email_required"));
-                setLoading(false);
-                return;
-            }
-            if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
-                setError(t("error_invalid_email"));
-                setLoading(false);
-                return;
-            }
-            if(!phoneNumber.trim()){
-                setError(t("error_phone_required"));
-                setLoading(false);
-                return;
-            }
-            if(!password.trim()){
-                setError(t("error_password_required"));
-                setLoading(false);
-                return;
-            }
-            if (password.length < 6) {
-                setError(t("error_password_length"));
-                setLoading(false);
-                return;
-            }
-            if (password !== confirmPassword) {
-                setError(t("error_password_mismatch"));
-                setLoading(false);
-                return;
-            }
-            try {
-                await axios.post("/users/register", {
-                    username,
-                    email,
-                    phoneNumber,
-                    password,
-                    confirmPassword
-                });
-                navigate("/login");
-            } catch (err) {
-                setError(t("error_register_failed") + (err.message ? `: ${err.message}` : ""));
-            }
+
+            await handleRegisteration();
+
         }else if (action === "forgot_password") {
             if (!email.trim()) {
                 setError(t("error_email_required"));
@@ -167,7 +182,7 @@ const Auth = () => {
                 return;
             }
             try {
-                await axios.post("/reset-password", {password});
+                //await axios.post("/reset-password", {password});
                 navigate("/login");
             } catch (err) {
                 setError(t("error_reset_failed") + (err.message ? `: ${err.message}` : ""));
