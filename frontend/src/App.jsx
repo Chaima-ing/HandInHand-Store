@@ -14,8 +14,11 @@ function App() {
                       <Route path="/login" element={<Auth />} />
                       <Route path="/register" element={<Auth />} />
                       <Route path="/forgot_password" element={<Auth />} />
+                      <Route path="/verify_code" element={<Auth />} />
+                      <Route path="/reset_password" element={<Auth />} />
 
-                      {/* Example page after login */}
+
+                    {/* Example page after login */}
                       {/* <Route path="/dashboard" element={<Dashboard />} /> */}
 
                       {/* Catch-all route for undefined URLs */}
