@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {useLocation, useNavigate} from "react-router-dom";
-import api from "../api/api";
 import {loginUser, registerUser} from "../api/authService.js"
 
 const Auth = () => {
@@ -22,8 +21,6 @@ const Auth = () => {
     const [loading, setLoading] = useState(false);
     const [resetSent, setResetSent] = useState(false);
     const [resetFailed, setResetFailed] = useState(false);
-    const [verificationCode, setVerificationCode] = useState("");
-
 
 
     const changeLanguage = (lang) => {
@@ -144,24 +141,10 @@ const Auth = () => {
             }
             try {
                 //await axios.post("/forgot-password", { email });
-                navigate("/verify_code"); // Move to reset password form
+                navigate("/reset_password"); // Move to reset password form
             } catch (err) {
                 setError(t("error_forgot_password_failed") + (err.message ? `: ${err.message}` : ""));
             }
-        }
-        //RESET CODE - enter the reset code
-            else if(action === "verify_code"){
-                if (!verificationCode.trim()) {
-                    setError(t("error_code_required"));
-                    setLoading(false);
-                    return;
-                }
-                try {
-                    //await axios.post("/verify-reset-code", { email, code: verificationCode });
-                    navigate("/reset_password");
-                } catch (err) {
-                    setError(t("error_code_invalid") + (err.message ? `: ${err.message}` : ""));
-                }
         }
 
         // RESET PASSWORD - set new password
@@ -203,7 +186,7 @@ const Auth = () => {
     return(
         <div className="bg-white rounded-2xl h-auto flex flex-col items-center justify-center w-1/2 pt-4 pb-4 m-auto">
             <div>
-                {action === "forgot_password" && resetSent || action === "verify_code" ? (
+                {action === "forgot_password" && resetSent ? (
                     <img src="mail.png"
                     alt="mail.img"
                     className="mx-auto mb-2 w-12 h-auto"/>
@@ -224,8 +207,6 @@ const Auth = () => {
                             ? t("register_title")
                             : action === "forgot_password"
                                 ? t("forgot_password_title")
-                                : action === "verify_code"
-                                    ? t("verify_code_title")
                                     : action === "reset_password"
                                         ? t("reset_password_title")
                                         : ""}
@@ -234,8 +215,7 @@ const Auth = () => {
 
             <hr className="my-3" />
             {action === "register" ? <p className="font-bold text-green-800">{t("register_p")}</p> :
-            action === "reset_password" ? <p className="font-bold text-red-600">{t("reset_password_p")}</p> :
-            action === "verify_code" ? <p className="font-bold text-green-800">{t("verify_code_p")}</p>: " "}
+            action === "reset_password" ? <p className="font-bold text-red-600">{t("reset_password_p")}</p> : " "}
             <div className="bg_white p-6 w-full max-w-md">
                 {action === "forgot_password" && resetSent ? (
                     <>
@@ -373,16 +353,6 @@ const Auth = () => {
                         </div>
                     ):"" }
 
-                    {/* VERIFY CODE */}
-                    {action === "verify_code" && (
-                        <input
-                            type="text"
-                            placeholder={t("verification_code_placeholder")}
-                            value={verificationCode}
-                            onChange={(e) => setVerificationCode(e.target.value)}
-                            className="mt-1 block w-full p-2 border border-gray-300 rounded"
-                        />
-                    )}
                     {error && <p className="text-red-500 text-sm">{error}</p>}
                     <button
                         type="submit"
@@ -400,8 +370,7 @@ const Auth = () => {
                                         : action === "verify_code"
                                             ? t("verify_code_button")
                                             : action === "reset_password"
-                                                ? t("reset_button_")
-                                                : ""}
+                                                ? t("reset_button_") : ""}
                     </button>
                 </form>
                 )}
@@ -435,11 +404,11 @@ const Auth = () => {
             <p className="mb-4 border-t border-gray-300 mt-4 pt-4 w-full max-w-md">
                 {action === "login" ? t("no_account") :
                     action === "register" ? t("have_account"):
-                action === "forgot_password" || action === "reset_password" || action === "verify_code" ? t("back_to_login" ) : " "}{" "}
+                action === "forgot_password" || action === "reset_password"  ? t("back_to_login" ) : " "}{" "}
                 <span
                     className="text-green-800 ml-1 cursor-pointer"
                     onClick={() =>  {
-                        if(action === "forgot_password" || action === "verify_code"){
+                        if(action === "forgot_password"){
                         navigate("/login");
                         setResetSent(false);
                     }else{

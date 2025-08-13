@@ -14,7 +14,6 @@ function App() {
                       <Route path="/login" element={<Auth />} />
                       <Route path="/register" element={<Auth />} />
                       <Route path="/forgot_password" element={<Auth />} />
-                      <Route path="/verify_code" element={<Auth />} />
                       <Route path="/reset_password" element={<Auth />} />
 
 
