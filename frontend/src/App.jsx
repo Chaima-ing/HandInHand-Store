@@ -1,30 +1,23 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import "./App.css";
-import Auth from "./components/Auth.jsx";
-import ResetPassword from "./components/ResetPassword.jsx";
-
+import './App.css';
+import Footer from './Footer.jsx';
+import Header from './Header.jsx';
+import Hero from './Hero.jsx';
+import Product from './Product.jsx';
+import Card from './Card.jsx';
+import Donates from './donates.jsx';
+import Beneficiaries from './Beneficiaries.jsx';
 function App() {
-      return (
-
-                <Routes>
-                      {/* Redirect root to /login */}
-                      <Route path="/" element={<Navigate to="/login" />} />
-
-                      {/* Auth routes */}
-                      <Route path="/login" element={<Auth />} />
-                      <Route path="/register" element={<Auth />} />
-                      <Route path="/forgot_password" element={<Auth />} />
-                      <Route path="/reset_password" element={<ResetPassword />} />
-
-
-                    {/* Example page after login */}
-                      {/* <Route path="/dashboard" element={<Dashboard />} /> */}
-
-                      {/* Catch-all route for undefined URLs */}
-                      <Route path="*" element={<h1>404 - Page Not Found</h1>} />
-                </Routes>
-
-      );
+    return(
+      <>
+      <Header/>
+      <Hero/>
+      <Card/>
+      <Product/>
+      <Donates/>
+      <Beneficiaries/>
+      <Footer/>
+      </>
+    );
 }
 
-export default App;
+export default App
