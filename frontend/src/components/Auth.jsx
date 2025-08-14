@@ -19,8 +19,6 @@ const Auth = () => {
     const [language, setLanguage] = useState(i18n.language || "en");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
-    const [resetSent, setResetSent] = useState(false);
-    const [resetFailed, setResetFailed] = useState(false);
 
 
     const changeLanguage = (lang) => {
@@ -43,6 +41,12 @@ const Auth = () => {
         }
         if(!password.trim()){
             setError(t("error_password_required"))
+            setLoading(false);
+            return;
+        }
+
+        if (password.length < 6) {
+            setError(t("error_password_length"));
             setLoading(false);
             return;
         }
@@ -94,7 +98,6 @@ const Auth = () => {
             setLoading(false);
             return;
         }
-
         try{
             const response = await registerUser({username,
             email,
@@ -108,25 +111,9 @@ const Auth = () => {
         }
     }
 
-    const handleForgotPassword = async () => {
-        if (!email.trim()) {
-            setError(t("error_email_required"));
-            setLoading(false);
-            return;
-        }
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            setError(t("error_invalid_email"));
-            setLoading(false);
-            return;
-        }
-        try{
-            await handleForgotPassword();
-            resetSent(true);
-        }catch(error){
-            setError("Server error: "+ error.message);
-        }
-        return true;
-    };
+    useEffect(() => {
+        setError("");
+    },[action]);
 
     useEffect(() => {
         document.documentElement.setAttribute("dir", language === "ar" ? "rtl" : "ltr");
@@ -149,95 +136,27 @@ const Auth = () => {
 
             await handleRegisteration();
 
-        }else if (action === "forgot_password") {
-            try {
-                //await axios.post("/forgot-password", { email });
-                navigate("/reset_password"); // Move to reset password form
-            } catch (err) {
-                setError(t("error_forgot_password_failed") + (err.message ? `: ${err.message}` : ""));
-            }
         }
-
-        // RESET PASSWORD - set new password
-        else if (action === "reset_password") {
-            try {
-                //await axios.post("/reset-password", {password});
-                navigate("/login");
-            } catch (err) {
-                setError(t("error_reset_failed") + (err.message ? `: ${err.message}` : ""));
-            }
-        }
-
         setLoading(false);
     };
 
-    const handleRetry = () => {
-        setResetFailed(false);
-        setResetSent(false); // Reset to allow retry
-    };
-    const handleResetFailed = () => {
-        setResetFailed(true);
-    }
 
     return(
         <div className="bg-white rounded-2xl h-auto flex flex-col items-center justify-center w-1/2 pt-4 pb-4 m-auto">
             <div>
-                {action === "forgot_password" && resetSent ? (
-                    <img src="mail.png"
-                    alt="mail.img"
-                    className="mx-auto mb-2 w-12 h-auto"/>
-                ) : action === "forgot_password" || action === "reset_password"  ? (
-                    <img
-                    src="key.png"
-                    alt="key.png"
-                    className="mx-auto mb-2 w-12 h-auto"
-                    />
-                ) : (
-                    <div className="border-t-4 border-green-700 pt-4" />
-                )}
                 {/* Title */}
-                <h2 className="text-2xl font-bold text-center mt-4">
+                <h1 className="text-2xl font-bold text-4xl text-center mt-4">
                     {action === "login"
                         ? t("login_title")
                         : action === "register"
-                            ? t("register_title")
-                            : action === "forgot_password"
-                                ? t("forgot_password_title")
-                                    : action === "reset_password"
-                                        ? t("reset_password_title")
-                                        : ""}
-                </h2>
+                            ? t("register_title") : ""}
+                </h1>
             </div>
 
             <hr className="my-3" />
             {action === "register" ? <p className="font-bold text-green-800">{t("register_p")}</p> :
-            action === "reset_password" ? <p className="font-bold text-red-600">{t("reset_password_p")}</p> : " "}
+                <p className="font-bold text-green-800">{t("login_p")}</p>}
             <div className="bg_white p-6 w-full max-w-md">
-                {action === "forgot_password" && resetSent ? (
-                    <>
-                    <p className="text-green-700 text-center">{t("reset_sent_message")}</p>
-                    <button type="button"
-                            className="bg-green-700 text-white mt-4 px-4 py-2 rounded-2xl w-full"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                handleResetFailed();
-                            }}
-                    >
-                        {t("reset_button")}
-                    </button>
-                        <p className="mt-4 text-gray-700 text-center">{t("no_email")}</p>
-                        <a
-                            href="#"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                handleRetry();
-                            }}
-                            className="text-red-500 text-center mt-4 block underline"
-                        >
-                            {t("resend_email")}
-                        </a>
-                    </>
-                ) : (
                 <form className="space-y-4 border-t border-gray-300 pt-4"
                 onSubmit={handleSubmit}>
                     {action === "register" && (
@@ -260,9 +179,7 @@ const Auth = () => {
                             />
                         </div>
                     )}
-                    {(action === "login" ||
-                        action === "register" ||
-                        action === "forgot_password") && (
+
                     <div>
                         <label
                             htmlFor="email"
@@ -282,7 +199,7 @@ const Auth = () => {
                             className="mt-1 block w-full p-2 border border-gray-300 rounded"
                         />
                     </div>
-                    )}
+
                     {action === "register" &&(
                         <div>
                             <label
@@ -304,9 +221,7 @@ const Auth = () => {
                             />
                         </div>
                     )}
-                    {(action === "login" ||
-                        action === "register" ||
-                        action === "reset_password") && (
+
                     <div>
                         <label
                             htmlFor="password"
@@ -326,8 +241,8 @@ const Auth = () => {
                             className="mt-1 block w-full p-2 border border-gray-300 rounded"
                         />
                     </div>
-                    )}
-                    {action === "register" || action === "reset_password" ? (
+
+                    {action === "register" ? (
                         <div>
                             <label
                                 htmlFor="confirmPassword"
@@ -360,18 +275,13 @@ const Auth = () => {
                             : action === "login"
                                 ? t("login_button")
                                 : action === "register"
-                                    ? t("register_button")
-                                    : action === "forgot_password"
-                                        ? t("reset_button_")
-                                        : action === "verify_code"
-                                            ? t("verify_code_button")
-                                            : action === "reset_password"
-                                                ? t("reset_button_") : ""}
+                                    ? t("register_button") : ""}
                     </button>
+
                 </form>
-                )}
+                <br/>
                 {action === "login" && (
-                    <span className="text-red-500 text-sm mt-4 cursor-pointer"
+                    <span className="text-gray-700 font-bold text-2xl text-sm mt-6 cursor-pointer"
                     onClick={() => navigate("/forgot_password")}
                     >
                         {t("forgot_password")}
@@ -399,17 +309,11 @@ const Auth = () => {
             <br />
             <p className="mb-4 border-t border-gray-300 mt-4 pt-4 w-full max-w-md">
                 {action === "login" ? t("no_account") :
-                    action === "register" ? t("have_account"):
-                action === "forgot_password" || action === "reset_password"  ? t("back_to_login" ) : " "}{" "}
+                    action === "register" ? t("have_account"): " "}{" "}
                 <span
                     className="text-green-800 ml-1 cursor-pointer"
                     onClick={() =>  {
-                        if(action === "forgot_password"){
-                        navigate("/login");
-                        setResetSent(false);
-                    }else{
                         navigate(action === "login" ? "/register" : "/login");
-                    }
                     }}
                 >
                     ({action === "login" ? t("register_link") : t("login_link")})
