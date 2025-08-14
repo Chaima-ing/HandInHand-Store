@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
 import Auth from "./components/Auth.jsx";
-// You can add other components here later (e.g., Dashboard, NotFound, etc.)
+import ResetPassword from "./components/ResetPassword.jsx";
 
 function App() {
       return (
@@ -14,7 +14,7 @@ function App() {
                       <Route path="/login" element={<Auth />} />
                       <Route path="/register" element={<Auth />} />
                       <Route path="/forgot_password" element={<Auth />} />
-                      <Route path="/reset_password" element={<Auth />} />
+                      <Route path="/reset_password" element={<ResetPassword />} />
 
 
                     {/* Example page after login */}

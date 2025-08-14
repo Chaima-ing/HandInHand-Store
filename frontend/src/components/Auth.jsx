@@ -107,6 +107,27 @@ const Auth = () => {
             setError(`Sever error occured: ${error.message}`);
         }
     }
+
+    const handleForgotPassword = async () => {
+        if (!email.trim()) {
+            setError(t("error_email_required"));
+            setLoading(false);
+            return;
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            setError(t("error_invalid_email"));
+            setLoading(false);
+            return;
+        }
+        try{
+            await handleForgotPassword();
+            resetSent(true);
+        }catch(error){
+            setError("Server error: "+ error.message);
+        }
+        return true;
+    };
+
     useEffect(() => {
         document.documentElement.setAttribute("dir", language === "ar" ? "rtl" : "ltr");
     }, [language]);
@@ -129,16 +150,6 @@ const Auth = () => {
             await handleRegisteration();
 
         }else if (action === "forgot_password") {
-            if (!email.trim()) {
-                setError(t("error_email_required"));
-                setLoading(false);
-                return;
-            }
-            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                setError(t("error_invalid_email"));
-                setLoading(false);
-                return;
-            }
             try {
                 //await axios.post("/forgot-password", { email });
                 navigate("/reset_password"); // Move to reset password form
@@ -149,21 +160,6 @@ const Auth = () => {
 
         // RESET PASSWORD - set new password
         else if (action === "reset_password") {
-            if (!password.trim()) {
-                setError(t("error_password_required"));
-                setLoading(false);
-                return;
-            }
-            if (password.length < 6) {
-                setError(t("error_password_length"));
-                setLoading(false);
-                return;
-            }
-            if (password !== confirmPassword) {
-                setError(t("error_password_mismatch"));
-                setLoading(false);
-                return;
-            }
             try {
                 //await axios.post("/reset-password", {password});
                 navigate("/login");
