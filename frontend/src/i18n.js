@@ -1,9 +1,9 @@
-import i18next from 'i18next';
+import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import en from './locals/en.json';
 import ar from './locals/ar.json';
 
-i18next
+i18n
     .use(initReactI18next)
     .init({
         lng: localStorage.getItem('language') || 'en', // Default to English
@@ -16,4 +16,4 @@ i18next
         },
     });
 
-export default i18next;
+export default i18n;

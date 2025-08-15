@@ -38,8 +38,8 @@ const ForgotPassword = () => {
     };
 
     return (
-        <div className="bg-white rounded-2xl h-auto flex flex-col items-center justify-center w-1/2 pt-4 pb-4 m-auto">
-            <div>
+        <div className="bg-white rounded-2xl min-h-fit flex flex-col items-center justify-center pb-8 pt-10 pr-4 pl-4">
+            <div className="w-full max-w-3xl flex flex-col items-center">
                 <img src="mail.png"
                      alt="mail.img"
                      className="mx-auto mb-2 w-12 h-auto"/>
@@ -47,7 +47,7 @@ const ForgotPassword = () => {
             </div>
             <hr className="my-3" />
             <p className="font-bold text-green-800">{t("reset_sent_message")}</p>
-            <div className="bg_white p-6 w-full max-w-md">
+            <div className="bg_white p-6 w-full ml-24 mr-24 ">
                 <form className="space-y-4 border-t border-gray-300 pt-4"
                       onSubmit={handleSubmit}>
 
@@ -81,20 +81,20 @@ const ForgotPassword = () => {
                 <button
                     type="button"
                     onClick={() => changeLanguage("en")}
-                    className={`m-4 ${language === "en" ? "text-emerald-700 font-bold" : "text-gray-700"}`}
+                    className={`mr-4 ml-4 ${language === "en" ? "text-emerald-700 font-bold" : "text-gray-700"}`}
                 >
                     {t("english")}
                 </button>
                 <button
                     type="button"
                     onClick={() => changeLanguage("ar")}
-                    className={`m-4 ${language === "ar" ? "text-emerald-700 font-bold" : "text-gray-700"}`}
+                    className={`mr-4 ml-4 ${language === "ar" ? "text-emerald-700 font-bold" : "text-gray-700"}`}
                 >
                     {t("arabic")}
                 </button>
             </div>
             <br />
-            <p>
+            <p className="mb-1 border-t border-gray-300 mt-1 pt-4 w-full max-w-md flex flex-row justify-center items-center">
                 {t("back_to_login")}
                 <span className="text-green-800 ml-1 cursor-pointer"
                       onClick={() =>  {
