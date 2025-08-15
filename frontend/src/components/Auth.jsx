@@ -142,21 +142,21 @@ const Auth = () => {
 
 
     return(
-        <div className="bg-white rounded-2xl h-auto flex flex-col items-center justify-center w-1/2 pt-4 pb-4 m-auto">
-            <div>
+        <div className="bg-white rounded-2xl min-h-screen flex flex-col items-center justify-center p-4">
+            <div className="w-full max-w-3xl flex flex-col items-center">
                 {/* Title */}
-                <h1 className="text-2xl font-bold text-4xl text-center mt-4">
+                <h2 className="text-2xl font-bold text-center mt-2">
                     {action === "login"
                         ? t("login_title")
                         : action === "register"
                             ? t("register_title") : ""}
-                </h1>
+                </h2>
             </div>
 
             <hr className="my-3" />
             {action === "register" ? <p className="font-bold text-green-800">{t("register_p")}</p> :
                 <p className="font-bold text-green-800">{t("login_p")}</p>}
-            <div className="bg_white p-6 w-full max-w-md">
+            <div className="bg_white p-6 w-full ml-24 mr-24 ">
                 <form className="space-y-4 border-t border-gray-300 pt-4"
                 onSubmit={handleSubmit}>
                     {action === "register" && (
@@ -279,9 +279,10 @@ const Auth = () => {
                     </button>
 
                 </form>
+
                 <br/>
                 {action === "login" && (
-                    <span className="text-gray-700 font-bold text-2xl text-sm mt-6 cursor-pointer"
+                    <span className="text-gray-700 font-bold text-sm mt-1 cursor-pointer flex flex-col justify-center items-center"
                     onClick={() => navigate("/forgot_password")}
                     >
                         {t("forgot_password")}
@@ -294,20 +295,20 @@ const Auth = () => {
                 <button
                     type="button"
                     onClick={() => changeLanguage("en")}
-                    className={`m-4 ${language === "en" ? "text-emerald-700 font-bold" : "text-gray-700"}`}
+                    className={`ml-4 mr-4 ${language === "en" ? "text-emerald-700 font-bold" : "text-gray-700"}`}
                 >
                     {t("english")}
                 </button>
                 <button
                     type="button"
                     onClick={() => changeLanguage("ar")}
-                    className={`m-4 ${language === "ar" ? "text-emerald-700 font-bold" : "text-gray-700"}`}
+                    className={`mr-4 ml-4 ${language === "ar" ? "text-emerald-700 font-bold" : "text-gray-700"}`}
                 >
                     {t("arabic")}
                 </button>
             </div>
             <br />
-            <p className="mb-4 border-t border-gray-300 mt-4 pt-4 w-full max-w-md">
+            <p className="mb-1 border-t border-gray-300 mt-1 pt-4 w-full max-w-md flex flex-row justify-center items-center">
                 {action === "login" ? t("no_account") :
                     action === "register" ? t("have_account"): " "}{" "}
                 <span

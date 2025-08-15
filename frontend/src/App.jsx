@@ -6,7 +6,7 @@ import ForgotPassword from "./components/ForgotPassword.jsx";
 
 function App() {
       return (
-
+            <div className="App">
                 <Routes>
                       {/* Redirect root to /login */}
                       <Route path="/" element={<Navigate to="/login" />} />
@@ -17,14 +17,9 @@ function App() {
                       <Route path="/forgot_password" element={<ForgotPassword />} />
                       <Route path="/reset_password" element={<ResetPassword />} />
 
-
-                    {/* Example page after login */}
-                      {/* <Route path="/dashboard" element={<Dashboard />} /> */}
-
-                      {/* Catch-all route for undefined URLs */}
                       <Route path="*" element={<h1>404 - Page Not Found</h1>} />
                 </Routes>
-
+            </div>
       );
 }
 
