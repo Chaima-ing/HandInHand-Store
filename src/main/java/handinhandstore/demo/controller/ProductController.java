@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -63,13 +65,19 @@ public class ProductController {
 
     @DeleteMapping("Delete-Product/{id_Product}")
     public ResponseEntity<String> deleteProduct(@PathVariable Long id_Product) {
-        // if (!realEstateService.existsById(id_RE)) {
-        //     throw new EntityNotFoundException("Listing not found with ID: " + id);
-        // }
         System.out.println("---------------------calling the delete process-------------");
         System.out.println("/n/n*********the id of the product to delete is"+id_Product+"/n/n************");
         productService.deleteProduct(id_Product);
         return ResponseEntity.ok("Product deleted successfully");
+    }
+
+    @PutMapping("Update-Product/{id_Product}")
+    public ResponseEntity<Product> updateProduct(
+            @PathVariable Long id_Product,
+            @RequestBody Product updatedProduct
+    ) {
+        Product product = productService.updateProduct(id_Product, updatedProduct);
+        return ResponseEntity.ok(product);
     }
 
 }
