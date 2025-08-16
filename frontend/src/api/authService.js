@@ -1,9 +1,7 @@
 import client from "./api.js"
 
 export const loginUser = (id, password) => {
-    return client.post("/UserLogin", {
-        params: {id,password}
-    });
+    return client.post("/UserLogin",{id,password});
 };
 
 export const registerUser = (userData) => {

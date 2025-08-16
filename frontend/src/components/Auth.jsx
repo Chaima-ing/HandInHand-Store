@@ -145,12 +145,12 @@ const Auth = () => {
         <div className="bg-white rounded-2xl min-h-screen flex flex-col items-center justify-center p-4">
             <div className="w-full max-w-3xl flex flex-col items-center">
                 {/* Title */}
-                <h2 className="text-2xl font-bold text-center mt-2">
+                <h1 className="text-2xl font-bold text-center mt-2">
                     {action === "login"
                         ? t("login_title")
                         : action === "register"
                             ? t("register_title") : ""}
-                </h2>
+                </h1>
             </div>
 
             <hr className="my-3" />
