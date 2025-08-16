@@ -43,7 +43,7 @@ const ForgotPassword = () => {
                 <img src="mail.png"
                      alt="mail.img"
                      className="mx-auto mb-2 w-12 h-auto"/>
-                <h1 className="text-3xl font-bold mb-4">{t("forgot_password_title")}</h1>
+                <h2 className="font-bold mb-4 !text-4xl">{t("forgot_password_title")}</h2>
             </div>
             <hr className="my-3" />
             <p className="font-bold text-green-800">{t("reset_sent_message")}</p>
