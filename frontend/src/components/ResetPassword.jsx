@@ -57,7 +57,7 @@ const ResetPassword = () => {
         <div className="bg-white rounded-2xl min-h-screen flex flex-col items-center justify-center p-4">
             <div className="w-full max-w-3xl flex flex-col items-center">
                 <img
-                    src="key.png"
+                    src="/key.png"
                     alt="key.png"
                     className="mx-auto mb-2 w-12 h-auto"
                 />

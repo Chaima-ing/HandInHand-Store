@@ -24,3 +24,7 @@ export const forgotPassword = (email) => {
 export const resetPassword = (token, newPassword) => {
     return client.post(`/reset-password`, { token, newPassword });
 };
+
+export const loginAdmin = (email, password) => {
+    return client.post("/LoginAdmin", {email, password});
+}
