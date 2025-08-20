@@ -1,6 +1,7 @@
 package handinhandstore.demo.controller;
 
 import org.springframework.web.bind.annotation.*;
+import java.time.LocalDateTime;
 
 import handinhandstore.demo.model.entity.User;
 import handinhandstore.demo.service.AuthenticationService;
@@ -31,6 +32,9 @@ public class AuthenticationController {
 
     @PostMapping("/UserRegistration")
     public User register(@RequestBody User user) {
+        LocalDateTime now = LocalDateTime.now();
+        user.setCreatedAt(now);
+        user.setUpdatedAt(now);
         return authService.userRegisteration(user);
     }
 }
