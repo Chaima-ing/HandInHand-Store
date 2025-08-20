@@ -1,30 +1,27 @@
-import client from "./api.js"
+import client from "./api.js";
 
-export const loginUser = (id, password) => {
-    return client.post("/UserLogin",{id,password});
+export const loginUser = (email, password) => {
+    return client.get("/UserLogin", {
+        params: { email, password }
+    });
 };
 
 export const registerUser = (userData) => {
-    return client.post("/UserRegister", userData)
-        .then(res => {
-            console.log(res.data);
-        })
-        .catch(err => {
-            console.log(err);
-        });
+    return client.post("/UserRegistration", userData);
 };
 
 export const forgotPassword = (email) => {
-    return client.post("/ForgotPassword", {email})
+    return client.post("/ForgotPassword", { email })
         .then(res => {
             console.log(res.data);
+            return res.data;
         });
 };
 
 export const resetPassword = (token, newPassword) => {
-    return client.post(`/reset-password`, { token, newPassword });
+    return client.post("/reset-password", { token, newPassword });
 };
 
 export const loginAdmin = (email, password) => {
-    return client.post("/LoginAdmin", {email, password});
-}
+    return client.post("/LoginAdmin", { email, password });
+};

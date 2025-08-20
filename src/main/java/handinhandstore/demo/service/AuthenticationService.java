@@ -31,8 +31,8 @@ public class AuthenticationService {
         }
     }
 
-    public boolean login(Long id, String password) {
-        Optional<User> userOptional = authRepo.findUserByIdAndPassword(id, password);
+    public boolean login(String email, String password) {
+        Optional<User> userOptional = authRepo.findUserByEmailAndPassword(email, password);
         return userOptional.isPresent();
     }
 }

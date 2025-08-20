@@ -22,14 +22,14 @@ public class AuthenticationController {
 
     @GetMapping("/UserLogin")
     public boolean login(
-            @RequestParam Long id,
+            @RequestParam String email,
             @RequestParam String password
     ) {
-        boolean isAuthenticated = authService.login(id, password);
+        boolean isAuthenticated = authService.login(email, password);
         return isAuthenticated;
     }
 
-    @PostMapping("/UserRegisteration")
+    @PostMapping("/UserRegistration")
     public User register(@RequestBody User user) {
         return authService.userRegisteration(user);
     }
