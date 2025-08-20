@@ -142,22 +142,22 @@ const Auth = () => {
 
 
     return(
-        <div className="bg-white rounded-2xl min-h-screen flex flex-col items-center justify-center p-4">
+        <div className="bg-white rounded-2xl min-h-fit flex flex-col items-center justify-center space-y-1 pt-1 pb-2">
             <div className="w-full max-w-3xl flex flex-col items-center">
                 {/* Title */}
-                <h2 className="text-2xl font-bold text-center mt-2">
+                <h1 className="text-2xl font-bold text-center mt-2">
                     {action === "login"
                         ? t("login_title")
                         : action === "register"
                             ? t("register_title") : ""}
-                </h2>
+                </h1>
             </div>
 
             <hr className="my-3" />
             {action === "register" ? <p className="font-bold text-green-800">{t("register_p")}</p> :
                 <p className="font-bold text-green-800">{t("login_p")}</p>}
             <div className="bg_white p-6 w-full ml-24 mr-24 ">
-                <form className="space-y-4 border-t border-gray-300 pt-4"
+                <form className="space-y-3 border-t border-gray-300 pt-2"
                 onSubmit={handleSubmit}>
                     {action === "register" && (
                         <div>
@@ -267,7 +267,7 @@ const Auth = () => {
                     {error && <p className="text-red-500 text-sm">{error}</p>}
                     <button
                         type="submit"
-                        className="bg-green-700 text-white mt-4 px-4 py-2 rounded-2xl w-full"
+                        className="bg-green-700 text-white mt-4 px-4 py-2 rounded-[20px] w-full"
                         disabled={loading}
                     >
                         {loading

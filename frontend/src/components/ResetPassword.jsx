@@ -54,19 +54,19 @@ const ResetPassword = () => {
     };
 
     return (
-        <div className="bg-white rounded-2xl h-auto flex flex-col items-center justify-center w-1/2 pt-4 pb-4 m-auto">
-            <div>
+        <div className="bg-white rounded-2xl min-h-screen flex flex-col items-center justify-center p-4">
+            <div className="w-full max-w-3xl flex flex-col items-center">
                 <img
-                    src="key.png"
+                    src="/key.png"
                     alt="key.png"
                     className="mx-auto mb-2 w-12 h-auto"
                 />
-                <h1 className="text-3xl font-bold mb-4 mt-4">{t("reset_password_title")}</h1>
+                <h1 className="text-3xl font-bold mt-2">{t("reset_password_title")}</h1>
             </div>
             <hr className="my-3" />
             <p className="font-bold text-green-800">{t("verify_code_title")}</p>
-            <div className="bg_white p-6 w-full max-w-md">
-                <form onSubmit={handleSubmit} className="max-w-md ms-auto p-4">
+            <div className="bg_white p-6 w-full ml-24 mr-24 ">
+                <form onSubmit={handleSubmit} className="space-y-4 border-t border-gray-300 pt-4">
 
                   {error && <p className="text-red-500">{error}</p>}
                         <div>
@@ -97,7 +97,7 @@ const ResetPassword = () => {
                             </label>
                           <input
                               type="password"
-                              placeholder={t("reassure_password_placeholder")}
+                              placeholder={t("reassure_placeholder")}
                               className="mt-1 block w-full p-2 border border-gray-300 rounded"
                               value={confirmPassword}
                               onChange={(e) => setConfirmPassword(e.target.value)}
@@ -115,20 +115,20 @@ const ResetPassword = () => {
                 <button
                     type="button"
                     onClick={() => changeLanguage("en")}
-                    className={`m-4 ${language === "en" ? "text-emerald-700 font-bold" : "text-gray-700"}`}
+                    className={`ml-4 mr-4 ${language === "en" ? "text-emerald-700 font-bold" : "text-gray-700"}`}
                 >
                     {t("english")}
                 </button>
                 <button
                     type="button"
                     onClick={() => changeLanguage("ar")}
-                    className={`m-4 ${language === "ar" ? "text-emerald-700 font-bold" : "text-gray-700"}`}
+                    className={`ml-4 mr-4 ${language === "ar" ? "text-emerald-700 font-bold" : "text-gray-700"}`}
                 >
                     {t("arabic")}
                 </button>
             </div>
             <br />
-            <p>
+            <p className="mb-1 border-t border-gray-300 mt-1 pt-4 w-full max-w-md flex flex-row justify-center items-center">
                 {t("back_to_login")}
                 <span className="text-green-800 ml-1 cursor-pointer"
                       onClick={() =>  {
