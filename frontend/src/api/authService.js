@@ -1,8 +1,8 @@
 import api from "./api.js"
 
-export const loginUser = (id, password) => {
+export const loginUser = (email, password) => {
     return api.get("/UserLogin", {
-        params: {id,password}
+        params: {email,password}
     });
 };
 
