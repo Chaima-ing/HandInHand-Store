@@ -49,5 +49,13 @@
   "open_email_button": "Open Email Inbox",
   "no_email": "Did not receive an email?",
   "resend_email": "click here",
-  "admin_login_title": "Admin Log In"
+  "admin_login_title": "Admin Log In",
+  "search_products_placeholder": "search for products",
+  "home_page": "Home",
+  "products": "Products",
+  "donations": "Donations",
+  "aboutUs": "About Us",
+  "Communicate_with_us": "Communicate Us",
+  "Login": "Login",
+  "register":"Register"
 }

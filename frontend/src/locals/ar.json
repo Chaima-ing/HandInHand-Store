@@ -49,5 +49,13 @@
   "open_email_button": "افتح بريدك الالكتروني",
   "no_email": "لم تستلم بريدا الكترونيا ؟",
   "resend_email": "اضغط هنا",
-  "admin_login_title": "تسجيل الدخول للإداري"
+  "admin_login_title": "تسجيل الدخول للإداري",
+  "search_products_placeholder": "ابحث عن منتجات..",
+  "home_page": "الرئيسية",
+  "products": "المنتجات",
+  "donations": "التبرعات",
+  "aboutUs": "عنا",
+  "Communicate_with_us": "اتصل بنا",
+  "Login": "تسجيل الدخول",
+  "register":"إنشاء حساب"
 }
