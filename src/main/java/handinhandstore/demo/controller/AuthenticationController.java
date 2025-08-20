@@ -29,7 +29,7 @@ public class AuthenticationController {
         return isAuthenticated;
     }
 
-    @PostMapping("/UserRegisteration")
+    @PostMapping("/UserRegistration")
     public User register(@RequestBody User user) {
         return authService.userRegisteration(user);
     }
