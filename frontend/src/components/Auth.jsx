@@ -142,7 +142,7 @@ const Auth = () => {
 
 
     return(
-        <div className="bg-white rounded-2xl min-h-fit flex flex-col items-center justify-center space-y-1 pt-1 pb-2">
+        <div className="bg-white rounded-2xl min-h-fit flex flex-col items-center justify-center space-y-1 pt-1 pb-2 mt-auto    ">
             <div className="w-full max-w-3xl flex flex-col items-center">
                 {/* Title */}
                 <h1 className="text-2xl font-bold text-center mt-2">

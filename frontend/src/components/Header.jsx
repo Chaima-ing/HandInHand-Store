@@ -28,7 +28,7 @@ function Header() {
             <div className="header-container">
                 {/* Logo */}
                 <div className="logo">
-                    <FaHandshake className="Hand-icon"/>متجر <span>غزة</span> للجميع
+                    <FaHandshake className="Hand-icon"/>{t("Store")}<span>{t("GAZA")}</span>{t("for_all")}
                 </div>
                 {/* Search */}
                 <div className="search">
@@ -45,8 +45,8 @@ function Header() {
                     </nav>
                 {/* Buttons */}
                 <div className="auth-buttons">
-                    <button className="btn-outline" onClick={navigate("/login")}>{t("Login")}</button>
-                    <button className="btn-green">{t("register")}</button>
+                    <button className="btn-outline" onClick={() => navigate("/login")}>{t("Login")}</button>
+                    <button className="btn-green" onClick={() => navigate("/register")}>{t("register")}</button>
                 </div>
             </div>
         </header>

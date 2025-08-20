@@ -13,12 +13,16 @@
 }
 
 .logo {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
+  display: flex;
+  flex-direction: row;
 }
 
 .logo span {
   color: green;
+  margin-right: 5px;
+  margin-left: 5px;
 }
 
 .Hand-icon {
@@ -48,7 +52,7 @@
 
 .search {
   position: relative;
-  width: 500px; /* plus long */
+  width: 300px; /* plus long */
 }
 
 .search-icon {
@@ -62,7 +66,7 @@
 
 .search input {
   width: 100%;
-  padding: 8px 35px 8px 10px; /* espace pour l’icône */
+  padding: 5px; /* espace pour l’icône */
   border-radius: 20px;
   border: none;
   outline: none;

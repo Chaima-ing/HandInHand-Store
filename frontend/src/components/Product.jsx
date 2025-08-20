@@ -1,10 +1,16 @@
 import "./styles/Product.css"
 function Product (){
    const cards = [
-  { img: "/images/phone.jpg", title: "هاتف ذكي", description: "أحدث الهواتف الذكية بأسعار رائعة" },
-  { img: "/images/book.jpg", title: "كتاب تعليمي", description: "تعلم البرمجة خطوة بخطوة" },
-  { img: "/images/watch.jpg", title: "ساعة يد", description: "تصميم أنيق وعصري" },
-  { img: "/images/gift.jpg", title: "هدية خاصة", description: "مناسبة لجميع المناسبات" }
+      { img: "/images/phone.jpg", title: "هاتف ذكي", description: "أحدث الهواتف الذكية بأسعار رائعة" },
+      { img: "/images/book.jpg", title: "كتاب تعليمي", description: "تعلم البرمجة خطوة بخطوة" },
+      { img: "/samsung-watch.png", title: "ساعة يد", description: "تصميم أنيق وعصري" },
+      { img: "/images/gift.jpg", title: "هدية خاصة", description: "مناسبة لجميع المناسبات" },
+       { img: "/images/phone.jpg", title: "هاتف ذكي", description: "أحدث الهواتف الذكية بأسعار رائعة" },
+       { img: "/images/book.jpg", title: "كتاب تعليمي", description: "تعلم البرمجة خطوة بخطوة" },
+       { img: "/samsung-watch.png", title: "ساعة يد", description: "تصميم أنيق وعصري" },
+       { img: "/images/gift.jpg", title: "هدية خاصة", description: "مناسبة لجميع المناسبات" },
+       { img: "/images/phone.jpg", title: "هاتف ذكي", description: "أحدث الهواتف الذكية بأسعار رائعة" },
+       { img: "/images/book.jpg", title: "كتاب تعليمي", description: "تعلم البرمجة خطوة بخطوة" },
 ];
     return(
         <section className="donation-section">

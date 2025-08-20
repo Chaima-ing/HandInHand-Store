@@ -1,16 +1,35 @@
 import "./styles/Hero.css";
 import { FaMessage } from 'react-icons/fa6';
+import { useTranslation } from "react-i18next";
+import {useEffect, useState} from "react";
+
 function Hero(){
+    const { t, i18n } = useTranslation();
+    const [language, setLanguage] = useState(i18n.language || 'en');
+
+    const changeLanguage = (lng) => {
+        i18n.changeLanguage(lng).then(() => {
+            console.log("Language changed");
+        });
+        setLanguage(lng);
+        localStorage.setItem('language', lng);
+        document.documentElement.setAttribute('dir', lng === "ar" ? 'rtl' : 'ltr');
+    };
+
+    useEffect(() => {
+        document.documentElement.setAttribute('dir', language === "ar" ? 'rtl' : 'ltr');
+    }, [language]);
+
 
     return(
         <section className="hero">
             <div className="hero-overlay">
                 <div className="hero-content">
-                    <h1>ساهم في دعم أهالي غزة من خلال متجرنا</h1>
-                    <p>أرباحنا تذهب مباشرة لمساعدة العائلات في غزة، تسوق الآن وساهم في صنع الفرق.</p>
+                    <h1>{t("hero_h1")}</h1>
+                    <p>{t("hero_p")}</p>
                         <div className="hero-buttons">
-                            <button className="btn-outline">تعرف على مبادراتنا</button>
-                            <button className="btn-green">تصفح المنتجات</button>
+                            <button className="btn-outline">{t("button_outline")}</button>
+                            <button className="btn-green">{t("browse_button")}</button>
                         </div>
                     <button className="circle-btn floating-btn"><FaMessage className="circle-icon"/></button>
                 </div>
