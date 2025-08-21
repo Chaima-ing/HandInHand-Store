@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import {forgotPassword} from "../api/authService.js";
+import {forgotPassword} from "../apiServices/authService.js";
 
 
 const ForgotPassword = () => {

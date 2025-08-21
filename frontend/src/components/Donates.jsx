@@ -1,42 +1,41 @@
 import "./styles/Donates.css"
+import { useTranslation } from "react-i18next";
 
-function Donates(){
+function Donates() {
+    const { t } = useTranslation();
 
     const stats = [
-    { value: "$124,850", label: "إجمالي التبرعات" },
-    { value: "5,200+", label: "عائلة مستفيدة" },
-    { value: "18", label: "مشروع ممول" },
-    { value: "100%", label: "شفافية" },
-  ];
-    return(
+        { value: "$124,850", label: t("total_donations") },
+        { value: "5,200+", label: t("benefited_families") },
+        { value: "18", label: t("funded_projects") },
+        { value: "100%", label: t("transparency") },
+    ];
+
+    return (
         <section className="principle">
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-            {/* Bloc texte au-dessus */}
-                <div style={{ textAlign: "center", marginBottom: "20px" }}>
-                    <h2 style={{ fontSize: "25px", fontWeight: "bold",color :"white"}}>تأثير تبرعاتكم</h2>
-                    <div style={{
-                        width: "50px",
-                        height: "3px",
-                        backgroundColor: "green",
-                        margin: "8px auto"
-                    }}></div>
-                    <p style={{ fontSize: "22px", color: "white" }}>
-                    احصائيات حقيقية عن الفرق الذي تصنعونه
+            <div className="flex flex-col items-center">
+                {/* Bloc texte au-dessus */}
+                <div className="text-center mb-5">
+                    <h2 className="text-[25px] font-bold text-white">{t("donations_impact")}</h2>
+                    <div className="w-[50px] h-[3px] bg-green-600 my-2 mx-auto"></div>
+                    <p className="text-[22px] text-white">
+                        {t("real_stats")}
                     </p>
+
                     <div className="donates-section">
                         <div className="donates-container">
                             {stats.map((stat, index) => (
-                            <div key={index} className="donate-item">
-                                <div className="donate-value">{stat.value}</div>
-                                <div className="donate-label">{stat.label}</div>
-                            </div>
+                                <div key={index} className="donate-item">
+                                    <div className="donate-value">{stat.value}</div>
+                                    <div className="donate-label">{stat.label}</div>
+                                </div>
                             ))}
                         </div>
                     </div>
                 </div>
-        </div>
+            </div>
         </section>
     );
 }
 
-export default Donates
+export default Donates;

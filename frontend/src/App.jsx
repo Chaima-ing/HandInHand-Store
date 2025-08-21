@@ -1,10 +1,11 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
-import Auth from "./components/Auth.jsx";
-import ResetPassword from "./components/ResetPassword.jsx";
-import ForgotPassword from "./components/ForgotPassword.jsx";
-import Login from "./components/Login.jsx";
-import Homepage from "./components/Homepage.jsx";
+import Auth from "./pages/Auth.jsx";
+import ResetPassword from "./pages/ResetPassword.jsx";
+import ForgotPassword from "./pages/ForgotPassword.jsx";
+import Login from "./pages/Login.jsx";
+import Homepage from "./pages/Homepage.jsx";
+import CheckoutProduct from "./pages/CheckoutProduct.jsx";
 
 
 
@@ -21,6 +22,7 @@ function App() {
                           <Route path="/login_admin" element={<Login/> }/>
 
                           <Route path="/" element={<Homepage />} />
+                          <Route path="/checkoutProduct" element={<CheckoutProduct />} />
                           {/* Redirect unknown paths to home */}
                           <Route path="*" element={<Navigate to="/" replace />} />
                     </Routes>

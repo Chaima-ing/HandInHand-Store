@@ -1,55 +1,49 @@
 import { FaHandHoldingUsd, FaHeart, FaShieldAlt } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 import "./styles/Card.css";
 
-
-function Card(){
+function Card() {
+    const { t } = useTranslation();
 
     const cards = [
-    {
-      icon: <FaHeart className="card-icon" />,
-      title: "تأثير حقيقي",
-      description: "قصص حقيقية عن كيفية مساعدة تبرعاتك للأسر في غزة"
-    },
-    {
-      icon: <FaShieldAlt className="card-icon" />,
-      title: "شفافية كاملة",
-      description: "تتبع تبرعاتك ومعرفة الجهات المستفيدة بالتفصيل"
-    },
-    {
-      icon: <FaHandHoldingUsd className="card-icon" />,
-      title: "%",
-      description: "اختر المنتج أو تعامل وحدد نسبة منه لدعم أهالي غزة مباشرة"
-    }
-  ];
+        {
+            icon: <FaHeart className="card-icon" />,
+            title: t("real_impact_title"),
+            description: t("real_impact_desc"),
+        },
+        {
+            icon: <FaShieldAlt className="card-icon" />,
+            title: t("full_transparency_title"),
+            description: t("full_transparency_desc"),
+        },
+        {
+            icon: <FaHandHoldingUsd className="card-icon" />,
+            title: t("percentage_title"),
+            description: t("percentage_desc"),
+        },
+    ];
 
-  return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-      {/* Bloc texte au-dessus */}
-      <div style={{ textAlign: "center", marginBottom: "20px" }}>
-        <h2 style={{ fontSize: "25px", fontWeight: "bold",color :"black"}}>كيف يعمل متجرنا؟</h2>
-        <div style={{
-                        width: "50px",
-                        height: "3px",
-                        backgroundColor: "green",
-                        margin: "8px auto"
-                    }}></div>
-        <p style={{ fontSize: "22px", color: "#040404ff" }}>
-          منصة سهلة الاستخدام تربط بين البائعين والمشترين لدعم القضية الفلسطينية
-        </p>
-      </div>
-      {/* Bloc des cartes */}
-      <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}>
-        {cards.map((card, index) => (
-          <div className="card" key={index}>
-            {card.icon}
-            <h2 className="card-title">{card.title}</h2>
-            <p className="card-description">{card.description}</p>
+    return (
+        <div className="flex flex-col items-center">
+            {/* Text block */}
+            <div className="text-center mb-5">
+                <h2 className="text-2xl font-bold text-black">{t("how_it_works")}</h2>
+                <div className="w-12 h-1 bg-green-600 mx-auto my-2"></div>
+                <p className="text-lg text-gray-800">{t("how_it_works_desc")}</p>
+            </div>
+
+            {/* Cards block */}
+            <div className="flex justify-center flex-wrap">
+                {cards.map((card, index) => (
+                    <div className="card" key={index}>
+                        {card.icon}
+                        <h2 className="card-title">{card.title}</h2>
+                        <p className="card-description">{card.description}</p>
+                    </div>
+                ))}
+            </div>
         </div>
-      ))}
-      </div>
-    </div>
-  );
+    );
 }
 
-export default Card
-
+export default Card;

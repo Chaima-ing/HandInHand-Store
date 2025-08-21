@@ -28,7 +28,7 @@ function Header() {
             <div className="header-container">
                 {/* Logo */}
                 <div className="logo">
-                    <FaHandshake className="Hand-icon"/>{t("Store")}<span>{t("GAZA")}</span>{t("for_all")}
+                    <FaHandshake className="Hand-icon"/>{t("Store")}<span>{t("GAZA")}</span>
                 </div>
                 {/* Search */}
                 <div className="search">

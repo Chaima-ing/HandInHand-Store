@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {useLocation, useNavigate} from "react-router-dom";
-import {loginUser, registerUser} from "../api/authService.js"
+import {loginUser, registerUser} from "../apiServices/authService.js"
 
 const Auth = () => {
     const { t, i18n } = useTranslation();

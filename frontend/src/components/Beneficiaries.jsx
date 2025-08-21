@@ -1,6 +1,8 @@
 import "./styles/Beneficiaries.css";
+import { useTranslation } from "react-i18next";
 
 function Beneficiaries() {
+  const { t } = useTranslation();
   const testimonials = [
     {
       text: "بفضل تبرعاتكم، استطعنا ترميم منزل عائلتنا الذي تضرر للدمار. كلمات الشكر لا تكفي للتعبير عن امتناننا.",
@@ -22,9 +24,9 @@ function Beneficiaries() {
   return (
     <section className="beneficiaries-section">
       <div className="beneficiaries-header">
-        <h2>كلمات المستفيدين</h2>
+        <h2> {t("beneficiaries.header.title")}</h2>
         <div className="header-line"></div>
-        <p>قصص حقيقية عن تأثير تبرعاتكم</p>
+        <p>{t("beneficiaries.header.subtitle")}</p>
       </div>
 
       <div className="beneficiaries-cards">

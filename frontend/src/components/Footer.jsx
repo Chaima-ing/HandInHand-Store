@@ -1,18 +1,19 @@
 import { FaInstagram, FaYoutube, FaTwitter ,FaFacebook,FaEnvelope,FaPhone,FaMapMarkerAlt, FaHandshake} from "react-icons/fa";
 import "./styles/Footer.css";
 import { FaAngleLeft } from 'react-icons/fa';
+import { useTranslation } from "react-i18next";
 
 function Footer(){
+    const { t } = useTranslation();
+
     return(
         <footer className="footer">
             <div className="footer-container">
-                 {/* Colonne 1 */}
+                {/* Colonne 1 */}
                 <div className="footer-column">
                     <FaHandshake className="Hand-icon"/>
-                    <h3 className="footer-title footer-subtitle">متجر غزة للجميع</h3>
-                    <p className="footer-text">
-                        منصة إلكترونية تمكّنك من المساهمة في دعم أهالي غزة من خلال عمليات الشراء والبيع.
-                    </p>
+                    <h3 className="footer-title footer-subtitle">{t("footer.title")}</h3>
+                    <p className="footer-text">{t("footer.description")}</p>
                     <div className="footer-socials">
                         <FaYoutube />
                         <FaInstagram />
@@ -23,52 +24,52 @@ function Footer(){
 
                 {/* Colonne 2 */}
                 <div className="footer-column">
-                    <h4 className="footer-subtitle">روابط سريعة</h4>
+                    <h4 className="footer-subtitle">{t("footer.quickLinks.title")}</h4>
                     <ul>
-                        <li><FaAngleLeft className="angle"/> الرئيسية</li>
-                        <li><FaAngleLeft className="angle"/> جميع المنتجات</li>
-                        <li><FaAngleLeft className="angle"/> التبرعات</li>
-                        <li><FaAngleLeft className="angle"/> عن المتجر</li>
-                        <li><FaAngleLeft className="angle"/> اتصل بنا</li>
+                        <li><FaAngleLeft className="angle"/> {t("footer.quickLinks.home")}</li>
+                        <li><FaAngleLeft className="angle"/> {t("footer.quickLinks.products")}</li>
+                        <li><FaAngleLeft className="angle"/> {t("footer.quickLinks.donations")}</li>
+                        <li><FaAngleLeft className="angle"/> {t("footer.quickLinks.about")}</li>
+                        <li><FaAngleLeft className="angle"/> {t("footer.quickLinks.contact")}</li>
                     </ul>
                 </div>
 
                 {/* Colonne 3 */}
                 <div className="footer-column">
-                    <h4 className="footer-subtitle">المساعدة</h4>
-                        <ul>
-                            <li><FaAngleLeft className="angle"/> الأسئلة الشائعة </li>
-                            <li><FaAngleLeft className="angle"/> الشحن والتوصيل</li>
-                            <li><FaAngleLeft className="angle"/> سياسة الإرجاع</li>
-                            <li><FaAngleLeft className="angle"/> سياسة الخصوصية</li>
-                            <li><FaAngleLeft className="angle"/> الشروط والأحكام</li>
-                        </ul>
+                    <h4 className="footer-subtitle">{t("footer.help.title")}</h4>
+                    <ul>
+                        <li><FaAngleLeft className="angle"/> {t("footer.help.faq")}</li>
+                        <li><FaAngleLeft className="angle"/> {t("footer.help.shipping")}</li>
+                        <li><FaAngleLeft className="angle"/> {t("footer.help.returns")}</li>
+                        <li><FaAngleLeft className="angle"/> {t("footer.help.privacy")}</li>
+                        <li><FaAngleLeft className="angle"/> {t("footer.help.terms")}</li>
+                    </ul>
                 </div>
 
                 {/* Colonne 4 */}
                 <div className="footer-column">
-                    <h4 className="footer-subtitle">فئات المنتجات</h4>
+                    <h4 className="footer-subtitle">{t("footer.categories.title")}</h4>
                     <ul>
-                        <li><FaAngleLeft className="angle"/> إلكترونيات </li>
-                        <li><FaAngleLeft className="angle"/> ملابس </li>
-                        <li><FaAngleLeft className="angle"/> كتب</li>
-                        <li><FaAngleLeft className="angle"/> أدوات منزلية</li>
-                        <li><FaAngleLeft className="angle"/> أعمال فنية</li>
+                        <li><FaAngleLeft className="angle"/> {t("footer.categories.electronics")}</li>
+                        <li><FaAngleLeft className="angle"/> {t("footer.categories.clothes")}</li>
+                        <li><FaAngleLeft className="angle"/> {t("footer.categories.books")}</li>
+                        <li><FaAngleLeft className="angle"/> {t("footer.categories.home")}</li>
+                        <li><FaAngleLeft className="angle"/> {t("footer.categories.art")}</li>
                     </ul>
                 </div>
 
-                 {/* Colonne 5 */}
+                {/* Colonne 5 */}
                 <div className="footer-column">
-                    <h4 className="footer-subtitle">اتصل بنا</h4>
-                    <p><FaEnvelope/> info@gaza-store.com </p>
-                    <p><FaPhone/> 0123456789</p>
-                    <p><FaMapMarkerAlt/> الجزائر</p>
+                    <h4 className="footer-subtitle">{t("footer.contact.title")}</h4>
+                    <p><FaEnvelope/> {t("footer.contact.email")}</p>
+                    <p><FaPhone/> {t("footer.contact.phone")}</p>
+                    <p><FaMapMarkerAlt/> {t("footer.contact.address")}</p>
                 </div>
             </div>
 
-            <div className="footer-bottom">.متجر غزة للجميع - جميع الحقوق محفوظة.</div>
+            <div className="footer-bottom">{t("footer.bottom")}</div>
         </footer>
     );
 }
 
-export default Footer
+export default Footer;
