@@ -8,6 +8,7 @@ import handinhandstore.demo.model.entity.User;
 import handinhandstore.demo.service.AuthenticationService;
 import handinhandstore.demo.service.EmailService;
 import handinhandstore.demo.service.PasswordResetService;
+import handinhandstore.demo.repository.PasswordResetTokenRepository;
 
 @RestController
 public class AuthenticationController {
@@ -17,6 +18,9 @@ public class AuthenticationController {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private PasswordResetTokenRepository tokenRepo;
 
     public AuthenticationController(AuthenticationService authService, PasswordResetService resetService) {
         this.authService = authService;
@@ -54,6 +58,14 @@ public class AuthenticationController {
         resetService.createOrUpdateResetToken(email, code);
 
         return "Reset code sent to " + email;
+    }
+
+     @PostMapping("/verify-code")
+    public String verifyCode(@RequestParam String email, @RequestParam String code) {
+        return tokenRepo.findByEmailAndCode(email, code)
+                .filter(token -> token.getExpiresAt().isAfter(LocalDateTime.now()))
+                .map(token -> "Code verified. You can reset your password.")
+                .orElse("Invalid or expired code.");
     }
 }
 
