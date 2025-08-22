@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import {forgotPassword} from "../api/authService.js";
+import {forgotPassword} from "../apiServices/authService.js";
 
 
 const ForgotPassword = () => {
@@ -30,7 +30,7 @@ const ForgotPassword = () => {
         try{
             await forgotPassword(email);
             alert("Code sent to your email");
-            navigate("/login");
+            /*navigate("/verifyCode");*/
         }catch(error){
             setError("Failed to send code to your email")+(error.message ? `: ${error.message}` : "");
         }
@@ -71,7 +71,8 @@ const ForgotPassword = () => {
                     </div>
                     <button type="submit"
                             className="bg-green-700 text-white mt-4 px-4 py-2 rounded-2xl w-full"
-                            disabled={loading}>
+                            disabled={loading}
+                            onClick={()=>{navigate("/verifyCode")}}>
                         {t("reset_button_")}
                     </button>
                 </form>
@@ -98,7 +99,7 @@ const ForgotPassword = () => {
                 {t("back_to_login")}
                 <span className="text-green-800 ml-1 cursor-pointer"
                       onClick={() =>  {
-                         navigate("/login");
+                         navigate("/verifyCode");
                       }}>
                     {t("login_link")}
                 </span>

@@ -25,3 +25,14 @@ export const resetPassword = (token, newPassword) => {
 export const loginAdmin = (email, password) => {
     return client.post("/LoginAdmin", { email, password });
 };
+
+
+export const verifyCode = (code,email) => {
+    try {
+        const res = client.post("/VerifyCode", { code, email });
+        return res.data; // return backend response { success: true/false, message }
+    } catch (error) {
+        // optional: normalize error message
+        return { success: false, message: error.response?.data?.message || "Server error" };
+    }
+}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {useLocation, useNavigate} from "react-router-dom";
-import {loginUser, registerUser} from "../api/authService.js"
+import {loginUser, registerUser} from "../apiServices/authService.js"
 
 const Auth = () => {
     const { t, i18n } = useTranslation();
@@ -142,7 +142,7 @@ const Auth = () => {
 
 
     return(
-        <div className="bg-white rounded-2xl min-h-fit flex flex-col items-center justify-center space-y-1 pt-1 pb-2">
+        <div className="bg-white rounded-2xl min-h-fit flex flex-col items-center justify-center space-y-1 pt-1 pb-2 mt-auto    ">
             <div className="w-full max-w-3xl flex flex-col items-center">
                 {/* Title */}
                 <h1 className="text-2xl font-bold text-center mt-2">

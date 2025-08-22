@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {useSearchParams, useNavigate} from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import {resetPassword} from "../api/authService.js";
+import {resetPassword} from "../apiServices/authService.js";
 
 
 const ResetPassword = () => {
