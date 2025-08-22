@@ -35,4 +35,13 @@ public class AuthenticationService {
         Optional<User> userOptional = authRepo.findUserByEmailAndPassword(email, password);
         return userOptional.isPresent();
     }
+
+    public void updatePassword(String email, String newPassword) {
+        Optional<User> optUser = authRepo.findByEmail(email);
+        if (optUser.isPresent()) {
+            User user = optUser.get();
+            user.setPassword(newPassword);
+            authRepo.save(user);
+        }
+    }
 }
