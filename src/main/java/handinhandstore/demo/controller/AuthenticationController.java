@@ -12,6 +12,7 @@ import handinhandstore.demo.service.EmailService;
 import handinhandstore.demo.service.PasswordResetService;
 import handinhandstore.demo.repository.AuthenticationRepository;
 import handinhandstore.demo.repository.PasswordResetTokenRepository;
+import handinhandstore.demo.dto.VerifyCodeRequest;
 
 @RestController
 public class AuthenticationController {
@@ -76,7 +77,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("/verify-code")
-    public String verifyCode(@RequestParam String email, @RequestParam String code) {
+    public String verifyCode(@RequestBody VerifyCodeRequest request) {
+        String email = request.getEmail();
+        String code = request.getCode();
         return tokenRepo.findByEmailAndCode(email, code)
                 .filter(token -> token.getExpiresAt().isAfter(LocalDateTime.now()))
                 .map(token -> "Code verified. You can reset your password.")
