@@ -3,11 +3,15 @@ import "./styles/Header.css";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { useNavigate} from "react-router-dom";
+import AuthContext from "../context/AuthContext";
+import { useContext } from "react";
 
 function Header() {
     const { t, i18n } = useTranslation();
     const [language, setLanguage] = useState(i18n.language || 'en');
     const navigate = useNavigate();
+
+    const { user } = useContext(AuthContext);
 
     const changeLanguage = (lng) => {
         i18n.changeLanguage(lng).then(() => {
@@ -45,8 +49,27 @@ function Header() {
                     </nav>
                 {/* Buttons */}
                 <div className="auth-buttons">
-                    <button className="btn-outline" onClick={() => navigate("/login")}>{t("Login")}</button>
-                    <button className="btn-green" onClick={() => navigate("/register")}>{t("register")}</button>
+                    {user ? (
+                        <>
+                            <button
+                                className="btn-outline"
+                                onClick={() => navigate("/cart")}
+                            >
+                                <FaShoppingCart /> {t("Cart")}
+                            </button>
+                            <button
+                                className="btn-green"
+                                onClick={() => navigate("/profile")}
+                            >
+                                <FaUser /> {t("Profile")}
+                            </button>
+                        </>
+                    ):(
+                        <>
+                            <button className="btn-outline" onClick={() => navigate("/login")}>{t("Login")}</button>
+                            <button className="btn-green" onClick={() => navigate("/register")}>{t("register")}</button>
+                        </>
+                    )}
                 </div>
             </div>
         </header>
