@@ -3,6 +3,7 @@ package handinhandstore.demo.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
+import java.util.Map;
 
 import handinhandstore.demo.model.entity.User;
 import handinhandstore.demo.service.AuthenticationService;
@@ -51,7 +52,10 @@ public class AuthenticationController {
     }
 
     @PostMapping("/forgot-password")
-    public String forgotPassword(@RequestParam String email) {
+    public String forgotPassword(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
+        System.out.println("/n/n/n/n*/n*/n***Forget Password");
+        System.out.println("The email is :"+email);
         String code = emailService.sendResetCode(email);
 
         // Save token with transaction
