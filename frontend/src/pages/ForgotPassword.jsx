@@ -99,7 +99,7 @@ const ForgotPassword = () => {
                 {t("back_to_login")}
                 <span className="text-green-800 ml-1 cursor-pointer"
                       onClick={() =>  {
-                         navigate("/login");
+                         navigate("/verifyCode");
                       }}>
                     {t("login_link")}
                 </span>
