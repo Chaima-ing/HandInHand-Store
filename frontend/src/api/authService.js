@@ -11,7 +11,7 @@ export const registerUser = (userData) => {
 };
 
 export const forgotPassword = (email) => {
-    return client.post("/ForgotPassword", { email })
+    return client.post("/forgot-password", { email })
         .then(res => {
             console.log(res.data);
             return res.data;
