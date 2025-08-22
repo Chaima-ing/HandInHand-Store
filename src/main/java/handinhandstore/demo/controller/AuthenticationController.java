@@ -4,25 +4,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 
-import handinhandstore.demo.model.entity.PasswordResetToken;
 import handinhandstore.demo.model.entity.User;
-import handinhandstore.demo.repository.PasswordResetTokenRepository;
 import handinhandstore.demo.service.AuthenticationService;
 import handinhandstore.demo.service.EmailService;
+import handinhandstore.demo.service.PasswordResetService;
 
 @RestController
 public class AuthenticationController {
 
     private final AuthenticationService authService;
+    private final PasswordResetService resetService;
 
     @Autowired
     private EmailService emailService;
 
-    @Autowired
-    private PasswordResetTokenRepository tokenRepo;
-
-    public AuthenticationController(AuthenticationService authService) {
+    public AuthenticationController(AuthenticationService authService, PasswordResetService resetService) {
         this.authService = authService;
+        this.resetService = resetService;
     }
 
     @GetMapping("/getUserById")
@@ -52,12 +50,8 @@ public class AuthenticationController {
     public String forgotPassword(@RequestParam String email) {
         String code = emailService.sendResetCode(email);
 
-        // remove old tokens for this email
-        tokenRepo.deleteByEmail(email);
-
-        // save new token with 1 min expiry
-        PasswordResetToken token = new PasswordResetToken(email, code, LocalDateTime.now().plusMinutes(1));
-        tokenRepo.save(token);
+        // Save token with transaction
+        resetService.createOrUpdateResetToken(email, code);
 
         return "Reset code sent to " + email;
     }
