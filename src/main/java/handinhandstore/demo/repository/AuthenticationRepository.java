@@ -14,7 +14,9 @@ public interface AuthenticationRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.id = :id")
     Optional<User>  findById(@Param("id") Long id);
     @Query("SELECT u FROM User u WHERE u.email = :email AND u.password = :password")
-    Optional<User> findUserByEmailAndPassword(String email, String password);    
+    Optional<User> findUserByEmailAndPassword(String email, String password);
+    @Query("SELECT u FROM User u WHERE u.email = :email")
+    Optional<User>  findByEmail(@Param("email") String email);    
 }
 
 

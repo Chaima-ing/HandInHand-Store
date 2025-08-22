@@ -60,11 +60,29 @@ public class AuthenticationController {
         return "Reset code sent to " + email;
     }
 
-     @PostMapping("/verify-code")
+    @PostMapping("/verify-code")
     public String verifyCode(@RequestParam String email, @RequestParam String code) {
         return tokenRepo.findByEmailAndCode(email, code)
                 .filter(token -> token.getExpiresAt().isAfter(LocalDateTime.now()))
                 .map(token -> "Code verified. You can reset your password.")
+                .orElse("Invalid or expired code.");
+    }
+
+    @PostMapping("/reset-password")
+    public String resetPassword(@RequestParam String email,
+                                @RequestParam String code,
+                                @RequestParam String newPassword) {
+        return tokenRepo.findByEmailAndCode(email, code)
+                .filter(token -> token.getExpiresAt().isAfter(LocalDateTime.now()))
+                .map(token -> {
+                    // Reset password via your service
+                    authService.updatePassword(email, newPassword);
+
+                    // remove used token
+                    tokenRepo.delete(token);
+
+                    return "Password reset successful!";
+                })
                 .orElse("Invalid or expired code.");
     }
 }
