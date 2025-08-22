@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Optional;
 
 import handinhandstore.demo.model.entity.User;
 import handinhandstore.demo.service.AuthenticationService;
 import handinhandstore.demo.service.EmailService;
 import handinhandstore.demo.service.PasswordResetService;
+import handinhandstore.demo.repository.AuthenticationRepository;
 import handinhandstore.demo.repository.PasswordResetTokenRepository;
 
 @RestController
@@ -19,6 +21,9 @@ public class AuthenticationController {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private AuthenticationRepository authRepo;
 
     @Autowired
     private PasswordResetTokenRepository tokenRepo;
@@ -57,6 +62,12 @@ public class AuthenticationController {
         System.out.println("/n/n/n/n*/n*/n***Forget Password");
         System.out.println("The email is :"+email);
         String code = emailService.sendResetCode(email);
+
+        // Check that the user with the email exist
+        Optional<User> optUser = authRepo.findByEmail(email);
+        if (optUser.isEmpty()){
+            return "No user found with this email: " + email;
+        }
 
         // Save token with transaction
         resetService.createOrUpdateResetToken(email, code);
