@@ -30,7 +30,8 @@ const ForgotPassword = () => {
         try{
             await forgotPassword(email);
             alert("Code sent to your email");
-            /*navigate("/verifyCode");*/
+            navigate("/verify_code", { state: { email } });
+
         }catch(error){
             setError("Failed to send code to your email")+(error.message ? `: ${error.message}` : "");
         }
@@ -97,10 +98,7 @@ const ForgotPassword = () => {
             <br />
             <p className="mb-1 border-t border-gray-300 mt-1 pt-4 w-full max-w-md flex flex-row justify-center items-center">
                 {t("back_to_login")}
-                <span className="text-green-800 ml-1 cursor-pointer"
-                      onClick={() =>  {
-                         navigate("/verifyCode");
-                      }}>
+                <span className="text-green-800 ml-1 cursor-pointer">
                     {t("login_link")}
                 </span>
             </p>
