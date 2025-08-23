@@ -1,8 +1,10 @@
 package handinhandstore.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -77,14 +79,30 @@ public class AuthenticationController {
     }
 
     @PostMapping("/verify-code")
-    public String verifyCode(@RequestBody VerifyCodeRequest request) {
+    public ResponseEntity<Map<String, Object>> verifyCode(@RequestBody VerifyCodeRequest request) {
         String email = request.getEmail();
         String code = request.getCode();
+
+        System.out.println("\n\n\n*\n*\n*\n*** VERIFY CODE");
+        System.out.println("The code: "+code);
+        System.out.println("The email: "+email);
+
+        Map<String, Object> response = new HashMap<>();
+
         return tokenRepo.findByEmailAndCode(email, code)
                 .filter(token -> token.getExpiresAt().isAfter(LocalDateTime.now()))
-                .map(token -> "Code verified. You can reset your password.")
-                .orElse("Invalid or expired code.");
+                .map(token -> {
+                response.put("success", true);
+                response.put("message", "Code verified. You can reset your password.");
+                return ResponseEntity.ok(response);
+            })
+            .orElseGet(() -> {
+                response.put("success", false);
+                response.put("message", "Invalid or expired code.");
+                return ResponseEntity.badRequest().body(response);
+            });
     }
+
 
     @PostMapping("/reset-password")
     public String resetPassword(@RequestParam String email,
