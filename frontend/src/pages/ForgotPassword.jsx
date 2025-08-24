@@ -30,6 +30,7 @@ const ForgotPassword = () => {
         try{
             await forgotPassword(email);
             alert("Code sent to your email");
+            localStorage.setItem("resetEmail", email);  // save email
             navigate("/verify_code", { state: { email } });
 
         }catch(error){
