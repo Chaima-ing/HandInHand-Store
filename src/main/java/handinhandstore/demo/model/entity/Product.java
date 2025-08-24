@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import jakarta.persistence.*;
 import handinhandstore.demo.model.enums.PriceType;
 import handinhandstore.demo.model.enums.ProductStatus;
+import java.math.BigDecimal;
 
 @Entity
 public class Product {
@@ -110,7 +111,7 @@ public class Product {
         return donationPercentage;
     }
 
-    public void setDonationPercentage(BigDicemal donationPercentage){
+    public void setDonationPercentage(BigDecimal donationPercentage){
         this.donationPercentage = donationPercentage;
     }
     
