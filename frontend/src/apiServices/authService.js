@@ -29,7 +29,7 @@ export const loginAdmin = (email, password) => {
 
 export const verifyCode = (code,email) => {
     try {
-        const res = client.post("/VerifyCode", { code, email });
+        const res = client.post("/verify-code", { code, email });
         return res.data; // return backend response { success: true/false, message }
     } catch (error) {
         // optional: normalize error message
