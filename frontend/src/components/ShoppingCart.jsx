@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 import { Minus, Plus, Trash2 } from 'lucide-react';
-import useCart  from '../context/CartContext';
+import {useCart}  from '../context/CartContext';
 
 const ShoppingCart = () => {
     const { cartItems, updateQuantity, removeFromCart, getCartTotal } = useCart();
@@ -8,8 +8,8 @@ const ShoppingCart = () => {
     const getItemTotal = (price, quantity) => price * quantity;
 
     return (
-        <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-sm p-6" dir="rtl">
-            <div className="space-y-4">
+        <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-sm p-6 mt-5 mb-6" dir="rtl">
+            <div className="space-y-4 m-4">
                 {cartItems.map((item) => (
                     <div key={item.id} className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
                         {/* Product Image */}

@@ -1,13 +1,15 @@
-import Header from "../components/Header.jsx"
-import Footer from "../components/Footer.jsx";
-import ShopingCart from "../components/ShopingCart.jsx";
+import Header from "../components/Header.jsx";
+import ShoppingCart from "../components/ShoppingCart.jsx";
 
 const CartPage = () => {
     return(
-        <div className="bg-white">
+        <div className="bg-white w-screen flex flex-col min-h-screen">
+
             <Header />
-            <ShoppingCart />
-            <Footer />
+            <div className="bg-gray-100 flex-1">
+                <h1 className="text-center text-4xl font-extrabold tracking-wide m-3">Shopping Cart</h1>
+                <ShoppingCart />
+            </div>
         </div>
     );
 }
