@@ -2,6 +2,7 @@ package handinhandstore.demo.model.entity;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -24,6 +25,9 @@ public class User {
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    private BigDecimal defaultDonationPercentage = BigDecimal.valueOf(10);
+
     public Long getId() {
         return id;
     }
@@ -72,6 +76,14 @@ public class User {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+    public BigDecimal getDefaultDonationPercentage() {
+        return defaultDonationPercentage;
+    }
+    public void setDefaultDonationPercentage(BigDecimal defaultDonationPercentage) {
+        this.defaultDonationPercentage = defaultDonationPercentage;
+    }
+
+    
 
     
 }
