@@ -1,8 +1,11 @@
 package handinhandstore.demo.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import handinhandstore.demo.repository.ProductRepository;
@@ -36,9 +39,13 @@ public class ProductService {
         existingProduct.setPriceType(updatedProduct.getPriceType());
         existingProduct.setFixedPrice(updatedProduct.getFixedPrice());
         existingProduct.setCategory(updatedProduct.getCategory());
-        existingProduct.setImageUrl(updatedProduct.getImageUrl());
         existingProduct.setStatus(updatedProduct.getStatus());
 
         return productRepository.save(existingProduct);
+    }
+
+    public List<Product> getMostFeaturedDonationProducts(int limit) {
+        Pageable pageable = PageRequest.of(0, limit); // first page, with "limit" items
+        return productRepository.findAllByOrderByDonationPercentageDesc(pageable);
     }
 }
