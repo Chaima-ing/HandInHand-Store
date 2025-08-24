@@ -27,10 +27,10 @@ export const loginAdmin = (email, password) => {
 };
 
 
-export const verifyCode = (code,email) => {
+export const verifyCode = async (code,email) => {
     try {
 
-        const res = client.post("/verify-code", {code: code, email: email });
+        const res = await client.post("/verify-code", {code: code, email: email });
 
         return res.data; // return backend response { success: true/false, message }
     } catch (error) {
