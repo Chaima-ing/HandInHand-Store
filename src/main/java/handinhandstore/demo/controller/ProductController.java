@@ -88,6 +88,11 @@ public class ProductController {
         return productService.getMostFeaturedDonationProducts(limit);
     }
 
+    @GetMapping("products/getById")
+    public Product getById(@RequestParam Long id) {
+        return productService.findById(id);
+    }
+
 }
 
 

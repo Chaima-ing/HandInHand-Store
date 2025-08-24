@@ -48,4 +48,15 @@ public class ProductService {
         Pageable pageable = PageRequest.of(0, limit); // first page, with "limit" items
         return productRepository.findAllByOrderByDonationPercentageDesc(pageable);
     }
+
+     public Product findById(Long id) {
+        Optional<Product> productOptional = productRepository.findById(id);
+
+        if (productOptional.isPresent()) {
+            Product product = productOptional.get();
+            return product;
+        } else {
+            return null; // or throw a custom exception
+        }
+    }
 }
