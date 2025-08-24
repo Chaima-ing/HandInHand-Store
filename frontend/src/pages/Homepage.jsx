@@ -8,7 +8,7 @@ import Donates from "../components/Donates.jsx";
 
 const HomePage = () => {
     return (
-        <div className="bg-white">
+        <div className="bg-white w-screen">
             <Header />
             <Hero />
             <Card />

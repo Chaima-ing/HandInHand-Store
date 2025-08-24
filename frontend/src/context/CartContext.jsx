@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const CartContext = createContext();
 
-const useCart = () => {
+export const useCart = () => {
     const context = useContext(CartContext);
     if (!context) {
         throw new Error('useCart must be used within a CartProvider');
@@ -27,6 +27,11 @@ export const CartProvider = ({ children }) => {
             const existingItem = prevItems.find(item => item.id === product.id);
 
             if (existingItem) {
+                // check stock
+                if (existingItem.quantity + quantity > product.stockQuantity) {
+                    alert("❌ الكمية المطلوبة غير متوفرة");
+                    return prevItems;
+                }
                 // If item already exists, update quantity
                 return prevItems.map(item =>
                     item.id === product.id
@@ -34,11 +39,24 @@ export const CartProvider = ({ children }) => {
                         : item
                 );
             } else {
+                if (quantity > product.stockQuantity) {
+                    alert("❌ الكمية المطلوبة غير متوفرة");
+                    return prevItems;
+                }
                 // If new item, add to cart
                 return [...prevItems, { ...product, quantity }];
             }
         });
     };
+    {/*
+    const getDonationTotal = () => {
+        return cartItems.reduce(
+            (total, item) =>
+                total +
+                ((item.donationPercentage || 0) / 100) * item.price * item.quantity,
+            0
+        );
+    };*/}
 
     const removeFromCart = (productId) => {
         setCartItems(prevItems => prevItems.filter(item => item.id !== productId));
@@ -98,4 +116,3 @@ export const CartProvider = ({ children }) => {
         </CartContext.Provider>
     );
 };
-export default useCart;

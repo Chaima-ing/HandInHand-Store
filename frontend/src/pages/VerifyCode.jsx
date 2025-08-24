@@ -19,14 +19,14 @@ const VerifyCode = () => {
         document.documentElement.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
     };
     // we expect email to be passed from previous step (ForgotPassword.jsx)
-    const email = location.state?.email;
+    const email = location.state?.email || localStorage.getItem("resetEmail");
 
     const handleVerify = async (e) => {
         e.preventDefault();
         const response = await verifyCode(code, email);
 
         if (response.success) {
-            navigate("/reset_password", { state: { email } });
+            navigate("/reset_password", { state: { email: email } });
         } else {
             setError(response.message || "Invalid or expired code.");
         }
