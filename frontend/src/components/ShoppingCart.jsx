@@ -15,23 +15,11 @@ const ShoppingCart = () => {
                         {/* Product Image */}
                         <div className="flex-shrink-0">
                             <div className="w-20 h-20 bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
-                                {item.id === 1 && (
-                                    <div className="w-full h-full bg-gray-300 flex items-center justify-center">
-                                        <div className="w-8 h-8 bg-gray-600 rounded-full"></div>
-                                    </div>
-                                )}
-                                {item.id === 2 && (
-                                    <div className="w-full h-full bg-yellow-400 flex items-center justify-center">
-                                        <div className="w-12 h-8 bg-gray-800 rounded-full relative">
-                                            <div className="absolute inset-1 bg-gray-900 rounded-full"></div>
-                                        </div>
-                                    </div>
-                                )}
-                                {item.id === 3 && (
-                                    <div className="w-full h-full bg-blue-100 flex items-center justify-center">
-                                        <div className="w-10 h-6 bg-gray-700 rounded"></div>
-                                    </div>
-                                )}
+                                <img
+                                    src={item.images?.[0] || "/placeholder.png"}
+                                    alt={item.name}
+                                    className="w-20 h-20 object-cover rounded"
+                                />
                             </div>
                         </div>
 
