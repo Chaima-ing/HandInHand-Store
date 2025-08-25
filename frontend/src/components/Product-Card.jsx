@@ -1,6 +1,6 @@
 import React from "react";
 
-const ProductCard = ({ product, onBuyNow, onAddToCart }) => (
+const ProductCard = ({ product, onDisplayDetails, onAddToCart }) => (
     <div className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
         <div className="relative mb-4">
             <div className="w-full h-48 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
@@ -41,7 +41,7 @@ const ProductCard = ({ product, onBuyNow, onAddToCart }) => (
                     Add to Cart
                 </button>
                 <button
-                    onClick={() => onBuyNow(product)}
+                    onClick={() => onDisplayDetails(product)}
                     className="px-4 py-1 text-sm bg-black text-white rounded-full hover:bg-green-700 transition-colors"
                 >
                     Display Details

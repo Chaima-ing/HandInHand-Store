@@ -1,19 +1,22 @@
-import React, { useState } from 'react';
-import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Sidebar from "./Sidebar.jsx";
 import ProductCard from "./Product-Card.jsx"
+import axios from "axios";
 
 const MainShoppingSection = ({
                                  categories = [],
                                  products = [],
                                  onCategoryChange = () => {},
                                  onAddToCart = () => {},
-                                 onBuyNow = () => {},
-                                 currentPage = 1,
-                                 totalPages = 10,
-                                 onPageChange = () => {}
+                                 onDisplayDetails = () => {}
                              }) => {
     const [selectedCategory, setSelectedCategory] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
+    const productsPerPage = 9;
+    //const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     // Default categories if none provided
     const defaultCategories = [
@@ -29,122 +32,60 @@ const MainShoppingSection = ({
 
     // Default products if none provided
     const defaultProducts = [
-        {
-            id: 1,
-            name: 'Phone Holder Sakti',
-            price: 29.90,
-            rating: 5.0,
-            reviews: 126,
-            category: 'Other',
-            image: '/api/placeholder/200/200'
-        },
-        {
-            id: 2,
-            name: 'Headsound',
-            price: 32.00,
-            rating: 5.0,
-            reviews: 126,
-            category: 'Music',
-            image: '/api/placeholder/200/200'
-        },
-        {
-            id: 3,
-            name: 'Adudu Cleaner',
-            price: 29.90,
-            rating: 4.5,
-            reviews: 126,
-            category: 'Other',
-            image: '/api/placeholder/200/200'
-        },
-        {
-            id: 4,
-            name: 'CCTV Maling',
-            price: 50.00,
-            rating: 4.5,
-            reviews: 100,
-            category: 'Home',
-            image: '/api/placeholder/200/200'
-        },
-        {
-            id: 5,
-            name: 'Stufflus Peker 32',
-            price: 9.90,
-            rating: 5.0,
-            reviews: 126,
-            category: 'Other',
-            image: '/api/placeholder/200/200'
-        },
-        {
-            id: 6,
-            name: 'Stufflus RT75',
-            price: 34.10,
-            rating: 4.5,
-            reviews: 126,
-            category: 'Music',
-            image: '/api/placeholder/200/200'
-        },
-        {
-            id: 7,
-            name: 'Phone Holder Sakti',
-            price: 29.90,
-            rating: 5.0,
-            reviews: 126,
-            category: 'Other',
-            image: '/api/placeholder/200/200'
-        },
-        {
-            id: 8,
-            name: 'Headsound',
-            price: 32.00,
-            rating: 5.0,
-            reviews: 126,
-            category: 'Music',
-            image: '/api/placeholder/200/200'
-        },
-        {
-            id: 9,
-            name: 'Adudu Cleaner',
-            price: 29.90,
-            rating: 4.5,
-            reviews: 126,
-            category: 'Other',
-            image: '/api/placeholder/200/200'
-        },
-        {
-            id: 10,
-            name: 'CCTV Maling',
-            price: 50.00,
-            rating: 4.5,
-            reviews: 100,
-            category: 'Home',
-            image: '/api/placeholder/200/200'
-        },
-        {
-            id: 11,
-            name: 'Stufflus Peker 32',
-            price: 9.90,
-            rating: 5.0,
-            reviews: 126,
-            category: 'Other',
-            image: '/api/placeholder/200/200'
-        },
-        {
-            id: 12,
-            name: 'Stufflus RT75',
-            price: 34.10,
-            rating: 4.5,
-            reviews: 126,
-            category: 'Music',
-            image: '/api/placeholder/200/200'
-        }
+        { id: 1, name: 'Phone Holder Sakti', price: 29.90, category: 'Other', image: '/api/placeholder/200/200' },
+        { id: 2, name: 'Headsound', price: 32.00, category: 'Music', image: '/api/placeholder/200/200' },
+        { id: 3, name: 'Adudu Cleaner', price: 29.90, category: 'Other', image: '/api/placeholder/200/200' },
+        { id: 4, name: 'CCTV Maling', price: 50.00, category: 'Home', image: '/api/placeholder/200/200' },
+        { id: 5, name: 'Stufflus Peker 32', price: 9.90, category: 'Other', image: '/api/placeholder/200/200' },
+        { id: 6, name: 'Stufflus RT75', price: 34.10, category: 'Music', image: '/api/placeholder/200/200' },
+        { id: 7, name: 'Phone Holder Sakti', price: 29.90, category: 'Other', image: '/api/placeholder/200/200' },
+        { id: 8, name: 'Headsound', price: 32.00, category: 'Music', image: '/api/placeholder/200/200' },
+        { id: 9, name: 'Adudu Cleaner', price: 29.90, category: 'Other', image: '/api/placeholder/200/200' },
+        { id: 10, name: 'CCTV Maling', price: 50.00, category: 'Home', image: '/api/placeholder/200/200' },
+        { id: 11, name: 'Stufflus Peker 32', price: 9.90, category: 'Other', image: '/api/placeholder/200/200' },
+        { id: 12, name: 'Stufflus RT75', price: 34.10, category: 'Music', image: '/api/placeholder/200/200' }
     ];
 
     const displayCategories = categories.length > 0 ? categories : defaultCategories;
     const displayProducts = products.length > 0 ? products : defaultProducts;
 
+
+
+/*
+    useEffect(() => {
+        const fetchProducts = async () => {
+           axios.get("http://localhost:8080/products/getById")
+               .then((response) => {
+                   setProducts(response.data);
+                   setLoading(false);
+               })
+               .catch((error)=>{
+                   setError("an error occured")+(error.message ? error.message : "");
+                   setLoading(false);
+               });
+        };
+        fetchProducts();
+    }, []);
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p className="text-red-500">Error: {error}</p>;
+*/
+    // Pagination logic
+    const totalPages = Math.ceil(displayProducts.length / productsPerPage);
+    const indexOfLastProduct = currentPage * productsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    const currentProducts = displayProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+
     const handleCategoryChange = (categoryIndex) => {
         setSelectedCategory(categoryIndex);
         onCategoryChange(categoryIndex);
+        setCurrentPage(1); // reset to first page when category changes
+    };
+
+    const handlePageChange = (page) => {
+        if (page >= 1 && page <= totalPages) {
+            setCurrentPage(page);
+        }
     };
 
     const generatePaginationItems = () => {
@@ -177,19 +118,20 @@ const MainShoppingSection = ({
                     selectedCategory={selectedCategory}
                     onCategoryChange={handleCategoryChange}
                 />
+
                 {/* Main Content */}
                 <main className="flex flex-col items-center justify-center w-full ml-30 overflow-y-auto">
                     {/* Product Grid */}
                     <div className="grid grid-cols-3 gap-6 mb-8">
-                        {displayProducts.map((product) => (
-                            <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} onBuyNow={onBuyNow} />
+                        {currentProducts.map((product) => (
+                            <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} onDisplayDetails={onDisplayDetails} />
                         ))}
                     </div>
 
                     {/* Pagination */}
                     <div className="flex items-center justify-between mb-12">
                         <button
-                            onClick={() => currentPage > 1 && onPageChange(currentPage - 1)}
+                            onClick={() => handlePageChange(currentPage - 1)}
                             disabled={currentPage === 1}
                             className="flex items-center text-gray-600 hover:text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed mr-3"
                         >
@@ -201,7 +143,7 @@ const MainShoppingSection = ({
                             {generatePaginationItems().map((page, index) => (
                                 <button
                                     key={index}
-                                    onClick={() => typeof page === 'number' && onPageChange(page)}
+                                    onClick={() => typeof page === 'number' && handlePageChange(page)}
                                     disabled={page === '...'}
                                     className={`px-3 py-2 text-sm rounded ${
                                         page === currentPage
@@ -217,7 +159,7 @@ const MainShoppingSection = ({
                         </div>
 
                         <button
-                            onClick={() => currentPage < totalPages && onPageChange(currentPage + 1)}
+                            onClick={() => handlePageChange(currentPage + 1)}
                             disabled={currentPage === totalPages}
                             className="flex items-center text-gray-600 hover:text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
@@ -245,7 +187,6 @@ const MainShoppingSection = ({
                             </button>
                         </div>
                     </section>
-
                 </main>
             </div>
         </div>
