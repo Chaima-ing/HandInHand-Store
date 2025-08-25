@@ -9,7 +9,7 @@ import CheckoutProduct from "./pages/CheckoutProduct.jsx";
 import ProductPage from "./pages/ProductPage.jsx";
 import VerifyCode from "./pages/VerifyCode.jsx";
 import CartPage from "./pages/CartPage.jsx";
-
+import ShoppingPage from "./pages/ShoppingPage.jsx";
 
 
 function App() {
@@ -29,6 +29,7 @@ function App() {
                           <Route path="/checkoutProduct/:productId" element={<CheckoutProduct />} />
                           <Route path="/productPage" element={<ProductPage />} />
                           <Route path="/shopingCart" element={<CartPage />}/>
+                          <Route path="/shoppingPage" element={<ShoppingPage />} />
 
                           {/* Redirect unknown paths to home */}
                           <Route path="*" element={<Navigate to="/" replace />} />

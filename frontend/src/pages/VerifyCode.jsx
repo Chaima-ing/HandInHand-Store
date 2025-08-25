@@ -26,6 +26,7 @@ const VerifyCode = () => {
         const response = await verifyCode(code, email);
 
         if (response.success) {
+            localStorage.setItem("resetEmail", email);  // save email
             navigate("/reset_password", { state: { email: email } });
         } else {
             setError(response.message || "Invalid or expired code.");
