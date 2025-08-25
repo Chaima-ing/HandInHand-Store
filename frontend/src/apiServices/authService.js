@@ -18,8 +18,8 @@ export const forgotPassword = (email) => {
         });
 };
 
-export const resetPassword = (token, newPassword) => {
-    return client.post("/reset-password", { token, newPassword });
+export const resetPassword = (email, newPassword) => {
+    return client.post("/reset-password", { email, newPassword });
 };
 
 export const loginAdmin = (email, password) => {

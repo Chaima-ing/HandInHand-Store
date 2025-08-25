@@ -8,10 +8,9 @@ const ResetPassword = () => {
     const { t, i18n } = useTranslation();
 
     const [searchParams] = useSearchParams();
-    const token = searchParams.get("token");
 
     const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
+    const [email, setEmail] = useState("");
     const [error, setError] = useState("");
     const [language, setLanguage] = useState(i18n.language || "en");
     const [loading, setLoading] = useState(false);
@@ -27,26 +26,31 @@ const ResetPassword = () => {
     const handleSubmit = async(e) => {
         e.preventDefault();
 
-        if(!password || !confirmPassword) {
+        if(!password) {
             setError("Please fill in all fields");
             setLoading(false);
             return;
         }
-        if (password.length < 6 || confirmPassword.length < 6) {
+        if (password.length < 6) {
             setError(t("error_password_length"));
             setLoading(false);
             return;
         }
-        if(password !== confirmPassword){
-            setError("Passwords must match");
+        if(!email) {
+            setError("Please enter an email address");
             setLoading(false);
             return;
         }
-
+        if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+            setError(t("error_invalid_email"));
+            setLoading(false);
+            return;
+        }
         try{
-            await resetPassword(token, password);
+            await resetPassword(email, password);
             alert("Password reset successfully");
-            navigate("/login");
+            localStorage.setItem("resetEmail", email);  // save email
+            navigate("/login", { state: { email } });
         }catch (error){
             setError("Failed to reset password")+ (error.message ? `: ${error.message}` : "");
         }
@@ -71,36 +75,36 @@ const ResetPassword = () => {
                   {error && <p className="text-red-500">{error}</p>}
                         <div>
                                 <label
-                                    htmlFor="password"
+                                    htmlFor="email"
                                     className={`block text-sm font-medium text-gray-700 mb-1 ${
                                         language === "ar" ? "text-right" : "text-left"
                                     }`}
                                 >
-                                    {t("password_label")}
+                                    {t("email_label")}
                                 </label>
                               <input
-                               type="password"
-                               placeholder={t("password_placeholder")}
+                               type="email"
+                               placeholder={t("email_placeholder")}
                                className="mt-1 block w-full p-2 border border-gray-300 rounded"
-                               value={password}
-                               onChange={(e) => setPassword(e.target.value)}
+                               value={email}
+                               onChange={(e) => setEmail(e.target.value)}
                               />
                         </div>
                     <div>
                             <label
-                                htmlFor="confirmPassword"
+                                htmlFor="Password"
                                 className={`block text-sm font-medium text-gray-700 mb-1 ${
                                     language === "ar" ? "text-right" : "text-left"
                                 }`}
                             >
-                                {t("reassure_password_label")}
+                                {t("password_label")}
                             </label>
                           <input
                               type="password"
                               placeholder={t("reassure_placeholder")}
                               className="mt-1 block w-full p-2 border border-gray-300 rounded"
-                              value={confirmPassword}
-                              onChange={(e) => setConfirmPassword(e.target.value)}
+                              value={password}
+                              onChange={(e) => setPassword(e.target.value)}
                           />
                     </div>
                   <button type="submit"

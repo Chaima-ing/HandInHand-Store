@@ -1,4 +1,4 @@
-import { FaBoxOpen, FaHome, FaInfoCircle,FaHandHoldingHeart,FaSearch, FaPhone,FaHandshake } from "react-icons/fa";
+import { FaBoxOpen, FaHome, FaInfoCircle,FaHandHoldingHeart, FaPhone,FaHandshake } from "react-icons/fa";
 import "./styles/Header.css";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
@@ -12,6 +12,7 @@ function Header() {
     const navigate = useNavigate();
 
     const { user } = useContext(AuthContext);
+    {/*
 
     const changeLanguage = (lng) => {
         i18n.changeLanguage(lng).then(() => {
@@ -21,6 +22,7 @@ function Header() {
         localStorage.setItem('language', lng);
         document.documentElement.setAttribute('dir', lng === "ar" ? 'rtl' : 'ltr');
     };
+    */}
 
     useEffect(() => {
         document.documentElement.setAttribute('dir', language === "ar" ? 'rtl' : 'ltr');
@@ -34,11 +36,11 @@ function Header() {
                 <div className="logo">
                     <FaHandshake className="Hand-icon"/>{t("Store")}<span>{t("GAZA")}</span>
                 </div>
-                {/* Search */}
+                {/* Search
                 <div className="search">
                     <FaSearch className="search-icon" />
                     <input type="text" placeholder={t("search_products_placeholder")} />
-                </div>
+                </div>*/}
                 {/* Navigation */}
                     <nav className="nav">
                         <a href="#"><FaHome/> {t("home_page")}</a>
