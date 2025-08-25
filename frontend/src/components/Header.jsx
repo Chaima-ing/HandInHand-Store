@@ -44,7 +44,7 @@ function Header() {
                 {/* Navigation */}
                     <nav className="nav">
                         <a href="#"><FaHome/> {t("home_page")}</a>
-                        <a href="#"><FaBoxOpen/>{t("products")}</a>
+                        <a href="/shoppingPage"><FaBoxOpen/>{t("products")}</a>
                         <a href="#"><FaHandHoldingHeart/>{t("donations")}</a>
                         <a href="#"><FaInfoCircle />{t("aboutUs")}</a>
                         <a href="#"><FaPhone />{t("Communicate_with_us")}</a>
