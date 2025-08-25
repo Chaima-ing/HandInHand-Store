@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import jakarta.persistence.*;
 import handinhandstore.demo.model.enums.PriceType;
 import handinhandstore.demo.model.enums.ProductStatus;
+import java.math.BigDecimal;
 
 @Entity
 public class Product {
@@ -25,12 +26,14 @@ public class Product {
 
     private Double fixedPrice;
     private String category;
-    private String imageUrl;
+    
 
     @Enumerated(EnumType.STRING)
     private ProductStatus status; // AVAILABLE, SOLD, REMOVED
 
     private LocalDateTime createdAt;
+
+    private BigDecimal donationPercentage;
 
     public Long getId() {
         return id;
@@ -88,14 +91,6 @@ public class Product {
         this.category = category;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
     public ProductStatus getStatus() {
         return status;
     }
@@ -112,5 +107,12 @@ public class Product {
         this.createdAt = createdAt;
     }
 
+    public BigDecimal getDonationPercentage(){
+        return donationPercentage;
+    }
+
+    public void setDonationPercentage(BigDecimal donationPercentage){
+        this.donationPercentage = donationPercentage;
+    }
     
 }
