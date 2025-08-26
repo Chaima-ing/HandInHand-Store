@@ -6,7 +6,7 @@ import axios from "axios";
 
 const MainShoppingSection = ({
                                  categories = [],
-                                 products = [],
+                                 //products = [],
                                  onCategoryChange = () => {},
                                  onAddToCart = () => {},
                                  onDisplayDetails = () => {}
@@ -14,7 +14,7 @@ const MainShoppingSection = ({
     const [selectedCategory, setSelectedCategory] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const productsPerPage = 9;
-    //const [products, setProducts] = useState([]);
+    const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -51,7 +51,7 @@ const MainShoppingSection = ({
 
 
 
-/*
+
     useEffect(() => {
         const fetchProducts = async () => {
            axios.get("http://localhost:8080/products/getById")
@@ -69,7 +69,7 @@ const MainShoppingSection = ({
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">Error: {error}</p>;
-*/
+
     // Pagination logic
     const totalPages = Math.ceil(displayProducts.length / productsPerPage);
     const indexOfLastProduct = currentPage * productsPerPage;
