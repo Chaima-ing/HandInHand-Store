@@ -13,7 +13,7 @@ export const AuthProvider = ({children}) => {
             const response = await loginUser(credentials); //API call
             if(response.data.success){
                 setUser(response.data.user);
-                localStorage.setItem("user",JSON ,response.data.user);
+                localStorage.setItem("userId",JSON.stringify(response.data.user.id));
                 return {success:true};
             }
             return {success:false, message:response.data.message};
@@ -32,10 +32,10 @@ export const AuthProvider = ({children}) => {
     };
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (token) {
+        const userId = localStorage.getItem('userId');
+        if (userId) {
             // fetch user data from backend
-                client.get("/me", { headers: { Authorization: `Bearer ${token}` } })
+                client.get(`/getUserById?id=${userId}`)
                 .then(res => setUser(res.data))
                 .catch(err => console.log(err));
         }

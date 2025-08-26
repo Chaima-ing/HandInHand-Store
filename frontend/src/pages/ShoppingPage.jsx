@@ -11,7 +11,6 @@ const ShoppingPage = () => {
 
     const onAddToCart = (product) => {
         addToCart(product, 1); // add with default quantity = 1
-        navigate("/shopingCart"); // optional: go to cart page after adding
     };
 
     const onDisplayDetails = (product) => {
