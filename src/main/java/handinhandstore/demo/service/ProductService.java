@@ -59,4 +59,9 @@ public class ProductService {
             return null; // or throw a custom exception
         }
     }
+
+    public  List<Product> findAllProducts (){
+        List<Product> listProducts = productRepository.findAllProducts();
+        return listProducts;
+    }
 }
