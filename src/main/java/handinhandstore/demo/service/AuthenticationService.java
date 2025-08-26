@@ -5,13 +5,17 @@ import java.util.Optional;
 
 import handinhandstore.demo.model.entity.User;
 import handinhandstore.demo.repository.AuthenticationRepository;
+import handinhandstore.demo.repository.PasswordResetTokenRepository;
+import jakarta.transaction.Transactional;
 
 @Service
 public class AuthenticationService {
     private final AuthenticationRepository authRepo;
+    private final PasswordResetTokenRepository tokenRepo;
 
-    public AuthenticationService(AuthenticationRepository authRepo) {
+    public AuthenticationService(AuthenticationRepository authRepo, PasswordResetTokenRepository tokenRepo) {
         this.authRepo = authRepo;
+        this.tokenRepo = tokenRepo;
     }
 
     public User userRegisteration(User user) {
@@ -36,6 +40,8 @@ public class AuthenticationService {
         return userOptional.isPresent();
     }
 
+
+    @Transactional
     public void updatePassword(String email, String newPassword) {
         Optional<User> optUser = authRepo.findByEmail(email);
         if (optUser.isPresent()) {
@@ -43,5 +49,6 @@ public class AuthenticationService {
             user.setPassword(newPassword);
             authRepo.save(user);
         }
+        tokenRepo.deleteByEmail(email);
     }
 }

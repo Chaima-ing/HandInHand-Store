@@ -1,7 +1,5 @@
 package handinhandstore.demo.dto;
 
-import handinhandstore.demo.model.enums.ProductStatus;
-
 public class VerifyCodeRequest {
     private String email;
     private String code;

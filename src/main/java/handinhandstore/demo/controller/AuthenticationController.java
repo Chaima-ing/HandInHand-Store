@@ -14,6 +14,7 @@ import handinhandstore.demo.service.EmailService;
 import handinhandstore.demo.service.PasswordResetService;
 import handinhandstore.demo.repository.AuthenticationRepository;
 import handinhandstore.demo.repository.PasswordResetTokenRepository;
+import handinhandstore.demo.dto.ResetPasswordRequest;
 import handinhandstore.demo.dto.VerifyCodeRequest;
 
 @RestController
@@ -105,21 +106,13 @@ public class AuthenticationController {
 
 
     @PostMapping("/reset-password")
-    public String resetPassword(@RequestParam String email,
-                                @RequestParam String code,
-                                @RequestParam String newPassword) {
-        return tokenRepo.findByEmailAndCode(email, code)
-                .filter(token -> token.getExpiresAt().isAfter(LocalDateTime.now()))
-                .map(token -> {
-                    // Reset password via your service
-                    authService.updatePassword(email, newPassword);
+    public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordRequest request) {
+        String email = request.getEmail();
+        String newPassword = request.getNewPassword();
 
-                    // remove used token
-                    tokenRepo.delete(token);
+        authService.updatePassword(email, newPassword);
 
-                    return "Password reset successful!";
-                })
-                .orElse("Invalid or expired code.");
+        return ResponseEntity.ok("Password reset successful!");
     }
 }
 
