@@ -93,6 +93,11 @@ public class ProductController {
         return productService.findById(id);
     }
 
+    @GetMapping("products/get")
+    public List<Product> getProducts(){
+        return productService.findAllProducts();
+    }
+
 }
 
 
