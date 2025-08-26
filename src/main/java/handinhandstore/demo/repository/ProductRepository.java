@@ -16,4 +16,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>{
 
    @Query("SELECT p FROM Product p WHERE p.id = :id")
    Optional<Product>  findById(@Param("id") Long id);
+
+   @Query("SELECT p FROM Product p ORDER BY p.id DESC")
+	List<Product> findAllProducts();
 }
