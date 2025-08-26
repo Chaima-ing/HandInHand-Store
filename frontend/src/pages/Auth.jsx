@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import {useLocation, useNavigate} from "react-router-dom";
-import {loginUser, registerUser} from "../apiServices/authService.js"
+import AuthContext from "../context/AuthContext.jsx";
 
 const Auth = () => {
     const { t, i18n } = useTranslation();
@@ -20,6 +20,9 @@ const Auth = () => {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
+    const {handleLogin} = useContext(AuthContext);
+    const {handleRegister} = useContext(AuthContext);
+
 
     const changeLanguage = (lang) => {
         i18n.changeLanguage(lang);
@@ -28,7 +31,7 @@ const Auth = () => {
         document.documentElement.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
     };
 
-    const handleLogin = async () => {
+    const handlLogin = async () => {
         if(!email.trim()){
             setError(t("error_email_required"));
             setLoading(false);
@@ -52,7 +55,7 @@ const Auth = () => {
         }
 
         try{
-            const response = await loginUser(email,password);
+            const response = await handleLogin({email, password});
             console.log(response.data);
             localStorage.setItem("token", response.data.token);
             navigate("/dashboard");
@@ -62,7 +65,7 @@ const Auth = () => {
         }
     };
 
-    const handleRegisteration = async () => {
+    const handlRegisteration = async () => {
         if(!username.trim()){
             setError(t("error_username_required"));
             setLoading(false);
@@ -99,7 +102,7 @@ const Auth = () => {
             return;
         }
         try{
-            const response = await registerUser({username,
+            const response = await handleRegister({username,
             email,
             password,
             confirmPassword,
@@ -130,11 +133,11 @@ const Auth = () => {
 
 
         if(action === "login"){
-            await handleLogin();
+            await handlLogin();
 
         }else if(action === "register"){
 
-            await handleRegisteration();
+            await handlRegisteration();
 
         }
         setLoading(false);

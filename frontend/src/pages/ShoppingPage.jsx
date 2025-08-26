@@ -41,4 +41,4 @@ const ShoppingPage = () => {
     );
 };
 
-export gidefault ShoppingPage;
+export default ShoppingPage;
