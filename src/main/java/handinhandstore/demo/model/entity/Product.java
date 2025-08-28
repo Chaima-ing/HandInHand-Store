@@ -2,9 +2,13 @@ package handinhandstore.demo.model.entity;
 
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.*;
 import handinhandstore.demo.model.enums.PriceType;
 import handinhandstore.demo.model.enums.ProductStatus;
+import java.math.BigDecimal;
 
 @Entity
 public class Product {
@@ -25,12 +29,19 @@ public class Product {
 
     private Double fixedPrice;
     private String category;
-    private String imageUrl;
+    
 
     @Enumerated(EnumType.STRING)
     private ProductStatus status; // AVAILABLE, SOLD, REMOVED
 
     private LocalDateTime createdAt;
+
+    private BigDecimal donationPercentage;
+
+    // List of The Product Images
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductImage> images = new ArrayList<>();
+
 
     public Long getId() {
         return id;
@@ -88,14 +99,6 @@ public class Product {
         this.category = category;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
     public ProductStatus getStatus() {
         return status;
     }
@@ -112,5 +115,20 @@ public class Product {
         this.createdAt = createdAt;
     }
 
+    public BigDecimal getDonationPercentage(){
+        return donationPercentage;
+    }
+
+    public void setDonationPercentage(BigDecimal donationPercentage){
+        this.donationPercentage = donationPercentage;
+    }
     
+    public List<ProductImage> getImages() {
+        return images;
+    }
+
+    public void setImages(List<ProductImage> images) {
+        this.images = images;
+    }
+
 }

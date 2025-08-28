@@ -4,11 +4,15 @@ import './index.css'
 import App from './App.jsx'
 import './i18n.js';
 import {BrowserRouter} from "react-router-dom";
+import GlobalProvider from "./context/GlobalProvider.jsx";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
       <BrowserRouter>
-          <App />
+          <GlobalProvider>
+              <App />
+          </GlobalProvider>
+
       </BrowserRouter>
 
   </StrictMode>,
