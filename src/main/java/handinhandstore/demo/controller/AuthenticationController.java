@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import handinhandstore.demo.model.entity.User;
 import handinhandstore.demo.service.AuthenticationService;
+import handinhandstore.demo.dto.UserLoginRequest;
 
 @RestController
 public class AuthenticationController {
@@ -21,12 +22,9 @@ public class AuthenticationController {
         return authService.getById(id); 
     }
 
-    @GetMapping("/UserLogin")
-    public boolean login(
-            @RequestParam String email,
-            @RequestParam String password
-    ) {
-        boolean isAuthenticated = authService.login(email, password);
+    @PostMapping("/UserLogin")
+    public boolean login(@RequestBody UserLoginRequest userLoginRequest) {
+        boolean isAuthenticated = authService.login(userLoginRequest.getEmail(), userLoginRequest.getPassword());
         return isAuthenticated;
     }
 
