@@ -2,6 +2,9 @@ package handinhandstore.demo.model.entity;
 
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.*;
 import handinhandstore.demo.model.enums.PriceType;
 import handinhandstore.demo.model.enums.ProductStatus;
@@ -34,6 +37,11 @@ public class Product {
     private LocalDateTime createdAt;
 
     private BigDecimal donationPercentage;
+
+    // List of The Product Images
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductImage> images = new ArrayList<>();
+
 
     public Long getId() {
         return id;
@@ -115,4 +123,12 @@ public class Product {
         this.donationPercentage = donationPercentage;
     }
     
+    public List<ProductImage> getImages() {
+        return images;
+    }
+
+    public void setImages(List<ProductImage> images) {
+        this.images = images;
+    }
+
 }

@@ -54,7 +54,7 @@ const MainShoppingSection = ({
 
     useEffect(() => {
         const fetchProducts = async () => {
-           axios.get("http://localhost:8080/products/getById")
+           axios.get("http://localhost:8080/products/get")
                .then((response) => {
                    setProducts(response.data);
                    setLoading(false);
