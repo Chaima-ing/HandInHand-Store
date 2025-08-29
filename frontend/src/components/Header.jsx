@@ -11,7 +11,8 @@ function Header() {
     const [language, setLanguage] = useState(i18n.language || 'en');
     const navigate = useNavigate();
 
-    const { user } = useContext(AuthContext);
+    const { user, isAuthenticated } = useContext(AuthContext);
+    console.log("Header sees user:", user);
     {/*
 
     const changeLanguage = (lng) => {

@@ -5,7 +5,7 @@ import App from './App.jsx'
 import './i18n.js';
 import {BrowserRouter} from "react-router-dom";
 import GlobalProvider from "./context/GlobalProvider.jsx";
-
+//import {AuthProvider} from "./context/AuthContext";
 createRoot(document.getElementById('root')).render(
   <StrictMode>
       <BrowserRouter>

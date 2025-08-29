@@ -11,10 +11,15 @@ export const AuthProvider = ({children}) => {
     const handleLogin = async (credentials) => {
         try{
             const response = await loginUser(credentials); //API call
-            if(response.data.success){
-                setUser(response.data.user);
-                localStorage.setItem("userId",JSON.stringify(response.data.user.id));
-                return {success:true};
+            if(response.data===true){
+                // just set a placeholder user until you fetch details
+                const email = credentials.email;
+                setUser({ email });
+                localStorage.setItem("userEmail", email);
+                return { success: true };
+                /* setUser(response.data.user);
+                localStorage.setItem("userId",response.data.user.id);
+                return {success:true};*/
             }
             return {success:false, message:response.data.message};
         }catch(error){
@@ -46,7 +51,7 @@ export const AuthProvider = ({children}) => {
       <AuthContext.Provider value={
           {
               user,
-              isAuthentificated: !!user,
+              isAuthenticated: !!user,
               loading,
               handleLogin,
               handleRegister,
