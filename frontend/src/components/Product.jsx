@@ -1,6 +1,6 @@
 import "./styles/Product.css";
 import { Link } from "react-router-dom";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 
 function Product (){
@@ -43,9 +43,7 @@ function Product (){
                       />
                       <h2 className="text-lg mb-2">{p.title}</h2>
                       <p className="text-sm text-gray-600">${p.description}</p>
-                      <span className="text-xs text-gray-500">
-                          {p.priceType === "FIXED" ? "Fixed price" : "Auction"}
-                      </span>
+                      <span className="text-xl font-bold text-red-700">${p.fixedPrice}</span>
                       <br />
                       {p.donationPercentage && (
                           <span className="text-xs text-red-600">
