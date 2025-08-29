@@ -57,7 +57,6 @@ const Auth = () => {
         try{
             const response = await handleLogin({email, password});
             console.log(response.data);
-            localStorage.setItem("token", response.data.token);
             navigate("/dashboard");
 
         }catch(error){

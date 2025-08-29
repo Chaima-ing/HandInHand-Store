@@ -1,6 +1,6 @@
 import "./styles/Product.css";
 import { Link } from "react-router-dom";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 
 function Product (){
@@ -13,6 +13,7 @@ function Product (){
    useEffect(() => {
        axios.get("http://localhost:8080/products/get/featured-donation")
            .then((res) => {
+               console.log("API response:", res.data);  // ✅ check structure
                setProducts(res.data.slice(0,10)); //takes first 10
                setLoading(false);
            })
@@ -36,12 +37,14 @@ function Product (){
                       className="btn btn-secondary w-100"
                   >
                       <img
-                          src={p.images?.[0] || "/placeholder.png"}
-                          alt={p.name}
+                          src={p.imageUrl || "/placeholder.png"}
+                          //alt={p.title}
                           className="w-full h-[120px] object-cover rounded-lg mb-2"
                       />
-                      <h2 className="text-lg mb-2">{p.name}</h2>
-                      <p className="text-sm text-gray-600">${p.price}</p>
+                      <h2 className="text-lg mb-2">{p.title}</h2>
+                      <p className="text-sm text-gray-600">${p.description}</p>
+                      <span className="text-xl font-bold text-red-700">${p.fixedPrice}</span>
+                      <br />
                       {p.donationPercentage && (
                           <span className="text-xs text-red-600">
                               {p.donationPercentage}% للتبرع

@@ -6,7 +6,7 @@ import axios from "axios";
 
 const MainShoppingSection = ({
                                  categories = [],
-                                 //products = [],
+                                 //product = [],
                                  onCategoryChange = () => {},
                                  onAddToCart = () => {},
                                  onDisplayDetails = () => {}

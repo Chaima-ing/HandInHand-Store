@@ -6,8 +6,6 @@ import { useCart } from "../context/CartContext";
 const ProductDetails = ({ product }) => {
   const { addToCart, isInCart, getItemQuantity } = useCart();
   const [selectedQuantity, setSelectedQuantity] = useState(1);
-  const [selectedColor, setSelectedColor] = useState("");
-  const [selectedSize, setSelectedSize] = useState("");
 
   if (!product) return null; // safeguard
 
@@ -21,25 +19,8 @@ const ProductDetails = ({ product }) => {
 
   // Add to Cart handler
   const handleAddToCart = () => {
-    // validate only if product has options
-    if (product.colors?.length && !selectedColor) {
-      alert("يرجى اختيار اللون");
-      return;
-    }
-    if (product.sizes?.length && !selectedSize) {
-      alert("يرجى اختيار المقاس");
-      return;
-    }
-
-    const productToAdd = {
-      ...product,
-      selectedColor,
-      selectedSize,
-      subtitle: `${selectedColor || ""} ${selectedSize || ""}`.trim(),
-    };
-
-    addToCart(productToAdd, selectedQuantity);
-    alert(`تم إضافة ${selectedQuantity} من ${product.name} إلى السلة`);
+    addToCart(product,selectedQuantity);
+    alert(`تم إضافة ${selectedQuantity} من ${product.title} إلى السلة`);
   };
 
   const currentCartQuantity = getItemQuantity(product.id);
@@ -50,47 +31,47 @@ const ProductDetails = ({ product }) => {
           className="w-screen mx-auto bg-white border border-gray-200 rounded-xl shadow-md p-6 space-y-6"
           dir="rtl"
       >
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="flex flex-col md:flex-row gap-8">
           {/* Product Images */}
-          <div className="space-y-4">
-            <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden flex flex-col items-center justify-center">
-              <img
-                  src={product.images?.[0]}
-                  alt={product.name}
-                  className="w-max-2xl h-full object-cover"
-              />
-            </div>
-            {product.images?.length > 1 && (
-                <div className="grid grid-cols-3 gap-2">
-                  {product.images.slice(1).map((image, index) => (
-                      <div
-                          key={index}
-                          className="aspect-square bg-gray-100 rounded-lg overflow-hidden"
-                      >
-                        <img
-                            src={image}
-                            alt={`${product.name} ${index + 2}`}
-                            className="w-full h-full object-cover cursor-pointer hover:opacity-75"
-                        />
-                      </div>
-                  ))}
-                </div>
-            )}
-          </div>
+          <div className="flex flex-row md:flex-row gap-8">
+            {/* Product Images */}
+            <div className="md:w-1/2 space-y-4">
+              <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+                <img
+                    src={product.images?.[0]}
+                    alt={product.title}
+                    className="w-full h-full object-cover"
+                />
+              </div>
 
-          {/* Product Info */}
-          <div className="space-y-6">
-            {/* Title */}
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900 mb-1">
-                {product.name}
-              </h1>
-              {product.subtitle && (
-                  <p className="text-gray-600 text-sm">{product.subtitle}</p>
+              {product.images?.length > 1 && (
+                  <div className="grid grid-cols-3 gap-2">
+                    {product.images.slice(1).map((image, index) => (
+                        <div
+                            key={index}
+                            className="aspect-square bg-gray-100 rounded-lg overflow-hidden"
+                        >
+                          <img
+                              src={image}
+                              alt={`${product.title} ${index + 2}`}
+                              className="w-full h-full object-cover cursor-pointer hover:opacity-75"
+                          />
+                        </div>
+                    ))}
+                  </div>
               )}
             </div>
 
-            {/* Rating */}
+          {/* Product Info */}
+          <div className="md:w-1/2 space-y-6">
+            {/* Title */}
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900 mb-1">
+                {product.title}
+              </h1>
+            </div>
+
+            {/* Rating
             {product.rating && (
                 <div className="flex items-center gap-2">
                   <div className="flex items-center">
@@ -110,12 +91,12 @@ const ProductDetails = ({ product }) => {
                 ({product.reviewCount || 0} تقييم)
               </span>
                 </div>
-            )}
+            )}*/}
 
             {/* Price */}
             <div className="flex items-center gap-3">
             <span className="text-3xl font-bold text-green-600">
-              ${product.price}
+              ${product.fixedPrice}
             </span>
               {product.originalPrice && (
                   <>
@@ -131,7 +112,7 @@ const ProductDetails = ({ product }) => {
               )}
             </div>
 
-            {/* Stock */}
+            {/* Stock
             <div className="flex items-center gap-2">
               <div
                   className={`w-3 h-3 rounded-full ${
@@ -147,9 +128,9 @@ const ProductDetails = ({ product }) => {
                   ? `متوفر (${product.stockQuantity || 0} قطعة)`
                   : "غير متوفر"}
             </span>
-            </div>
+            </div>*/}
 
-            {/* Colors */}
+            {/* Colors
             {product.colors?.length > 0 && (
                 <div>
                   <h3 className="text-lg font-semibold mb-2">اللون</h3>
@@ -170,8 +151,8 @@ const ProductDetails = ({ product }) => {
                   </div>
                 </div>
             )}
-
-            {/* Sizes */}
+            */}
+            {/* Sizes
             {product.sizes?.length > 0 && (
                 <div>
                   <h3 className="text-lg font-semibold mb-2">المقاس</h3>
@@ -192,7 +173,7 @@ const ProductDetails = ({ product }) => {
                   </div>
                 </div>
             )}
-
+            */}
             {/* Quantity */}
             <div>
               <h3 className="text-lg font-semibold mb-2">الكمية</h3>
@@ -230,7 +211,6 @@ const ProductDetails = ({ product }) => {
             <div className="space-y-3">
               <button
                   onClick={handleAddToCart}
-                  disabled={!product.inStock}
                   className="w-full bg-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-700 disabled:opacity-50 flex items-center justify-center gap-2 transition-colors"
               >
                 <ShoppingCart size={20} />
@@ -238,17 +218,6 @@ const ProductDetails = ({ product }) => {
                     ? "إضافة المزيد إلى السلة"
                     : "إضافة إلى السلة"}
               </button>
-
-              <div className="flex gap-3">
-                <button className="flex-1 border border-gray-300 py-2 px-4 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 transition-colors">
-                  <Heart size={20} />
-                  إضافة للمفضلة
-                </button>
-                <button className="flex-1 border border-gray-300 py-2 px-4 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 transition-colors">
-                  <Share2 size={20} />
-                  مشاركة
-                </button>
-              </div>
             </div>
 
             {/* Description */}
@@ -293,6 +262,7 @@ const ProductDetails = ({ product }) => {
             </div>
           </div>
         </div>
+      </div>
       </div>
   );
 };

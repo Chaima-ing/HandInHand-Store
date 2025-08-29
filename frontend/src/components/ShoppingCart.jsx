@@ -16,8 +16,8 @@ const ShoppingCart = () => {
                         <div className="flex-shrink-0">
                             <div className="w-20 h-20 bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
                                 <img
-                                    src={item.images?.[0] || "/placeholder.png"}
-                                    alt={item.name}
+                                    src={item.imageUrl || "/placeholder.png"}
+                                    alt={item.title}
                                     className="w-20 h-20 object-cover rounded"
                                 />
                             </div>
@@ -25,17 +25,17 @@ const ShoppingCart = () => {
 
                         {/* Product Details */}
                         <div className="flex-grow">
-                            <h3 className="font-medium text-gray-900 text-right">{item.name}</h3>
-                            <p className="text-sm text-gray-500 text-right">{item.subtitle}</p>
+                            <h3 className="font-medium text-gray-900 text-right">{item.title}</h3>
+                            <p className="text-sm text-gray-500 text-right">{item.description}</p>
                         </div>
 
                         {/* Price Display */}
                         <div className="text-center min-w-[80px]">
                             <div className="text-lg font-semibold text-green-600">
-                                ${getItemTotal(item.price, item.quantity)}
+                                ${getItemTotal(item.fixedPrice, item.quantity)}
                             </div>
                             <div className="text-sm text-gray-500">
-                                ${item.price}
+                                ${item.fixedPrice}
                             </div>
                         </div>
 
