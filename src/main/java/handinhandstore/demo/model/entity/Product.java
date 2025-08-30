@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import handinhandstore.demo.model.enums.PriceType;
 import handinhandstore.demo.model.enums.ProductStatus;
@@ -40,6 +42,7 @@ public class Product {
 
     // List of The Product Images
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<ProductImage> images = new ArrayList<>();
 
 
