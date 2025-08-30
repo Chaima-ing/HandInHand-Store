@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import handinhandstore.demo.repository.ProductRepository;
 import handinhandstore.demo.model.entity.Product;
@@ -64,4 +66,9 @@ public class ProductService {
         List<Product> listProducts = productRepository.findAllProducts();
         return listProducts;
     }
+
+    public List<Product> searchProducts(String keyword) {
+        return productRepository.findByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(keyword, keyword);
+    }
+
 }
