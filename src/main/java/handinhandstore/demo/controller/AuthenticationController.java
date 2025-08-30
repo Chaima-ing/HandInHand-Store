@@ -10,6 +10,8 @@ import java.util.Optional;
 
 import handinhandstore.demo.model.entity.User;
 import handinhandstore.demo.service.AuthenticationService;
+
+import handinhandstore.demo.dto.UserLoginRequest;
 import handinhandstore.demo.service.EmailService;
 import handinhandstore.demo.service.PasswordResetService;
 import handinhandstore.demo.repository.AuthenticationRepository;
@@ -43,6 +45,9 @@ public class AuthenticationController {
         return authService.getById(id); 
     }
 
+    @PostMapping("/UserLogin")
+    public boolean login(@RequestBody UserLoginRequest userLoginRequest) {
+        boolean isAuthenticated = authService.login(userLoginRequest.getEmail(), userLoginRequest.getPassword());
     @PostMapping("/UserLogin")
     public boolean login(
             @RequestParam String email,
