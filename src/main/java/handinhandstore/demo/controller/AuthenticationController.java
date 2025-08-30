@@ -43,7 +43,7 @@ public class AuthenticationController {
         return authService.getById(id); 
     }
 
-    @GetMapping("/UserLogin")
+    @PostMapping("/UserLogin")
     public boolean login(
             @RequestParam String email,
             @RequestParam String password
