@@ -48,6 +48,12 @@ public class AuthenticationController {
     @PostMapping("/UserLogin")
     public boolean login(@RequestBody UserLoginRequest userLoginRequest) {
         boolean isAuthenticated = authService.login(userLoginRequest.getEmail(), userLoginRequest.getPassword());
+    @PostMapping("/UserLogin")
+    public boolean login(
+            @RequestParam String email,
+            @RequestParam String password
+    ) {
+        boolean isAuthenticated = authService.login(email, password);
         return isAuthenticated;
     }
 
