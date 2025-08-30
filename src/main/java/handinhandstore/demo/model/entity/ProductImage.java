@@ -1,5 +1,7 @@
 package handinhandstore.demo.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -12,6 +14,7 @@ public class ProductImage {
     // Each image belongs to one product
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
+    @JsonBackReference
     private Product product;
 
     private String imageUrl;  // store path/URL of image in DB, not the file itself
