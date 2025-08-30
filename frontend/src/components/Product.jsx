@@ -36,11 +36,16 @@ function Product (){
                       key={p.id}
                       className="btn btn-secondary w-100"
                   >
-                      <img
-                          src={p.imageUrl || "/placeholder.png"}
-                          //alt={p.title}
-                          className="w-full h-[120px] object-cover rounded-lg mb-2"
-                      />
+                      {p.images && p.images.length > 0 ? (
+                          <img
+                              src={p.images[0].imageUrl}
+                              alt={p.title}
+                              className="w-full h-[120px] object-cover rounded-lg mb-2"
+                          />
+                      ) : (
+                          <div className="w-full h-[120px] bg-gray-300 rounded-lg mb-2"></div>
+                      )}
+
                       <h2 className="text-lg mb-2">{p.title}</h2>
                       <p className="text-sm text-gray-600">${p.description}</p>
                       <span className="text-xl font-bold text-red-700">${p.fixedPrice}</span>

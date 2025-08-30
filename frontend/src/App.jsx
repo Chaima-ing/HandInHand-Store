@@ -10,6 +10,7 @@ import ProductPage from "./pages/ProductPage.jsx";
 import VerifyCode from "./pages/VerifyCode.jsx";
 import CartPage from "./pages/CartPage.jsx";
 import ShoppingPage from "./pages/ShoppingPage.jsx";
+import ProfilePage from "./pages/ProfilePage.jsx";
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
                           <Route path="/productPage" element={<ProductPage />} />
                           <Route path="/shopingCart" element={<CartPage />}/>
                           <Route path="/shoppingPage" element={<ShoppingPage />} />
+                          <Route path="/profilePage" element={<ProfilePage />} />
 
                           {/* Redirect unknown paths to home */}
                           <Route path="*" element={<Navigate to="/" replace />} />

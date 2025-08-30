@@ -1,4 +1,4 @@
-import { FaBoxOpen, FaHome, FaInfoCircle,FaHandHoldingHeart, FaPhone,FaHandshake } from "react-icons/fa";
+import { FaBoxOpen, FaHome, FaInfoCircle,FaShoppingCart,FaUser,FaHandHoldingHeart, FaPhone,FaHandshake } from "react-icons/fa";
 import "./styles/Header.css";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
@@ -44,7 +44,7 @@ function Header() {
                 </div>*/}
                 {/* Navigation */}
                     <nav className="nav">
-                        <a href="#"><FaHome/> {t("home_page")}</a>
+                        <a href="/"><FaHome/> {t("home_page")}</a>
                         <a href="/shoppingPage"><FaBoxOpen/>{t("products")}</a>
                         <a href="#"><FaHandHoldingHeart/>{t("donations")}</a>
                         <a href="#"><FaInfoCircle />{t("aboutUs")}</a>
@@ -56,15 +56,15 @@ function Header() {
                         <>
                             <button
                                 className="btn-outline"
-                                onClick={() => navigate("/cart")}
+                                onClick={() => navigate("/shopingCart")}
                             >
-                                <FaShoppingCart /> {t("Cart")}
+                                <FaShoppingCart />
                             </button>
                             <button
                                 className="btn-green"
                                 onClick={() => navigate("/profile")}
                             >
-                                <FaUser /> {t("Profile")}
+                                <FaUser />
                             </button>
                         </>
                     ):(

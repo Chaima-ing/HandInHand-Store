@@ -7,11 +7,16 @@ return(
 
         <div className="relative mb-4">
             <div className="w-full h-48 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
-                {product.imageUrl ? (
-                    <img src={product.imageUrl} alt={product.title} className="w-full h-full object-cover"/>
+                {product.images && product.images.length > 0 ? (
+                    <img
+                        src={product.images[0].imageUrl}
+                        alt={product.title}
+                        className="w-full h-[120px] object-cover rounded-lg mb-2"
+                    />
                 ) : (
-                    <div className="w-24 h-24 bg-gray-300 rounded"></div>
+                    <div className="w-full h-[120px] bg-gray-300 rounded-lg mb-2"></div>
                 )}
+
             </div>
             <span className="absolute top-2 right-2 bg-gray-100 text-gray-600 px-2 py-1 text-xs rounded">
                 {product.category}
