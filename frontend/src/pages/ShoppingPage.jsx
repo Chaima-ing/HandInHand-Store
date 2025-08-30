@@ -4,6 +4,7 @@ import MainShoppingSection from "../components/MainShoppingSection.jsx";
 import ShoppingHero from "../components/ShoppingHero.jsx";
 import {useCart}  from '../context/CartContext';
 import {useNavigate} from 'react-router-dom';
+import ImageUpload from "../components/ImageUpload.jsx";
 
 const ShoppingPage = () => {
     const navigate = useNavigate();
@@ -24,6 +25,7 @@ const ShoppingPage = () => {
                           subtitle="Give All You Need"
                           onSearch={(searchTerm) => console.log('Search:', searchTerm)}
             />
+            <ImageUpload productId={1}/>
             <MainShoppingSection
                 onAddToCart={onAddToCart}
                 onDisplayDetails={onDisplayDetails}
