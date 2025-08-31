@@ -3,7 +3,7 @@ import { Minus, Plus, Trash2 } from 'lucide-react';
 import {useCart}  from '../context/CartContext';
 
 const ShoppingCart = () => {
-    const { cartItems, updateQuantity, removeFromCart, getCartTotal } = useCart();
+    const { cartItems, updateQuantity, removeFromCart, getCartTotal, clearCart } = useCart();
 
     const getItemTotal = (price, quantity) => price * quantity;
 
@@ -16,9 +16,9 @@ const ShoppingCart = () => {
                         <div className="flex-shrink-0">
                             <div className="w-20 h-20 bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
                                 <img
-                                    src={item.imageUrl || "/placeholder.png"}
+                                    src={item.images?.[0].imageUrl}
                                     alt={item.title}
-                                    className="w-20 h-20 object-cover rounded"
+                                    className="w-[90px] h-[100px] object-cover"
                                 />
                             </div>
                         </div>
@@ -89,6 +89,21 @@ const ShoppingCart = () => {
                     <p className="text-sm">أضف بعض المنتجات للمتابعة</p>
                 </div>
             )}
+            <div className="flex flex-col items-center justify-between mt-4">
+                <div className="flex gap-4">
+                    <button
+                        onClick={clearCart}
+                        className="px-3 py-1 text-lg w-[200px] border border-red-600 rounded-full hover:bg-red-600 transition-colors"
+                    >
+                        Clear Cart
+                    </button>
+                    <button
+                        className="px-4 py-1 text-lg w-[200px] h-[50px] bg-green-600 text-white rounded-full hover:bg-green-800 transition-colors"
+                    >
+                       Validte Cart
+                    </button>
+                </div>
+            </div>
         </div>
     );
 };

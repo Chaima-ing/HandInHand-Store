@@ -35,29 +35,26 @@ const ProductDetails = ({ product }) => {
           {/* Product Images */}
           <div className="flex flex-row md:flex-row gap-8">
             {/* Product Images */}
-            <div className="md:w-1/2 space-y-4">
+            <div className="md:w-1/2 space-y-1">
               <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
                 <img
-                    src={product.images?.[0]}
+                    src={product.images?.[0].imageUrl}
                     alt={product.title}
-                    className="w-full h-full object-cover"
+                    className="w-[900px] h-[500px] object-cover"
                 />
               </div>
 
               {product.images?.length > 1 && (
                   <div className="grid grid-cols-3 gap-2">
-                    {product.images.slice(1).map((image, index) => (
-                        <div
-                            key={index}
-                            className="aspect-square bg-gray-100 rounded-lg overflow-hidden"
-                        >
-                          <img
-                              src={image}
-                              alt={`${product.title} ${index + 2}`}
-                              className="w-full h-full object-cover cursor-pointer hover:opacity-75"
-                          />
-                        </div>
-                    ))}
+                    {product.images && product.images.length > 0 ? (
+                        <img
+                            src={product.images[0].imageUrl}
+                            alt={product.title}
+                            className="w-full h-[120px] object-cover rounded-lg mb-2"
+                        />
+                    ) : (
+                        <div className="w-full h-[120px] bg-gray-300 rounded-lg mb-2"></div>
+                    )}
                   </div>
               )}
             </div>
@@ -95,7 +92,7 @@ const ProductDetails = ({ product }) => {
 
             {/* Price */}
             <div className="flex items-center gap-3">
-            <span className="text-3xl font-bold text-green-600">
+            <span className="text-3xl font-bold text-green-700">
               ${product.fixedPrice}
             </span>
               {product.originalPrice && (
@@ -211,7 +208,7 @@ const ProductDetails = ({ product }) => {
             <div className="space-y-3">
               <button
                   onClick={handleAddToCart}
-                  className="w-full bg-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-700 disabled:opacity-50 flex items-center justify-center gap-2 transition-colors"
+                  className="w-full bg-green-700 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-800 disabled:opacity-50 flex items-center justify-center gap-2 transition-colors"
               >
                 <ShoppingCart size={20} />
                 {isProductInCart

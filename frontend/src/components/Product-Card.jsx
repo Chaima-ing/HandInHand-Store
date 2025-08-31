@@ -11,7 +11,7 @@ return(
                     <img
                         src={product.images[0].imageUrl}
                         alt={product.title}
-                        className="w-full h-[120px] object-cover rounded-lg mb-2"
+                        className="w-full object-cover rounded-lg mb-2"
                     />
                 ) : (
                     <div className="w-full h-[120px] bg-gray-300 rounded-lg mb-2"></div>

@@ -25,7 +25,7 @@ const ShoppingPage = () => {
                           subtitle="Give All You Need"
                           onSearch={(searchTerm) => console.log('Search:', searchTerm)}
             />
-            <ImageUpload productId={1}/>
+            {/*<ImageUpload productId={5}/>*/}
             <MainShoppingSection
                 onAddToCart={onAddToCart}
                 onDisplayDetails={onDisplayDetails}
