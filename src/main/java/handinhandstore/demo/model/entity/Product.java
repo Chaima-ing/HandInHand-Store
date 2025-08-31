@@ -1,19 +1,19 @@
 package handinhandstore.demo.model.entity;
 
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale.Category;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
-import handinhandstore.demo.model.enums.PriceType;
-import handinhandstore.demo.model.enums.ProductStatus;
 import java.math.BigDecimal;
 import java.util.Set;
+
+import handinhandstore.demo.model.enums.PriceType;
+import handinhandstore.demo.model.enums.ProductStatus;
+import handinhandstore.demo.model.entity.Category;
 
 @Entity
 public class Product {
