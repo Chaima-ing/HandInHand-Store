@@ -3,7 +3,9 @@ package handinhandstore.demo.model.entity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale.Category;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -11,6 +13,7 @@ import jakarta.persistence.*;
 import handinhandstore.demo.model.enums.PriceType;
 import handinhandstore.demo.model.enums.ProductStatus;
 import java.math.BigDecimal;
+import java.util.Set;
 
 @Entity
 public class Product {
@@ -44,6 +47,14 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<ProductImage> images = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "product_category", // join table
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private Set<Category> categories = new HashSet<>();
 
 
     public Long getId() {
@@ -132,6 +143,14 @@ public class Product {
 
     public void setImages(List<ProductImage> images) {
         this.images = images;
+    }
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
     }
 
 }
