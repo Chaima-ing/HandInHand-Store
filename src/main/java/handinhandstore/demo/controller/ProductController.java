@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import java.util.Collections; // Add this import at the top
 
 import handinhandstore.demo.service.ProductService;
 import handinhandstore.demo.dto.ProductRequest;
@@ -100,7 +101,8 @@ public class ProductController {
 
     @GetMapping("/products/search")
     public List<Product> searchProducts(@RequestParam String keyword) {
-        return productService.searchProducts(keyword);
+         List<Product> results = productService.searchProducts(keyword);
+         return results != null ? results : Collections.emptyList();
     }
 
 }
