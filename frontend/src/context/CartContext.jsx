@@ -99,105 +99,89 @@ export const CartProvider = ({ children }) => {
     };
 
     const validateCart = () => {
-        if (cartItems.length === 0) {
-            return {
-                isValid: false,
-                message: "Your cart is empty. Please add some items before checkout.",
-                errors: ["EMPTY_CART"]
-            };
+        const errors = [];
+
+        // 1. Check if cart is empty
+        if (!cartItems || cartItems.length === 0) {
+            errors.push({
+                type: 'EMPTY_CART',
+                message: 'Your cart is empty'
+            });
+            return { isValid: false, errors };
         }
 
-        const validationErrors = [];
-        const invalidItems = [];
-
-        // Validate each item in the cart
-        cartItems.forEach(item => {
-            // Check if item has required properties
-            if (!item.id || !item.title || !item.fixedPrice) {
-                validationErrors.push("INVALID_ITEM_DATA");
-                invalidItems.push(item.title || `Item ${item.id}`);
-                return;
+        // 2. Check each item for basic validity
+        cartItems.forEach((item, index) => {
+            // Check if item has required fields
+            if (!item.id || !item.title || !item.fixedPrice || !item.quantity) {
+                errors.push({
+                    type: 'INVALID_ITEM',
+                    message: `Item at position ${index + 1} is missing required information`,
+                    itemIndex: index
+                });
             }
 
             // Check if quantity is valid
-            if (!item.quantity || item.quantity < 1) {
-                validationErrors.push("INVALID_QUANTITY");
-                invalidItems.push(item.title);
-                return;
-            }
-
-            // Check stock availability (if stockQuantity exists)
-            if (item.stockQuantity !== undefined && item.quantity > item.stockQuantity) {
-                validationErrors.push("INSUFFICIENT_STOCK");
-                invalidItems.push(`${item.title} (requested: ${item.quantity}, available: ${item.stockQuantity})`);
-                return;
+            if (item.quantity <= 0) {
+                errors.push({
+                    type: 'INVALID_QUANTITY',
+                    message: `"${item.title}" has invalid quantity`,
+                    itemId: item.id
+                });
             }
 
             // Check if price is valid
             if (item.fixedPrice <= 0) {
-                validationErrors.push("INVALID_PRICE");
-                invalidItems.push(item.title);
-                return;
+                errors.push({
+                    type: 'INVALID_PRICE',
+                    message: `"${item.title}" has invalid price`,
+                    itemId: item.id
+                });
             }
         });
 
-        // Check minimum order value (optional - adjust as needed)
-        const minOrderValue = 10.00; // Set your minimum order value
-        const cartTotal = getCartTotal();
-        if (cartTotal < minOrderValue) {
-            validationErrors.push("MINIMUM_ORDER_NOT_MET");
+        // 3. Calculate total and check if reasonable
+        const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+        if (total <= 0) {
+            errors.push({
+                type: 'INVALID_TOTAL',
+                message: 'Cart total must be greater than zero'
+            });
         }
 
-        // Check maximum order value (optional - adjust as needed)
-        const maxOrderValue = 10000.00; // Set your maximum order value
-        if (cartTotal > maxOrderValue) {
-            validationErrors.push("MAXIMUM_ORDER_EXCEEDED");
-        }
-
-        // If there are validation errors, return them
-        if (validationErrors.length > 0) {
-            let message = "Cart validation failed: ";
-
-            if (validationErrors.includes("INVALID_ITEM_DATA")) {
-                message += "Some items have invalid data. ";
-            }
-            if (validationErrors.includes("INVALID_QUANTITY")) {
-                message += "Some items have invalid quantities. ";
-            }
-            if (validationErrors.includes("INSUFFICIENT_STOCK")) {
-                message += "Some items are out of stock or have insufficient quantity. ";
-            }
-            if (validationErrors.includes("INVALID_PRICE")) {
-                message += "Some items have invalid prices. ";
-            }
-            if (validationErrors.includes("MINIMUM_ORDER_NOT_MET")) {
-                message += `Minimum order value is $${minOrderValue}. Current total: $${cartTotal.toFixed(2)}. `;
-            }
-            if (validationErrors.includes("MAXIMUM_ORDER_EXCEEDED")) {
-                message += `Maximum order value is $${maxOrderValue}. Current total: $${cartTotal.toFixed(2)}. `;
-            }
-
-            return {
-                isValid: false,
-                message: message.trim(),
-                errors: validationErrors,
-                invalidItems: invalidItems,
-                cartTotal: cartTotal
-            };
-        }
-
-        // Save valid cart to localStorage
-        localStorage.setItem('cart', JSON.stringify(cartItems));
-
-        // Cart is valid
         return {
-            isValid: true,
-            message: "Cart is valid and ready for checkout.",
-            errors: [],
-            invalidItems: [],
-            cartTotal: cartTotal,
-            itemCount: getCartItemsCount()
+            isValid: errors.length === 0,
+            errors,
+            total
         };
+    };
+    // Helper function to show validation errors to user
+    const displayValidationErrors = (errors) => {
+        return (
+            <div className="validation-errors">
+                {errors.map((error, index) => (
+                    <div key={index} className={`alert ${getAlertClass(error.type)}`}>
+                        {error.message}
+                    </div>
+                ))}
+            </div>
+        );
+    };
+
+    const getAlertClass = (errorType) => {
+        switch (errorType) {
+            case 'PRICE_CHANGED':
+            case 'INSUFFICIENT_STOCK':
+            case 'QUANTITY_EXCEEDED':
+                return 'alert-warning';
+            case 'OUT_OF_STOCK':
+            case 'PRODUCT_NOT_FOUND':
+            case 'PRODUCT_INACTIVE':
+                return 'alert-error';
+            default:
+                return 'alert-info';
+        }
     };
 
     const value = {
@@ -210,7 +194,8 @@ export const CartProvider = ({ children }) => {
         getCartItemsCount,
         isInCart,
         getItemQuantity,
-        validateCart
+        validateCart,
+        displayValidationErrors
     };
 
     return (

@@ -77,7 +77,7 @@ const ShoppingHero = ({
                                 ))}
                             </div>
                         ) : (
-                            <p className="text-red-500">No results yet...</p>
+                            <p className="text-green-700">Serch for a product</p>
                         )}
                     </div>
                 </div>
