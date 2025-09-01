@@ -1,34 +1,17 @@
-package handinhandstore.demo.model.entity;
+package handinhandstore.demo.dto;
 
-import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-public class Category {
+import handinhandstore.demo.model.entity.Product;
+import jakarta.persistence.ManyToMany;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class CategoryRequest {
     private String name;    // e.g. "Men’s Clothing"
     private String icon;    // e.g. "👕"
 
     @ManyToMany(mappedBy = "categories")
     private Set<Product> products = new HashSet<>();
-
-    public Category(String name, String icon){
-        this.name = name;
-        this.icon = icon;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -53,4 +36,6 @@ public class Category {
     public void setProducts(Set<Product> products) {
         this.products = products;
     }
+
+    
 }
