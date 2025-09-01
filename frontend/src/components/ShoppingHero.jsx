@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Search } from 'lucide-react';
-import axios from "axios";
+import {searchProduct} from "../apiServices/authService.js";
+import ProductCard from "./Product-Card";
 
 const ShoppingHero = ({
                           title = "Shop",
@@ -14,13 +15,22 @@ const ShoppingHero = ({
         e.preventDefault();
         if (!query.trim()) return;
         try {
-            const res = await axios.get(`http://localhost:8080/products/search?keyword=${query}`);
+            const res = await searchProduct(query);
             setResults(res.data);
             console.log("Search results:", res.data); // ✅ see what comes back
         } catch (error) {
+            setResults([]);
             console.error("Search error:", error);
         }
     };
+
+    const onAddToCart = (product) => {
+        addToCart(product, 1); // add with default quantity = 1
+    };
+
+    const onDisplayDetails = (product) => {
+        navigate(`/checkoutProduct/${product.id}` ,{product: product});
+    }
 
     return (
         <section className="relative py-20 bg-center bg-cover"
@@ -53,17 +63,21 @@ const ShoppingHero = ({
                     </form>
 
                     {/* Example: Show results */}
+                    {/* Display search results using ProductCard */}
                     <div className="mt-6">
-                        {results.length > 0 ? (
-                            <ul className="space-y-2">
-                                {results.map((p) => (
-                                    <li key={p.id} className="text-gray-700">
-                                        {p.title} – ${p.fixedPrice ?? "N/A"}
-                                    </li>
+                        {Array.isArray(results) && results.length > 0 ? (
+                            <div className="flex flex-row justify-end items-start space-x-2 gap-6">
+                                {results.map((product) => (
+                                    <ProductCard
+                                        key={product.id}
+                                        product={product}
+                                        onAddToCart={onAddToCart}
+                                        onDisplayDetails={onDisplayDetails}
+                                    />
                                 ))}
-                            </ul>
+                            </div>
                         ) : (
-                            <p className="text-red-500">No results yet...</p>
+                            <p className="text-green-700">Serch for a product</p>
                         )}
                     </div>
                 </div>

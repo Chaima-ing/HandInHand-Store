@@ -10,7 +10,7 @@ export const AuthProvider = ({children}) => {
 
     const handleLogin = async (credentials) => {
         try{
-            const response = await loginUser(credentials); //API call
+            const response = await loginUser(credentials.email, credentials.password); //API call
             if(response.data===true){
                 // just set a placeholder user until you fetch details
                 const email = credentials.email;
@@ -43,8 +43,9 @@ export const AuthProvider = ({children}) => {
                 client.get(`/getUserById?id=${userId}`)
                 .then(res => setUser(res.data))
                 .catch(err => console.log(err));
+        }else{
+            setLoading(false);
         }
-        setLoading(false);
     }, []);
 
     return (

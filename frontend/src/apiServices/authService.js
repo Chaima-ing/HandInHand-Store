@@ -38,4 +38,8 @@ export const verifyCode = async (code,email) => {
         // optional: normalize error message
         return { success: false, message: error.response?.data?.message || "Server error" };
     }
+};
+
+export const searchProduct = (keyword) => {
+    return client.get(`/products/search?keyword=${encodeURIComponent(keyword)}`);
 }

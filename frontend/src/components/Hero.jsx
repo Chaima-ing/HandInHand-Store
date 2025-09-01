@@ -2,11 +2,12 @@ import "./styles/Hero.css";
 import { FaMessage } from 'react-icons/fa6';
 import { useTranslation } from "react-i18next";
 import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 function Hero(){
     const { t, i18n } = useTranslation();
     const [language, setLanguage] = useState(i18n.language || 'en');
-
+    const navigate = useNavigate();
     const changeLanguage = (lng) => {
         i18n.changeLanguage(lng).then(() => {
             console.log("Language changed");
@@ -29,7 +30,7 @@ function Hero(){
                     <p>{t("hero_p")}</p>
                         <div className="hero-buttons">
                             <button className="btn-outline">{t("button_outline")}</button>
-                            <button className="btn-green">{t("browse_button")}</button>
+                            <button className="btn-green" onClick={() => {navigate("/shoppingPage")}}>{t("browse_button")}</button>
                         </div>
                     <button className="circle-btn floating-btn"><FaMessage className="circle-icon"/></button>
                 </div>

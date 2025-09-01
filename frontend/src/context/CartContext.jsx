@@ -98,6 +98,92 @@ export const CartProvider = ({ children }) => {
         return item ? item.quantity : 0;
     };
 
+    const validateCart = () => {
+        const errors = [];
+
+        // 1. Check if cart is empty
+        if (!cartItems || cartItems.length === 0) {
+            errors.push({
+                type: 'EMPTY_CART',
+                message: 'Your cart is empty'
+            });
+            return { isValid: false, errors };
+        }
+
+        // 2. Check each item for basic validity
+        cartItems.forEach((item, index) => {
+            // Check if item has required fields
+            if (!item.id || !item.title || !item.fixedPrice || !item.quantity) {
+                errors.push({
+                    type: 'INVALID_ITEM',
+                    message: `Item at position ${index + 1} is missing required information`,
+                    itemIndex: index
+                });
+            }
+
+            // Check if quantity is valid
+            if (item.quantity <= 0) {
+                errors.push({
+                    type: 'INVALID_QUANTITY',
+                    message: `"${item.title}" has invalid quantity`,
+                    itemId: item.id
+                });
+            }
+
+            // Check if price is valid
+            if (item.fixedPrice <= 0) {
+                errors.push({
+                    type: 'INVALID_PRICE',
+                    message: `"${item.title}" has invalid price`,
+                    itemId: item.id
+                });
+            }
+        });
+
+        // 3. Calculate total and check if reasonable
+        const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+        if (total <= 0) {
+            errors.push({
+                type: 'INVALID_TOTAL',
+                message: 'Cart total must be greater than zero'
+            });
+        }
+
+        return {
+            isValid: errors.length === 0,
+            errors,
+            total
+        };
+    };
+    // Helper function to show validation errors to user
+    const displayValidationErrors = (errors) => {
+        return (
+            <div className="validation-errors">
+                {errors.map((error, index) => (
+                    <div key={index} className={`alert ${getAlertClass(error.type)}`}>
+                        {error.message}
+                    </div>
+                ))}
+            </div>
+        );
+    };
+
+    const getAlertClass = (errorType) => {
+        switch (errorType) {
+            case 'PRICE_CHANGED':
+            case 'INSUFFICIENT_STOCK':
+            case 'QUANTITY_EXCEEDED':
+                return 'alert-warning';
+            case 'OUT_OF_STOCK':
+            case 'PRODUCT_NOT_FOUND':
+            case 'PRODUCT_INACTIVE':
+                return 'alert-error';
+            default:
+                return 'alert-info';
+        }
+    };
+
     const value = {
         cartItems,
         addToCart,
@@ -107,7 +193,9 @@ export const CartProvider = ({ children }) => {
         getCartTotal,
         getCartItemsCount,
         isInCart,
-        getItemQuantity
+        getItemQuantity,
+        validateCart,
+        displayValidationErrors
     };
 
     return (

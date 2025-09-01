@@ -1,11 +1,30 @@
 import React from "react";
 import { Minus, Plus, Trash2 } from 'lucide-react';
 import {useCart}  from '../context/CartContext';
+import {useNavigate} from 'react-router-dom';
 
 const ShoppingCart = () => {
-    const { cartItems, updateQuantity, removeFromCart, getCartTotal } = useCart();
+    const { cartItems, updateQuantity, removeFromCart, getCartTotal, clearCart, validateCart, displayValidationErrors } = useCart();
 
     const getItemTotal = (price, quantity) => price * quantity;
+    const navigate = useNavigate();
+
+    const handleValidate = () => {
+        console.log('Validating cart...');
+        const validation = validateCart();
+        console.log('Validation result:', validation);
+
+        if(!validation.isValid) {
+            console.log('Validation failed:', validation.errors);
+            displayValidationErrors(validation.errors);
+            return false;
+        }else{
+            console.log('Validation passed, navigating...');
+            navigate("/checkoutPage");
+        }
+        return true;
+
+    }
 
     return (
         <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-sm p-6 mt-5 mb-6" dir="rtl">
@@ -16,9 +35,9 @@ const ShoppingCart = () => {
                         <div className="flex-shrink-0">
                             <div className="w-20 h-20 bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
                                 <img
-                                    src={item.imageUrl || "/placeholder.png"}
+                                    src={item.images?.[0].imageUrl}
                                     alt={item.title}
-                                    className="w-20 h-20 object-cover rounded"
+                                    className="w-[90px] h-[100px] object-cover"
                                 />
                             </div>
                         </div>
@@ -31,7 +50,7 @@ const ShoppingCart = () => {
 
                         {/* Price Display */}
                         <div className="text-center min-w-[80px]">
-                            <div className="text-lg font-semibold text-green-600">
+                            <div className="text-lg font-semibold text-green-700">
                                 ${getItemTotal(item.fixedPrice, item.quantity)}
                             </div>
                             <div className="text-sm text-gray-500">
@@ -89,6 +108,22 @@ const ShoppingCart = () => {
                     <p className="text-sm">أضف بعض المنتجات للمتابعة</p>
                 </div>
             )}
+            <div className="flex flex-col items-center justify-between mt-4">
+                <div className="flex gap-4">
+                    <button
+                        onClick={clearCart}
+                        className="px-3 py-1 text-lg w-[200px] border border-red-600 rounded-full hover:bg-red-600 transition-colors"
+                    >
+                        Clear Cart
+                    </button>
+                    <button
+                        onClick={handleValidate}
+                        className="px-4 py-1 text-lg w-[200px] h-[50px] bg-green-700 text-white rounded-full hover:bg-green-800 transition-colors"
+                    >
+                       Validate Cart
+                    </button>
+                </div>
+            </div>
         </div>
     );
 };
