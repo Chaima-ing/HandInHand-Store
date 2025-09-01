@@ -46,7 +46,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/UserLogin")
-    public boolean login(@RequestBody UserLoginRequest userLoginRequest) {
+    public User login(@RequestBody UserLoginRequest userLoginRequest) {
         return authService.login(userLoginRequest.getEmail(), userLoginRequest.getPassword());
     }
 

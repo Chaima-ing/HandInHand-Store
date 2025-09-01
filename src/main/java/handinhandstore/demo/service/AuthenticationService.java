@@ -35,11 +35,10 @@ public class AuthenticationService {
         }
     }
 
-    public boolean login(String email, String password) {
+    public User login(String email, String password) {
         Optional<User> userOptional = authRepo.findUserByEmailAndPassword(email, password);
-        return userOptional.isPresent();
+        return userOptional.orElse(null);
     }
-
 
     @Transactional
     public void updatePassword(String email, String newPassword) {
