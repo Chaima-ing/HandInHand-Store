@@ -168,25 +168,6 @@ const MainShoppingSection = ({
                         </button>
                     </div>
 
-                    {/* Newsletter Section */}
-                    <section className="bg-gray-800 rounded-lg p-8 text-center">
-                        <h2 className="text-3xl font-bold text-white mb-2">Ready to Get</h2>
-                        <h3 className="text-3xl font-bold text-white mb-4">Our New Stuff?</h3>
-                        <p className="text-gray-300 mb-6 max-w-md mx-auto">
-                            Get the best product deals, find best products, and then
-                            create a shopping cart! Easy category selections right for you.
-                        </p>
-                        <div className="flex max-w-md mx-auto">
-                            <input
-                                type="email"
-                                placeholder="Your Email"
-                                className="flex-1 px-4 py-3 rounded-l-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-                            <button className="bg-blue-600 text-white px-6 py-3 rounded-r-full hover:bg-blue-700 transition-colors">
-                                Send
-                            </button>
-                        </div>
-                    </section>
                 </main>
             </div>
         </div>

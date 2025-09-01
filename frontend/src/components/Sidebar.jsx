@@ -3,7 +3,7 @@ import React from "react";
 
 const Sidebar = ({ categories = [], selectedCategory, onCategoryChange }) => {
     return (
-        <aside className="w-64 flex-shrink-0 h-[calc(100vh-4rem)] overflow-y-auto">
+        <aside className="w-64 flex-shrink-0 h-[calc(100vh-4rem)] h-fit sticky top-6 self-start shadow">
             <div className="bg-black rounded-lg p-6 shadow-sm">
                 <h3 className="font-semibold text-white mb-4">Category</h3>
                 <div className="space-y-4 space-x-6">
