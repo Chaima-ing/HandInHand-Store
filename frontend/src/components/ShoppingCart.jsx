@@ -1,11 +1,30 @@
 import React from "react";
 import { Minus, Plus, Trash2 } from 'lucide-react';
 import {useCart}  from '../context/CartContext';
+import {useNavigate} from 'react-router-dom';
 
 const ShoppingCart = () => {
-    const { cartItems, updateQuantity, removeFromCart, getCartTotal, clearCart } = useCart();
+    const { cartItems, updateQuantity, removeFromCart, getCartTotal, clearCart, validateCart, displayValidationErrors } = useCart();
 
     const getItemTotal = (price, quantity) => price * quantity;
+    const navigate = useNavigate();
+
+    const handleValidate = () => {
+        console.log('Validating cart...');
+        const validation = validateCart();
+        console.log('Validation result:', validation);
+
+        if(!validation.isValid) {
+            console.log('Validation failed:', validation.errors);
+            displayValidationErrors(validation.errors);
+            return false;
+        }else{
+            console.log('Validation passed, navigating...');
+            navigate("/checkoutPage");
+        }
+        return true;
+
+    }
 
     return (
         <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-sm p-6 mt-5 mb-6" dir="rtl">
@@ -31,7 +50,7 @@ const ShoppingCart = () => {
 
                         {/* Price Display */}
                         <div className="text-center min-w-[80px]">
-                            <div className="text-lg font-semibold text-green-600">
+                            <div className="text-lg font-semibold text-green-700">
                                 ${getItemTotal(item.fixedPrice, item.quantity)}
                             </div>
                             <div className="text-sm text-gray-500">
@@ -98,9 +117,10 @@ const ShoppingCart = () => {
                         Clear Cart
                     </button>
                     <button
-                        className="px-4 py-1 text-lg w-[200px] h-[50px] bg-green-600 text-white rounded-full hover:bg-green-800 transition-colors"
+                        onClick={handleValidate}
+                        className="px-4 py-1 text-lg w-[200px] h-[50px] bg-green-700 text-white rounded-full hover:bg-green-800 transition-colors"
                     >
-                       Validte Cart
+                       Validate Cart
                     </button>
                 </div>
             </div>
