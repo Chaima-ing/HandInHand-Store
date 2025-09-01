@@ -24,7 +24,7 @@ public class CategoryController {
 
     @PostMapping("/save")
     public Category createCategory(@RequestBody CategoryRequest categoryRequest) {
-        Category category = new Category(categoryRequest.getName(), categoryRequest.getIcon);
+        Category category = new Category(categoryRequest.getName(), categoryRequest.getIcon());
         return categoryService.createCategory(category);
     }
 }
