@@ -58,6 +58,8 @@ public class ProductController {
             Product product = new Product();
             product.setTitle(productRequest.getTitle());
             product.setDescription(productRequest.getDescription());
+            System.out.println("\n\n\n********************************\n Description from Request: "+productRequest.getDescription()+"\n\n*******************************");
+            System.out.println("\n\n\n********************************\n Description from product: "+product.getDescription()+"\n\n*******************************");
             product.setPriceType(productRequest.getPriceType());
             product.setFixedPrice(productRequest.getPriceType() == PriceType.FIXED ? productRequest.getFixedPrice() : null);
             product.setStatus(productRequest.getStatus());

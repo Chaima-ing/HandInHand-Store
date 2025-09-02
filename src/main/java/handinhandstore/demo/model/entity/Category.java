@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class Category {
 
@@ -15,6 +17,7 @@ public class Category {
     private String icon;    // e.g. "👕"
 
     @ManyToMany(mappedBy = "categories")
+    @JsonBackReference
     private Set<Product> products = new HashSet<>();
 
     public Category(){
