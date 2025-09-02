@@ -35,4 +35,13 @@ public class CategoryController {
         categoryService.deleteCategory(id_Category);
         return ResponseEntity.ok("Category deleted successfully");
     }
+
+    @PutMapping("/update/{id_Category}")
+    public ResponseEntity<Category> updateCategory(
+            @PathVariable Long id_Category,
+            @RequestBody Category updatedCategory
+    ) {
+        Category category = categoryService.updateCategory(id_Category, updatedCategory);
+        return ResponseEntity.ok(category);
+    }
 }
