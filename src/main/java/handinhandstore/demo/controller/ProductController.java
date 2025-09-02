@@ -43,7 +43,7 @@ public class ProductController {
 
     @PostMapping("/Add-Product")
     public ResponseEntity<Map<String, Long>> publishProduct(
-        @RequestPart("productRequest") ProductRequest productRequest
+        @RequestBody ProductRequest productRequest
     ) {
         try {
             Set<Category> categories = new HashSet<>();
