@@ -11,7 +11,7 @@ function Header() {
     const [language, setLanguage] = useState(i18n.language || 'en');
     const navigate = useNavigate();
 
-    const { user, isAuthenticated } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
     console.log("Header sees user:", user);
     {/*
 
@@ -37,12 +37,6 @@ function Header() {
                 <div className="logo">
                     <FaHandshake className="Hand-icon"/>{t("Store")}<span>{t("GAZA")}</span>
                 </div>
-                {/* Search
-                <div className="search">
-                    <FaSearch className="search-icon" />
-                    <input type="text" placeholder={t("search_products_placeholder")} />
-                </div>*/}
-                {/* Navigation */}
                     <nav className="nav">
                         <a href="/"><FaHome/> {t("home_page")}</a>
                         <a href="/shoppingPage"><FaBoxOpen/>{t("products")}</a>

@@ -9,21 +9,25 @@ export const AuthProvider = ({children}) => {
     const [loading, setLoading] = useState(true);
 
     const handleLogin = async (credentials) => {
-        try{
-            const response = await loginUser(credentials.email, credentials.password); //API call
-            if(response.data===true){
-                // just set a placeholder user until you fetch details
+        try {
+            const response = await loginUser(credentials.email, credentials.password); // API call
+            if (response.data === true) {
+                // placeholder user
                 const email = credentials.email;
-                setUser({ email });
+                const user = { id: Date.now(), email }; // temporary id
+                setUser(user);
+
+                localStorage.setItem("userId", user.id); // ✅ match with useEffect
                 localStorage.setItem("userEmail", email);
+
                 return { success: true };
-                /* setUser(response.data.user);
-                localStorage.setItem("userId",response.data.user.id);
-                return {success:true};*/
             }
-            return {success:false, message:response.data.message};
-        }catch(error){
-            return {success: false, message: error.response?.data?.message || "Login failed"};
+            return { success: false, message: response.data.message };
+        } catch (error) {
+            return {
+                success: false,
+                message: error.response?.data?.message || "Login failed"
+            };
         }
     };
 
@@ -37,13 +41,14 @@ export const AuthProvider = ({children}) => {
     };
 
     useEffect(() => {
-        const userId = localStorage.getItem('userId');
+        const userId = localStorage.getItem("userId");
         if (userId) {
-            // fetch user data from backend
-                client.get(`/getUserById?id=${userId}`)
-                .then(res => setUser(res.data))
-                .catch(err => console.log(err));
-        }else{
+            client
+                .get(`/getUserById?id=${userId}`)
+                .then((res) => setUser(res.data))
+                .catch((err) => console.log(err))
+                .finally(() => setLoading(false)); // ✅ always stop loading
+        } else {
             setLoading(false);
         }
     }, []);
