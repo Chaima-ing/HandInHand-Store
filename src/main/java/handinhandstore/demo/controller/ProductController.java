@@ -2,6 +2,7 @@ package handinhandstore.demo.controller;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.Collections; // Add this import at the top
 
 import handinhandstore.demo.service.ProductService;
@@ -24,10 +26,15 @@ import handinhandstore.demo.dto.ProductRequest;
 import handinhandstore.demo.model.entity.Product;
 import handinhandstore.demo.model.entity.User;
 import handinhandstore.demo.model.enums.PriceType;
+import handinhandstore.demo.model.entity.Category;
+import handinhandstore.demo.repository.CategoryRepository;
 
 @RestController
 public class ProductController {
     private final ProductService productService;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Autowired
     public ProductController(ProductService productService){
@@ -39,31 +46,41 @@ public class ProductController {
         @RequestPart("productRequest") ProductRequest productRequest
     ) {
         try {
-        Product product = new Product();
-        product.setTitle(productRequest.getTitle());
-        product.setDescription(productRequest.getDescription());
-        product.setPriceType(productRequest.getPriceType());
-        product.setFixedPrice(productRequest.getPriceType() == PriceType.FIXED ? productRequest.getFixedPrice() : null);
-        product.setStatus(productRequest.getStatus());
-        product.setCreatedAt(LocalDateTime.now());
+            Set<Category> categories = new HashSet<>();
+            for(Long category_id:productRequest.getCategories_ids()){
+                // Find category
+                Category category = categoryRepository.findById(category_id)
+                    .orElseThrow(() -> new RuntimeException("Category not found"));
+                // Add category
+                categories.add(category);
+            }
 
-        // Set seller (only ID from request)
-        User seller = new User();
-        seller.setId(productRequest.getSellerId());
-        product.setSeller(seller);
+            Product product = new Product();
+            product.setTitle(productRequest.getTitle());
+            product.setDescription(productRequest.getDescription());
+            product.setPriceType(productRequest.getPriceType());
+            product.setFixedPrice(productRequest.getPriceType() == PriceType.FIXED ? productRequest.getFixedPrice() : null);
+            product.setStatus(productRequest.getStatus());
+            product.setCreatedAt(LocalDateTime.now());     
+            product.setCategories(categories);
 
-        productService.saveProduct(product);
+            // Set seller (only ID from request)
+            User seller = new User();
+            seller.setId(productRequest.getSellerId());
+            product.setSeller(seller);
 
-        Map<String, Long> response = new HashMap<>();
-        response.put("productId", product.getId());
-        return ResponseEntity.ok(response);
+            productService.saveProduct(product);
 
-    } catch (Exception e) {
-        e.printStackTrace();
-        Map<String, Long> errorResponse = new HashMap<>();
-        errorResponse.put("error", -1L);
-        return ResponseEntity.status(500).body(errorResponse);
-    }
+            Map<String, Long> response = new HashMap<>();
+            response.put("productId", product.getId());
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Map<String, Long> errorResponse = new HashMap<>();
+            errorResponse.put("error", -1L);
+            return ResponseEntity.status(500).body(errorResponse);
+        }   
     }
 
     @DeleteMapping("Delete-Product/{id_Product}")

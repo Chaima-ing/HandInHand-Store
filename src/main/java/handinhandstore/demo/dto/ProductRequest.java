@@ -1,5 +1,7 @@
 package handinhandstore.demo.dto;
 
+import java.util.List;
+
 import handinhandstore.demo.model.enums.PriceType;
 import handinhandstore.demo.model.enums.ProductStatus;
 
@@ -11,6 +13,7 @@ public class ProductRequest {
     private Double fixedPrice;
     private String category;
     private ProductStatus status; // AVAILABLE, SOLD, REMOVED
+    private List<Long> categories_ids;
 
     public Long getSellerId() {
         return sellerId;
@@ -67,5 +70,15 @@ public class ProductRequest {
     public void setStatus(ProductStatus status) {
         this.status = status;
     }
+
+    public List<Long> getCategories_ids() {
+        return categories_ids;
+    }
+
+    public void setCategories_ids(List<Long> categories_ids) {
+        this.categories_ids = categories_ids;
+    }
+
+    
 }
 
