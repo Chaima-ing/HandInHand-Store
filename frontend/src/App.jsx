@@ -11,7 +11,6 @@ import VerifyCode from "./pages/VerifyCode.jsx";
 import CartPage from "./pages/CartPage.jsx";
 import ShoppingPage from "./pages/ShoppingPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
-import checkoutPage from "./pages/checkoutPage.jsx";
 import CheckoutPage from "./pages/checkoutPage.jsx";
 
 

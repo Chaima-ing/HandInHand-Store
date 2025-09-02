@@ -39,7 +39,3 @@ export const verifyCode = async (code,email) => {
         return { success: false, message: error.response?.data?.message || "Server error" };
     }
 };
-
-export const searchProduct = (keyword) => {
-    return client.get(`/products/search?keyword=${encodeURIComponent(keyword)}`);
-}
