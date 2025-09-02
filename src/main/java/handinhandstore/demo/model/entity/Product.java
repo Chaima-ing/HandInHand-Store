@@ -33,9 +33,7 @@ public class Product {
     private PriceType priceType; // FIXED or AUCTION
 
     private Double fixedPrice;
-    private String category;
     
-
     @Enumerated(EnumType.STRING)
     private ProductStatus status; // AVAILABLE, SOLD, REMOVED
 
@@ -54,6 +52,7 @@ public class Product {
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
+    @JsonManagedReference
     private Set<Category> categories = new HashSet<>();
 
 
@@ -103,14 +102,6 @@ public class Product {
 
     public void setFixedPrice(Double fixedPrice) {
         this.fixedPrice = fixedPrice;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
     }
 
     public ProductStatus getStatus() {

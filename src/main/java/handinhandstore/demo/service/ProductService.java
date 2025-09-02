@@ -40,7 +40,7 @@ public class ProductService {
         existingProduct.setDescription(updatedProduct.getDescription());
         existingProduct.setPriceType(updatedProduct.getPriceType());
         existingProduct.setFixedPrice(updatedProduct.getFixedPrice());
-        existingProduct.setCategory(updatedProduct.getCategory());
+        existingProduct.setCategories(updatedProduct.getCategories());
         existingProduct.setStatus(updatedProduct.getStatus());
 
         return productRepository.save(existingProduct);
