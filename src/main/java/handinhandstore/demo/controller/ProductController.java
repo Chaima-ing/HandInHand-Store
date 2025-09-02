@@ -44,7 +44,6 @@ public class ProductController {
         product.setDescription(productRequest.getDescription());
         product.setPriceType(productRequest.getPriceType());
         product.setFixedPrice(productRequest.getPriceType() == PriceType.FIXED ? productRequest.getFixedPrice() : null);
-        product.setCategory(productRequest.getCategory());
         product.setStatus(productRequest.getStatus());
         product.setCreatedAt(LocalDateTime.now());
 
