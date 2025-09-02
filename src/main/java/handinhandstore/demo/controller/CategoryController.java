@@ -3,6 +3,8 @@ package handinhandstore.demo.controller;
 import handinhandstore.demo.model.entity.Category;
 import handinhandstore.demo.service.CategoryService;
 import handinhandstore.demo.dto.CategoryRequest;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,5 +28,11 @@ public class CategoryController {
     public Category createCategory(@RequestBody CategoryRequest categoryRequest) {
         Category category = new Category(categoryRequest.getName(), categoryRequest.getIcon());
         return categoryService.createCategory(category);
+    }
+
+    @DeleteMapping("/delete/{id_Category}")
+    public ResponseEntity<String> deleteCategory(@PathVariable Long id_Category) {
+        categoryService.deleteCategory(id_Category);
+        return ResponseEntity.ok("Category deleted successfully");
     }
 }
