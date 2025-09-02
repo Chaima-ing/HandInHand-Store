@@ -1,42 +1,23 @@
 import React, { useState } from 'react';
 import { Search } from 'lucide-react';
-import {searchProduct} from "../apiServices/authService.js";
-import ProductCard from "./Product-Card";
 
 const ShoppingHero = ({
                           title = "Shop",
                           subtitle = "Give All You Need",
                           searchPlaceholder = "Search on Stufflus",
+                          onSearch = () => {}
                       }) => {
     const [query, setQuery] = useState("");
-    const [results, setResults] = useState([]);
 
-    const handleSearch = async (e) => {
+    const handleSearch = (e) => {
         e.preventDefault();
         if (!query.trim()) return;
-        try {
-            const res = await searchProduct(query);
-            setResults(res.data);
-            console.log("Search results:", res.data); // ✅ see what comes back
-        } catch (error) {
-            setResults([]);
-            console.error("Search error:", error);
-        }
+        onSearch(query); // ✅ send query up
     };
-
-    const onAddToCart = (product) => {
-        addToCart(product, 1); // add with default quantity = 1
-    };
-
-    const onDisplayDetails = (product) => {
-        navigate(`/checkoutProduct/${product.id}` ,{product: product});
-    }
 
     return (
-        <section className="relative py-20 bg-center bg-cover"
-                 /*style={{ backgroundImage: "url('/solidarity.jpg')" }}*/>
-            {/* Overlay to make text readable */}
-            <div className="absolute inset-0 bg-gray-200 bg-opacity-40"></div>
+        <section className="relative py-5 bg-center bg-cover space-y-[10px]">
+            <div className="absolute inset-0 bg-gray-200"></div>
             <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-black">
                 <div className="text-center">
                     <h1 className="text-6xl font-bold text-green-800 mb-4">{title}</h1>
@@ -61,25 +42,6 @@ const ShoppingHero = ({
                             Search
                         </button>
                     </form>
-
-                    {/* Example: Show results */}
-                    {/* Display search results using ProductCard */}
-                    <div className="mt-6">
-                        {Array.isArray(results) && results.length > 0 ? (
-                            <div className="flex flex-row justify-end items-start space-x-2 gap-6">
-                                {results.map((product) => (
-                                    <ProductCard
-                                        key={product.id}
-                                        product={product}
-                                        onAddToCart={onAddToCart}
-                                        onDisplayDetails={onDisplayDetails}
-                                    />
-                                ))}
-                            </div>
-                        ) : (
-                            <p className="text-green-700">Serch for a product</p>
-                        )}
-                    </div>
                 </div>
             </div>
         </section>

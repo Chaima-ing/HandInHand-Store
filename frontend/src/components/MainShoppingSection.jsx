@@ -1,68 +1,67 @@
-import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
+import { ChevronLeft, ChevronRight, XCircle } from 'lucide-react';
 import Sidebar from "./Sidebar.jsx";
-import ProductCard from "./Product-Card.jsx"
+import ProductCard from "./Product-Card.jsx";
 import axios from "axios";
+import { searchProduct, getAllCategories } from "../apiServices/searchServices.js";
 
-const MainShoppingSection = ({
-                                 categories = [],
-                                 //product = [],
-                                 onCategoryChange = () => {},
-                                 onAddToCart = () => {},
-                                 onDisplayDetails = () => {}
-                             }) => {
-    const [selectedCategory, setSelectedCategory] = useState(0);
+const MainShoppingSection = forwardRef(({
+                                            onCategoryChange = () => {},
+                                            onAddToCart = () => {},
+                                            onDisplayDetails = () => {}
+                                        }, ref) => {
+    const [selectedCategory, setSelectedCategory] = useState(null); // ✅ will store category.id
     const [currentPage, setCurrentPage] = useState(1);
     const productsPerPage = 9;
     const [products, setProducts] = useState([]);
+    const [categories, setCategories] = useState([]); // ✅ state only (no prop anymore)
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [results, setResults] = useState([]);
 
-    // Default categories if none provided
-    const defaultCategories = [
-        { name: 'All Products', count: 5, active: true },
-        { name: 'For Home', count: null },
-        { name: 'For Music', count: null },
-        { name: 'For Phone', count: null },
-        { name: 'For Storage', count: null },
-        { name: 'New Arrival', count: null },
-        { name: 'Best Seller', count: null },
-        { name: 'On Discount', count: null }
-    ];
+    // ✅ Expose search + clear to parent
+    useImperativeHandle(ref, () => ({
+        handleSearch: async (query) => {
+            try {
+                const res = await searchProduct(query);
+                setResults(res.data);
+                setCurrentPage(1);
+            } catch (error) {
+                setResults([]);
+                console.error("Search error:", error);
+            }
+        },
+        clearSearch: () => {
+            setResults([]);
+            setCurrentPage(1);
+        }
+    }));
 
-    // Default products if none provided
-    const defaultProducts = [
-        { id: 1, name: 'Phone Holder Sakti', price: 29.90, category: 'Other', image: '/api/placeholder/200/200' },
-        { id: 2, name: 'Headsound', price: 32.00, category: 'Music', image: '/api/placeholder/200/200' },
-        { id: 3, name: 'Adudu Cleaner', price: 29.90, category: 'Other', image: '/api/placeholder/200/200' },
-        { id: 4, name: 'CCTV Maling', price: 50.00, category: 'Home', image: '/api/placeholder/200/200' },
-        { id: 5, name: 'Stufflus Peker 32', price: 9.90, category: 'Other', image: '/api/placeholder/200/200' },
-        { id: 6, name: 'Stufflus RT75', price: 34.10, category: 'Music', image: '/api/placeholder/200/200' },
-        { id: 7, name: 'Phone Holder Sakti', price: 29.90, category: 'Other', image: '/api/placeholder/200/200' },
-        { id: 8, name: 'Headsound', price: 32.00, category: 'Music', image: '/api/placeholder/200/200' },
-        { id: 9, name: 'Adudu Cleaner', price: 29.90, category: 'Other', image: '/api/placeholder/200/200' },
-        { id: 10, name: 'CCTV Maling', price: 50.00, category: 'Home', image: '/api/placeholder/200/200' },
-        { id: 11, name: 'Stufflus Peker 32', price: 9.90, category: 'Other', image: '/api/placeholder/200/200' },
-        { id: 12, name: 'Stufflus RT75', price: 34.10, category: 'Music', image: '/api/placeholder/200/200' }
-    ];
+    // ✅ Fetch categories from backend
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await getAllCategories();
+                console.log("Fetched categories:", response.data); // ✅ log here
+                setCategories(response.data);
+            } catch (error) {
+                console.error("Error fetching categories:", error);
+            }
+        };
+        fetchCategories();
+    }, []);
 
-    const displayCategories = categories.length > 0 ? categories : defaultCategories;
-    const displayProducts = products.length > 0 ? products : defaultProducts;
-
-
-
-
+    // ✅ Fetch products from backend
     useEffect(() => {
         const fetchProducts = async () => {
-           axios.get("http://localhost:8080/products/get")
-               .then((response) => {
-                   setProducts(response.data);
-                   setLoading(false);
-               })
-               .catch((error)=>{
-                   setError("an error occured")+(error.message ? error.message : "");
-                   setLoading(false);
-               });
+            try {
+                const response = await axios.get("http://localhost:8080/products/get");
+                setProducts(response.data);
+                setLoading(false);
+            } catch (error) {
+                setError("An error occurred " + (error.message || ""));
+                setLoading(false);
+            }
         };
         fetchProducts();
     }, []);
@@ -70,16 +69,20 @@ const MainShoppingSection = ({
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">Error: {error}</p>;
 
-    // Pagination logic
-    const totalPages = Math.ceil(displayProducts.length / productsPerPage);
+    // ✅ If search results exist → show them, else → show products
+    const activeProducts = results.length > 0 ? results : products;
+
+    // ✅ Pagination
+    const totalPages = Math.ceil(activeProducts.length / productsPerPage);
     const indexOfLastProduct = currentPage * productsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-    const currentProducts = displayProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+    const currentProducts = activeProducts.slice(indexOfFirstProduct, indexOfLastProduct);
 
-    const handleCategoryChange = (categoryIndex) => {
-        setSelectedCategory(categoryIndex);
-        onCategoryChange(categoryIndex);
-        setCurrentPage(1); // reset to first page when category changes
+    // ✅ Handle category change (store id, not index)
+    const handleCategoryChange = (categoryId) => {
+        setSelectedCategory(categoryId);
+        onCategoryChange(categoryId);
+        setCurrentPage(1);
     };
 
     const handlePageChange = (page) => {
@@ -93,19 +96,12 @@ const MainShoppingSection = ({
         const maxVisible = 5;
 
         if (totalPages <= maxVisible) {
-            for (let i = 1; i <= totalPages; i++) {
-                items.push(i);
-            }
+            for (let i = 1; i <= totalPages; i++) items.push(i);
         } else {
-            if (currentPage <= 3) {
-                items.push(1, 2, 3, '...', totalPages);
-            } else if (currentPage >= totalPages - 2) {
-                items.push(1, '...', totalPages - 2, totalPages - 1, totalPages);
-            } else {
-                items.push(1, '...', currentPage, '...', totalPages);
-            }
+            if (currentPage <= 3) items.push(1, 2, 3, '...', totalPages);
+            else if (currentPage >= totalPages - 2) items.push(1, '...', totalPages - 2, totalPages - 1, totalPages);
+            else items.push(1, '...', currentPage, '...', totalPages);
         }
-
         return items;
     };
 
@@ -114,64 +110,87 @@ const MainShoppingSection = ({
             <div className="flex gap-5 flex-row">
                 {/* Sidebar */}
                 <Sidebar
-                    categories={displayCategories}
+                    categories={categories}
                     selectedCategory={selectedCategory}
                     onCategoryChange={handleCategoryChange}
                 />
 
                 {/* Main Content */}
                 <main className="flex flex-col items-center justify-center w-full ml-30 overflow-y-auto">
+
+                    {/* ✅ Show "Clear Search" if results are active */}
+                    {results.length > 0 && (
+                        <div className="flex justify-between items-center w-full mb-6 px-2">
+                            <p className="text-gray-600">
+                                Showing {results.length} result{results.length !== 1 ? 's' : ''} for your search
+                            </p>
+                            <button
+                                onClick={() => setResults([])}
+                                className="flex items-center text-red-600 hover:text-red-800 transition"
+                            >
+                                <XCircle className="w-5 h-5 mr-1" />
+                                Clear Search
+                            </button>
+                        </div>
+                    )}
+
                     {/* Product Grid */}
                     <div className="grid grid-cols-3 gap-6 mb-8">
                         {currentProducts.map((product) => (
-                            <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} onDisplayDetails={onDisplayDetails} />
+                            <ProductCard
+                                key={product.id}
+                                product={product}
+                                onAddToCart={onAddToCart}
+                                onDisplayDetails={onDisplayDetails}
+                            />
                         ))}
                     </div>
 
-                    {/* Pagination */}
-                    <div className="flex items-center justify-between mb-12">
-                        <button
-                            onClick={() => handlePageChange(currentPage - 1)}
-                            disabled={currentPage === 1}
-                            className="flex items-center text-gray-600 hover:text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed mr-3"
-                        >
-                            <ChevronLeft className="w-4 h-4 mr-1" />
-                            Previous
-                        </button>
+                    {/* Pagination (hidden when search results are showing) */}
+                    {results.length === 0 && (
+                        <div className="flex items-center justify-between mb-12">
+                            <button
+                                onClick={() => handlePageChange(currentPage - 1)}
+                                disabled={currentPage === 1}
+                                className="flex items-center text-gray-600 hover:text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed mr-3"
+                            >
+                                <ChevronLeft className="w-4 h-4 mr-1" />
+                                Previous
+                            </button>
 
-                        <div className="flex items-center space-x-2 gap-2">
-                            {generatePaginationItems().map((page, index) => (
-                                <button
-                                    key={index}
-                                    onClick={() => typeof page === 'number' && handlePageChange(page)}
-                                    disabled={page === '...'}
-                                    className={`px-3 py-2 text-sm rounded ${
-                                        page === currentPage
-                                            ? 'bg-green-700 text-white'
-                                            : page === '...'
-                                                ? 'text-gray-400 cursor-default'
-                                                : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
-                                    }`}
-                                >
-                                    {page}
-                                </button>
-                            ))}
+                            <div className="flex items-center space-x-2 gap-2">
+                                {generatePaginationItems().map((page, index) => (
+                                    <button
+                                        key={index}
+                                        onClick={() => typeof page === 'number' && handlePageChange(page)}
+                                        disabled={page === '...'}
+                                        className={`px-3 py-2 text-sm rounded ${
+                                            page === currentPage
+                                                ? 'bg-green-700 text-white'
+                                                : page === '...'
+                                                    ? 'text-gray-400 cursor-default'
+                                                    : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
+                                        }`}
+                                    >
+                                        {page}
+                                    </button>
+                                ))}
+                            </div>
+
+                            <button
+                                onClick={() => handlePageChange(currentPage + 1)}
+                                disabled={currentPage === totalPages}
+                                className="flex items-center text-gray-600 hover:text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                Next
+                                <ChevronRight className="w-4 h-4 ml-1" />
+                            </button>
                         </div>
-
-                        <button
-                            onClick={() => handlePageChange(currentPage + 1)}
-                            disabled={currentPage === totalPages}
-                            className="flex items-center text-gray-600 hover:text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                            Next
-                            <ChevronRight className="w-4 h-4 ml-1" />
-                        </button>
-                    </div>
-
+                    )}
                 </main>
             </div>
         </div>
     );
-};
+});
 
 export default MainShoppingSection;

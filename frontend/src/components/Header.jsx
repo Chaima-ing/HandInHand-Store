@@ -62,7 +62,7 @@ function Header() {
                             </button>
                             <button
                                 className="btn-green"
-                                onClick={() => navigate("/profile")}
+                                onClick={() => navigate("/profilePage")}
                             >
                                 <FaUser />
                             </button>

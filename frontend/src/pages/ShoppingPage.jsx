@@ -5,6 +5,7 @@ import ShoppingHero from "../components/ShoppingHero.jsx";
 import {useCart}  from '../context/CartContext';
 import {useNavigate} from 'react-router-dom';
 import ImageUpload from "../components/ImageUpload.jsx";
+import {useRef} from "react";
 
 const ShoppingPage = () => {
     const navigate = useNavigate();
@@ -17,18 +18,20 @@ const ShoppingPage = () => {
     const onDisplayDetails = (product) => {
         navigate(`/checkoutProduct/${product.id}` ,{product: product});
     }
+    const mainRef = useRef(null);
 
     return (
         <div className="bg-white w-screen">
             <Header />
             <ShoppingHero title="Shop for Gaza"
                           subtitle="Give All You Need"
-                          onSearch={(searchTerm) => console.log('Search:', searchTerm)}
+                          onSearch={(query) => mainRef.current?.handleSearch(query)}
             />
             {/*<ImageUpload productId={5}/>*/}
             <MainShoppingSection
                 onAddToCart={onAddToCart}
                 onDisplayDetails={onDisplayDetails}
+                ref={mainRef}
                /* categories={yourCategories}
                 products={yourProducts}
                 currentPage={currentPage}
