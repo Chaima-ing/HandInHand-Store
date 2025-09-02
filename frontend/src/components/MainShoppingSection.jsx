@@ -78,12 +78,26 @@ const MainShoppingSection = forwardRef(({
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
     const currentProducts = activeProducts.slice(indexOfFirstProduct, indexOfLastProduct);
 
-    // ✅ Handle category change (store id, not index)
-    const handleCategoryChange = (categoryId) => {
-        setSelectedCategory(categoryId);
-        onCategoryChange(categoryId);
-        setCurrentPage(1);
+    const handleCategoryChange = async (categoryIndex) => {
+        setSelectedCategory(categoryIndex);
+        const category = categories[categoryIndex];
+
+        if (category && category.id) {
+            try {
+                const res = await getProductsByCategory(category.id);
+                setProducts(res.data);
+                setResults([]); // clear search results
+                setCurrentPage(1);
+            } catch (error) {
+                console.error("Error fetching products by category:", error);
+            }
+        } else {
+            // fallback: fetch all products
+            const res = await axios.get("http://localhost:8080/products/get");
+            setProducts(res.data);
+        }
     };
+
 
     const handlePageChange = (page) => {
         if (page >= 1 && page <= totalPages) {
@@ -116,7 +130,7 @@ const MainShoppingSection = forwardRef(({
                 />
 
                 {/* Main Content */}
-                <main className="flex flex-col items-center justify-center w-full ml-30 overflow-y-auto">
+                <main className="flex flex-col items-start justify-start w-full ml-30 overflow-y-auto">
 
                     {/* ✅ Show "Clear Search" if results are active */}
                     {results.length > 0 && (
