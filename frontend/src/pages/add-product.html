@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إضافة منتج جديد - متجر غزة للجميع</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Palestinian Color Scheme */
+        :root {
+            --green: #007A3D;
+            --dark-green: #006a34;
+            --black: #000000;
+            --white: #FFFFFF;
+            --red: #CE1126;
+            --light-gray: #f5f5f5;
+            --dark-gray: #333;
+            --gold: #FFD700;
+        }
+
+        /* Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-gray);
+            color: var(--black);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 250px;
+            background-color: var(--black);
+            color: var(--white);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            right: 0;
+            padding: 20px 0;
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+        }
+
+        .logo-section {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 20px;
+        }
+
+        .logo-section h1 {
+            font-size: 22px;
+            margin-bottom: 5px;
+            color: var(--white);
+        }
+
+        .logo-section p {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .nav-links {
+            list-style: none;
+            flex: 1;
+        }
+
+        .nav-links li a {
+            display: flex;
+            align-items: center;
+            padding: 15px 25px;
+            color: var(--white);
+            text-decoration: none;
+            font-size: 16px;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+        }
+
+        .nav-links li a:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .nav-links li a.active {
+            background: rgba(255,255,255,0.1);
+            border-left: 4px solid var(--green);
+        }
+
+        .nav-links li a i {
+            margin-left: 10px;
+            font-size: 18px;
+            width: 25px;
+        }
+
+        .user-section {
+            padding: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .user-info h3 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .user-info p {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-right: 250px;
+            padding: 30px 40px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .page-header h1 {
+            font-size: 32px;
+            color: var(--black);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .page-header h1::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            right: 50%;
+            transform: translateX(50%);
+            width: 100px;
+            height: 3px;
+            background: var(--green);
+        }
+
+        .page-header p {
+            color: var(--dark-gray);
+            max-width: 700px;
+            margin: 20px auto 0;
+            font-size: 18px;
+        }
+
+        /* Add Product Form */
+        .add-product-form {
+            background: var(--white);
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            padding: 40px;
+            margin-bottom: 60px;
+        }
+
+        .form-section {
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .form-section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .form-section-header i {
+            background: var(--green);
+            color: var(--white);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 15px;
+            font-size: 18px;
+        }
+
+        .form-section-header h2 {
+            font-size: 22px;
+            color: var(--black);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--dark-gray);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--green);
+            box-shadow: 0 0 0 3px rgba(0, 122, 61, 0.1);
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .price-options {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .price-option {
+            flex: 1;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .price-option.active {
+            border-color: var(--green);
+            background: rgba(0, 122, 61, 0.05);
+        }
+
+        .price-option i {
+            font-size: 32px;
+            color: var(--green);
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .price-option h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .price-option p {
+            color: var(--dark-gray);
+            font-size: 14px;
+        }
+
+        .price-inputs {
+            display: flex;
+            gap: 20px;
+        }
+
+        .price-inputs .form-group {
+            flex: 1;
+        }
+
+        .auction-dates {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .auction-dates .form-group {
+            flex: 1;
+        }
+
+        .image-upload-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .upload-area {
+            width: 150px;
+            height: 150px;
+            border: 2px dashed #ddd;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-area:hover {
+            border-color: var(--green);
+        }
+
+        .upload-area i {
+            font-size: 32px;
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+
+        .upload-area p {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .upload-preview {
+            width: 150px;
+            height: 150px;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .upload-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .remove-image {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            background: var(--red);
+            color: var(--white);
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .form-btn {
+            padding: 14px 40px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .submit-btn {
+            background: var(--green);
+            color: var(--white);
+        }
+
+        .submit-btn:hover {
+            background: var(--dark-green);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 122, 61, 0.3);
+        }
+
+        .cancel-btn {
+            background: var(--light-gray);
+            color: var(--dark-gray);
+        }
+
+        .cancel-btn:hover {
+            background: #e0e0e0;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 70px;
+                overflow: hidden;
+            }
+            
+            .logo-section h1, .logo-section p, .user-info, .nav-links li a span {
+                display: none;
+            }
+            
+            .nav-links li a {
+                justify-content: center;
+                padding: 15px 5px;
+            }
+            
+            .nav-links li a i {
+                margin-left: 0;
+                font-size: 22px;
+            }
+            
+            .user-section {
+                justify-content: center;
+            }
+            
+            .main-content {
+                margin-right: 70px;
+            }
+            
+            .price-options {
+                flex-direction: column;
+            }
+            
+            .price-inputs, .auction-dates {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                bottom: 0;
+                top: auto;
+                flex-direction: row;
+                padding: 0;
+            }
+            
+            .logo-section {
+                display: none;
+            }
+            
+            .nav-links {
+                display: flex;
+                flex: 1;
+                justify-content: space-around;
+                padding: 10px 0;
+            }
+            
+            .nav-links li {
+                flex: 1;
+            }
+            
+            .nav-links li a {
+                flex-direction: column;
+                padding: 10px 5px;
+                font-size: 12px;
+                text-align: center;
+                border-left: none;
+                border-top: 4px solid transparent;
+            }
+            
+            .nav-links li a.active {
+                border-left: none;
+                border-top: 4px solid var(--green);
+            }
+            
+            .nav-links li a i {
+                margin-left: 0;
+                margin-bottom: 5px;
+                font-size: 20px;
+            }
+            
+            .user-section {
+                display: none;
+            }
+            
+            .main-content {
+                margin-right: 0;
+                margin-bottom: 70px;
+                padding: 20px;
+            }
+            
+            .add-product-form {
+                padding: 20px;
+            }
+            
+            .form-section-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .form-section-header i {
+                margin-left: 0;
+                margin-bottom: 15px;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .form-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="logo-section">
+            <h1>متجر غزة للجميع</h1>
+            <p>كل التبرعات لدعم أهالي غزة</p>
+        </div>
+        
+        <ul class="nav-links">
+            <li><a href="/"><i class="fas fa-home"></i> <span>الرئيسية</span></a></li>
+            <li><a href="products.html"><i class="fas fa-box-open"></i> <span>المنتجات</span></a></li>
+            <li><a href="/add-product" class="active"><i class="fas fa-plus-circle"></i> <span>إضافة منتج</span></a></li>
+            <li><a href="/dashboard"><i class="fas fa-chart-line"></i> <span>لوحة التحكم</span></a></li>
+            <li><a href="/orders"><i class="fas fa-shopping-cart"></i> <span>الطلبات</span></a></li>
+            <li><a href="/donations"><i class="fas fa-hand-holding-heart"></i> <span>تبرعاتي</span></a></li>
+            <li><a href="/settings"><i class="fas fa-cog"></i> <span>الإعدادات</span></a></li>
+        </ul>
+        
+        <div class="user-section">
+            <div class="user-avatar">م</div>
+            <div class="user-info">
+                <h3>محمد أحمد</h3>
+                <p>بائع</p>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1>إضافة منتج جديد</h1>
+            <p>أضف منتجك لدعم أهالي غزة، كل الأرباح ستذهب لمساعدة العائلات المحتاجة في غزة</p>
+        </div>
+
+        <div class="add-product-form">
+            <!-- Product Info Section -->
+            <div class="form-section">
+                <div class="form-section-header">
+                    <i class="fas fa-info-circle"></i>
+                    <h2>معلومات المنتج الأساسية</h2>
+                </div>
+                
+                <div class="form-group">
+                    <label for="product-title">عنوان المنتج *</label>
+                    <input type="text" id="product-title" class="form-control" placeholder="أدخل عنوان واضح للمنتج" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="product-category">التصنيف *</label>
+                    <select id="product-category" class="form-control" required>
+                        <option value="">اختر تصنيف المنتج</option>
+                        <option value="electronics">إلكترونيات</option>
+                        <option value="clothing">ملابس</option>
+                        <option value="books">كتب</option>
+                        <option value="home">أدوات منزلية</option>
+                        <option value="jewelry">مجوهرات</option>
+                        <option value="art">أعمال فنية</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="product-description">وصف المنتج *</label>
+                    <textarea id="product-description" class="form-control" placeholder="صف منتجك بشكل مفصل، اذكر المواصفات والمميزات" required></textarea>
+                </div>
+            </div>
+            
+            <!-- Pricing Section -->
+            <div class="form-section">
+                <div class="form-section-header">
+                    <i class="fas fa-tag"></i>
+                    <h2>تحديد السعر</h2>
+                </div>
+                
+                <div class="price-options">
+                    <div class="price-option active" id="fixed-price">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <h3>سعر ثابت</h3>
+                        <p>حدد سعر ثابت للمنتج</p>
+                    </div>
+                    
+                    <div class="price-option" id="auction-price">
+                        <i class="fas fa-gavel"></i>
+                        <h3>بيع بالمزايدة</h3>
+                        <p>اسمح للمشترين بالمزايدة على منتجك</p>
+                    </div>
+                </div>
+                
+                <div class="price-inputs">
+                    <div class="form-group" id="fixed-price-group">
+                        <label for="product-price">السعر الثابت *</label>
+                        <input type="number" id="product-price" class="form-control" placeholder="السعر بالدولار" min="1" required>
+                    </div>
+                    
+                    <div class="form-group" id="starting-price-group" style="display: none;">
+                        <label for="starting-price">سعر البدء *</label>
+                        <input type="number" id="starting-price" class="form-control" placeholder="سعر البدء بالمزايدة" min="1">
+                    </div>
+                </div>
+                
+                <div class="auction-dates" style="display: none;" id="auction-dates">
+                    <div class="form-group">
+                        <label for="auction-start">بداية المزايدة</label>
+                        <input type="datetime-local" id="auction-start" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="auction-end">نهاية المزايدة</label>
+                        <input type="datetime-local" id="auction-end" class="form-control">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Images Section -->
+            <div class="form-section">
+                <div class="form-section-header">
+                    <i class="fas fa-images"></i>
+                    <h2>صور المنتج</h2>
+                </div>
+                
+                <div class="form-group">
+                    <label>أضف صوراً واضحة للمنتج (3 صور على الأقل)</label>
+                    <div class="image-upload-container">
+                        <div class="upload-area" id="upload-area">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>اضغط لرفع صورة</p>
+                            <input type="file" id="image-upload" accept="image/*" style="display: none;" multiple>
+                        </div>
+                        
+                        <div class="upload-preview">
+                            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1999&q=80" alt="Product Preview">
+                            <div class="remove-image"><i class="fas fa-times"></i></div>
+                        </div>
+                        
+                        <div class="upload-preview">
+                            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Product Preview">
+                            <div class="remove-image"><i class="fas fa-times"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quantity Section -->
+            <div class="form-section">
+                <div class="form-section-header">
+                    <i class="fas fa-box"></i>
+                    <h2>المخزون والتوفر</h2>
+                </div>
+                
+                <div class="form-group">
+                    <label for="product-quantity">الكمية المتاحة *</label>
+                    <input type="number" id="product-quantity" class="form-control" placeholder="عدد القطع المتاحة" min="1" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="product-condition">حالة المنتج *</label>
+                    <select id="product-condition" class="form-control" required>
+                        <option value="">اختر حالة المنتج</option>
+                        <option value="new">جديد</option>
+                        <option value="used">مستعمل - بحالة ممتازة</option>
+                        <option value="good">مستعمل - بحالة جيدة</option>
+                        <option value="fair">مستعمل - بحالة مقبولة</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Donation Section -->
+            <div class="form-section">
+                <div class="form-section-header">
+                    <i class="fas fa-hand-holding-heart"></i>
+                    <h2>التبرع لدعم غزة</h2>
+                </div>
+                
+                <div class="form-group">
+                    <label>نسبة التبرع من الربح *</label>
+                    <div style="display: flex; gap: 15px; align-items: center;">
+                        <input type="range" id="donation-percent" min="0" max="100" value="100" class="form-control" style="flex: 1;">
+                        <div style="font-size: 20px; font-weight: bold; color: var(--green); min-width: 60px;">
+                            <span id="percent-value">100</span>%
+                        </div>
+                    </div>
+                    <p style="margin-top: 10px; color: var(--green); font-weight: bold;">
+                        <i class="fas fa-info-circle"></i> تبرعك بنسبة 100% يعني أن كل الأرباح ستذهب لدعم أهالي غزة
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Form Actions -->
+            <div class="form-actions">
+                <button type="button" class="form-btn cancel-btn">إلغاء</button>
+                <button type="submit" class="form-btn submit-btn">إضافة المنتج</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Toggle between fixed price and auction
+        const fixedPriceOption = document.getElementById('fixed-price');
+        const auctionPriceOption = document.getElementById('auction-price');
+        const fixedPriceGroup = document.getElementById('fixed-price-group');
+        const startingPriceGroup = document.getElementById('starting-price-group');
+        const auctionDates = document.getElementById('auction-dates');
+        
+        fixedPriceOption.addEventListener('click', function() {
+            fixedPriceOption.classList.add('active');
+            auctionPriceOption.classList.remove('active');
+            fixedPriceGroup.style.display = 'block';
+            startingPriceGroup.style.display = 'none';
+            auctionDates.style.display = 'none';
+            document.getElementById('product-price').required = true;
+            document.getElementById('starting-price').required = false;
+        });
+        
+        auctionPriceOption.addEventListener('click', function() {
+            auctionPriceOption.classList.add('active');
+            fixedPriceOption.classList.remove('active');
+            fixedPriceGroup.style.display = 'none';
+            startingPriceGroup.style.display = 'block';
+            auctionDates.style.display = 'flex';
+            document.getElementById('product-price').required = false;
+            document.getElementById('starting-price').required = true;
+        });
+        
+        // Image upload
+        const uploadArea = document.getElementById('upload-area');
+        const imageUpload = document.getElementById('image-upload');
+        
+        uploadArea.addEventListener('click', function() {
+            imageUpload.click();
+        });
+        
+        imageUpload.addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                // Create new previews for uploaded images
+                for (let i = 0; i < e.target.files.length; i++) {
+                    const file = e.target.files[i];
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(event) {
+                        const previewContainer = document.createElement('div');
+                        previewContainer.className = 'upload-preview';
+                        
+                        const img = document.createElement('img');
+                        img.src = event.target.result;
+                        img.alt = "صورة المنتج";
+                        
+                        const removeBtn = document.createElement('div');
+                        removeBtn.className = 'remove-image';
+                        removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+                        removeBtn.onclick = function() {
+                            previewContainer.remove();
+                        };
+                        
+                        previewContainer.appendChild(img);
+                        previewContainer.appendChild(removeBtn);
+                        
+                        document.querySelector('.image-upload-container').appendChild(previewContainer);
+                    };
+                    
+                    reader.readAsDataURL(file);
+                }
+            }
+        });
+        
+        // Donation percentage slider
+        const donationSlider = document.getElementById('donation-percent');
+        const percentValue = document.getElementById('percent-value');
+        
+        donationSlider.addEventListener('input', function() {
+            percentValue.textContent = this.value;
+        });
+        
+        // Remove image
+        const removeButtons = document.querySelectorAll('.remove-image');
+        removeButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                if (confirm('هل أنت متأكد من حذف هذه الصورة؟')) {
+                    this.parentElement.remove();
+                }
+            });
+        });
+        
+        // Form submission
+        const submitBtn = document.querySelector('.submit-btn');
+        
+        submitBtn.addEventListener('click', function() {
+            // Show loading state
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري إضافة المنتج...';
+            this.disabled = true;
+            
+            // Simulate form submission
+            setTimeout(() => {
+                alert('تم إضافة المنتج بنجاح! سيتم مراجعته من قبل الإدارة قبل النشر.');
+                this.innerHTML = 'إضافة المنتج';
+                this.disabled = false;
+                
+                // Reset form
+                document.getElementById('product-title').value = '';
+                document.getElementById('product-category').value = '';
+                document.getElementById('product-description').value = '';
+                document.getElementById('product-price').value = '';
+                document.getElementById('product-quantity').value = '';
+                document.getElementById('product-condition').value = '';
+                document.querySelectorAll('.upload-preview').forEach(preview => preview.remove());
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
