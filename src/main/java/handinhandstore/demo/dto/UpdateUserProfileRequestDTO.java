@@ -3,9 +3,10 @@ package handinhandstore.demo.dto;
 public class UpdateUserProfileRequestDTO {
     private String fullName;
     private String phoneNumber;
+    private String email;
     private String address;
     private String bio;
-    
+
     public String getFullName() {
         return fullName;
     }
@@ -30,7 +31,11 @@ public class UpdateUserProfileRequestDTO {
     public void setBio(String bio) {
         this.bio = bio;
     }
-
-    
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }    
 }
 

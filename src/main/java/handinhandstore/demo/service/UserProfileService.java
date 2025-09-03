@@ -27,6 +27,7 @@ public class UserProfileService {
         // Update fields (only if not null to allow partial updates)
         if (dto.getFullName() != null) user.setFullName(dto.getFullName());
         if (dto.getPhoneNumber() != null) user.setPhoneNumber(dto.getPhoneNumber());
+        if (dto.getEmail() != null) user.setEmail(dto.getEmail());
         if (dto.getAddress() != null) user.setAddress(dto.getAddress());
         if (dto.getBio() != null) user.setBio(dto.getBio());
 
