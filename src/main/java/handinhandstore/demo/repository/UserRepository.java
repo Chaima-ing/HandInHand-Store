@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import handinhandstore.demo.model.entity.User;
 
 @Repository
-public interface AuthenticationRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.id = :id")
     Optional<User>  findById(@Param("id") Long id);
 
