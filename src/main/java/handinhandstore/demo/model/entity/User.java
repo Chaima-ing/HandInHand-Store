@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import handinhandstore.demo.model.enums.AccountStatus;
+
 @Entity
 public class User {
 
@@ -20,7 +22,9 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Column(unique = true)
     private String phoneNumber;
+    
     private String address;
 
     private LocalDateTime createdAt;
@@ -28,6 +32,15 @@ public class User {
 
     private BigDecimal defaultDonationPercentage = BigDecimal.valueOf(10);
 
+    private String profileImageUrl;
+
+    @Column(length = 500)
+    private String bio;
+
+    @Enumerated(EnumType.STRING)
+    private AccountStatus status = AccountStatus.ACTIVE;
+
+    // Getters & Setters
     public Long getId() {
         return id;
     }
@@ -81,6 +94,24 @@ public class User {
     }
     public void setDefaultDonationPercentage(BigDecimal defaultDonationPercentage) {
         this.defaultDonationPercentage = defaultDonationPercentage;
+    }
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+    public String getBio() {
+        return bio;
+    }
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    // Trigger On Update
+    @PreUpdate
+    protected void onUpdate() {
+    updatedAt = LocalDateTime.now();
     }
 
 }
