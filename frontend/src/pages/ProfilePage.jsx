@@ -1,10 +1,9 @@
 import React, {useContext, useState} from 'react';
-import {User, Shield, Bell, Store, Heart, Globe, Trash2, Home, Package, PlusCircle, BarChart3, ShoppingCart, Settings, Upload, Check, InfoIcon} from 'lucide-react';
-import client from "../apiServices/api.js"
-import { deleteUser } from "../apiServices/authService.js"
-import { useNavigate } from "react-router-dom";
+import {User, Shield, Bell, Store, Heart, Globe, Trash2, Home, Package, PlusCircle, BarChart3, ShoppingCart, Upload, InfoIcon} from 'lucide-react';
 import AuthContext from "../context/AuthContext";
-
+import DeleteSection from "../components/DeleteSection.jsx";
+import ProfileSection from "../components/ProfileSection.jsx";
+import SecuritySection from "../components/SecuritySection.jsx";
 
 const ProfilePage = () => {
     const [activeSection, setActiveSection] = useState('profile');
@@ -17,96 +16,9 @@ const ProfilePage = () => {
         offers: false
     });
 
-    const [fullName, setFullName] = useState("محمد أحمد");
-    const [email, setEmail] = useState("mohamed@example.com");
-    const [phone, setPhone] = useState("+970 59 123 4567");
-    const [address, setAddress] = useState("غزة، فلسطين");
-    const [bio, setBio] = useState("أنا بائع في متجر غزة للجميع...");
-    const [deleteValue, setDeleteValue] = useState("");
-    const [oldPassword, setOldPassword] = useState("");
-    const [newPassword, setNewPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
-    const navigate = useNavigate();
     const { setUser } = useContext(AuthContext);
-
-
-    const handleSave = async () => {
-        setIsLoading(true);
-       try{
-           const userId = localStorage.getItem('userId');
-           const response = await client.put(`/users/${userId}`, {
-               fullName,
-               email,
-               phoneNumber : phone,
-               address,
-               bio
-           });
-           setFullName(response.data.fullName);
-           setEmail(response.data.email);
-           setPhone(response.data.phoneNumber);
-           setAddress(response.data.address);
-           setBio(response.data.bio);
-           alert("تم حفظ التغييرات بنجاح!");
-       } catch (error) {
-           console.error("Error saving profile:", error);
-           alert("فشل حفظ التغييرات!");
-       } finally {
-           setIsLoading(false);
-       }
-    };
-
-    const handleDeleteAccount = async () => {
-        if (deleteValue === "حذف حسابي") {
-            if (confirm("هل أنت متأكد تماماً من رغبتك في حذف حسابك بشكل دائم؟ لا يمكن التراجع عن هذا الإجراء.")) {
-                setIsLoading(true);
-                try {
-                    const userId = localStorage.getItem('userId');
-                    await deleteUser(userId);
-
-                    localStorage.deleteItem("userId");
-                    localStorage.deleteItem("userEmail");
-                    setUser(null);
-                    alert("تم حذف حسابك بنجاح. نأسف لرحيلك ونشكرك على دعمك لأهالي غزة.");
-                    navigate("/");
-                }catch(error) {
-                    console.error("Delete account failed:", error);
-                    alert("فشل حذف الحساب، حاول مرة أخرى.");
-                } finally {
-                    setIsLoading(false);
-                }
-            }
-        }else{
-            alert('الرجاء كتابة "حذف حسابي" بشكل صحيح للتأكيد.');
-        }
-    };
-
-    const handleSecurity = async () => {
-        if(newPassword !== confirmPassword){
-            alert("كلمة المرور الجديدة وتأكيدها غير متطابقين");
-            return;
-        }
-        setIsLoading(true);
-        try{
-            const email = localStorage.getItem('email');
-            const res = client.post("userSecurity",{
-                email,
-                newPassword,
-                confirmPassword
-            });
-            alert(res.data); //display a message to the user from the backend
-            setOldPassword("");
-            setNewPassword("");
-            setConfirmPassword("");
-        }catch(err){
-            alert(err.response?.data || "فشل في تغيير كلمة المرور");
-        } finally {
-            setIsLoading(false);
-        }
-    }
-
-
 
     const toggleNotification = (key) => {
         setNotifications(prev => ({
@@ -187,163 +99,6 @@ const ProfilePage = () => {
         );
     };
 
-    const ProfileSection = () => (
-        <div className="bg-white rounded-2xl shadow-lg p-8 min-w-[620px]">
-            <div className="flex items-center mb-6 pb-4 border-b border-gray-100">
-                <div className="w-10 h-10 bg-green-600 text-white rounded-full flex items-center justify-center ml-4">
-                    <User className="w-5 h-5" />
-                </div>
-                <h2 className="text-2xl font-bold">الملف الشخصي</h2>
-            </div>
-            <p className="text-gray-600 mb-8">إدارة معلومات حسابك الشخصية وصورة الملف الشخصي</p>
-
-            <div className="flex items-center gap-8 mb-8">
-                <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-green-600">
-                    <img
-                        src="https://randomuser.me/api/portraits/men/32.jpg"
-                        alt="صورة المستخدم"
-                        className="w-full h-full object-cover"
-                    />
-                </div>
-                <div className="flex flex-col gap-3">
-                    <button className="flex items-center gap-2 px-6 py-2 border-2 border-green-600 text-green-600 rounded-full hover:bg-green-600 hover:text-white transition-colors">
-                        <Upload className="w-4 h-4" />
-                        تغيير الصورة
-                    </button>
-                    <button className="flex items-center gap-2 px-6 py-2 border-2 border-red-500 text-red-500 rounded-full hover:bg-red-500 hover:text-white transition-colors">
-                        <Trash2 className="w-4 h-4" />
-                        إزالة الصورة
-                    </button>
-                    <p className="text-sm text-gray-500 mt-3">يجب أن تكون الصورة بحجم أقل من 2MB</p>
-                </div>
-            </div>
-          <form onSubmit={(e) => {e.preventDefault();}}>
-            <div className="grid md:grid-cols-2 gap-6 mb-6">
-                <div>
-                    <label className="block text-gray-700 font-semibold mb-3">الاسم الكامل *</label>
-                    <input
-                        type="text"
-                        value={fullName}
-                        onChange={(e) => setFullName(e.target.value)}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-green-600 focus:ring-3 focus:ring-green-100"
-                    />
-                </div>
-                <div>
-                    <label className="block text-gray-700 font-semibold mb-3">البريد الإلكتروني *</label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange = {(e) => setEmail(e.target.value)}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-green-600 focus:ring-3 focus:ring-green-100"
-                    />
-                </div>
-                <div>
-                    <label className="block text-gray-700 font-semibold mb-3">رقم الهاتف</label>
-                    <input
-                        type="tel"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-green-600 focus:ring-3 focus:ring-green-100"
-                    />
-                </div>
-                <div>
-                    <label className="block text-gray-700 font-semibold mb-3">الموقع</label>
-                    <input
-                        type="text"
-                        value={address}
-                        onChange={(e) => setAddress(e.target.value)}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-green-600 focus:ring-3 focus:ring-green-100"
-                    />
-                </div>
-            </div>
-
-            <div className="mb-8">
-                <label className="block text-gray-700 font-semibold mb-3">نبذة عنك</label>
-                <textarea
-                    rows="4"
-                    value={bio}
-                    onChange={(e) => setBio(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-green-600 focus:ring-3 focus:ring-green-100"
-                />
-            </div>
-
-            <div className="flex gap-4">
-                <button className="px-8 py-3 bg-gray-200 text-gray-600 rounded-full hover:bg-gray-300 transition-colors">
-                    إلغاء
-                </button>
-                <button
-                    onClick={() => handleSave('profile')}
-                    disabled={isLoading}
-                    className="flex items-center gap-2 px-8 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-all transform hover:-translate-y-1 hover:shadow-lg disabled:opacity-50"
-                >
-                    حفظ التغييرات
-                </button>
-            </div>
-          </form>
-        </div>
-    );
-
-    const SecuritySection = () => (
-        <div className="bg-white rounded-2xl shadow-lg p-8 min-w-[620px]">
-            <div className="flex items-center mb-6 pb-4 border-b border-gray-100">
-                <div className="w-10 h-10 bg-green-600 text-white rounded-full flex items-center justify-center ml-4">
-                    <Shield className="w-5 h-5" />
-                </div>
-                <h2 className="text-2xl font-bold">الأمان</h2>
-            </div>
-            <p className="text-gray-600 mb-8">إدارة إعدادات أمان حسابك وكلمة المرور</p>
-
-            <div className="flex items-center p-4 bg-green-50 rounded-xl mb-8">
-                <Check className="w-6 h-6 text-green-600 ml-4" />
-                <p className="font-medium text-gray-700">
-                    حالة أمان حسابك: <span className="text-green-600 font-bold">جيدة</span> • آخر تحديث: ١٠ نوفمبر ٢٠٢٣
-                </p>
-            </div>
-
-            <div className="space-y-6 mb-8">
-                <div>
-                    <label className="block text-gray-700 font-semibold mb-3">كلمة المرور الحالية *</label>
-                    <input
-                        type="password"
-                        value={oldPassword}
-                        onChange={(e) => {setOldPassword(e.target.value)}}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-green-600 focus:ring-3 focus:ring-green-100"
-                    />
-                </div>
-                <div>
-                    <label className="block text-gray-700 font-semibold mb-3">كلمة المرور الجديدة *</label>
-                    <input
-                        type="password"
-                        value={newPassword}
-                        onChange={(e) => {setNewPassword(e.target.value)}}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-green-600 focus:ring-3 focus:ring-green-100"
-                    />
-                </div>
-                <div>
-                    <label className="block text-gray-700 font-semibold mb-3">تأكيد كلمة المرور الجديدة *</label>
-                    <input
-                        type="password"
-                        value={confirmPassword}
-                        onChange={(e) => {setConfirmPassword(e.target.value)}}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-green-600 focus:ring-3 focus:ring-green-100"
-                    />
-                </div>
-            </div>
-
-            <div className="flex gap-4">
-                <button className="px-8 py-3 bg-gray-200 text-gray-600 rounded-full hover:bg-gray-300 transition-colors">
-                    إلغاء
-                </button>
-                <button
-                    onClick={() => handleSecurity()}
-                    className="px-8 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-all transform hover:-translate-y-1 hover:shadow-lg"
-                >
-                    تغيير كلمة المرور
-                </button>
-            </div>
-        </div>
-    );
-
     const NotificationToggle = ({ label, description, checked, onChange }) => (
         <div className="flex items-center justify-between py-4 border-b border-gray-100 last:border-b-0">
             <div>
@@ -409,7 +164,6 @@ const ProfilePage = () => {
 
             <div className="flex justify-start">
                 <button
-                    onClick={() => handleSave('notifications')}
                     className="px-8 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-all transform hover:-translate-y-1 hover:shadow-lg"
                 >
                     حفظ التغييرات
@@ -475,7 +229,6 @@ const ProfilePage = () => {
                     إلغاء
                 </button>
                 <button
-                    onClick={() => handleSave('store')}
                     className="px-8 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-all transform hover:-translate-y-1 hover:shadow-lg"
                 >
                     حفظ التغييرات
@@ -552,7 +305,6 @@ const ProfilePage = () => {
 
             <div className="flex justify-start">
                 <button
-                    onClick={() => handleSave('donation')}
                     className="px-8 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-all transform hover:-translate-y-1 hover:shadow-lg"
                 >
                     حفظ التفضيلات
@@ -608,71 +360,9 @@ const ProfilePage = () => {
 
             <div className="flex justify-start">
                 <button
-                    onClick={() => handleSave('language')}
                     className="px-8 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-all transform hover:-translate-y-1 hover:shadow-lg"
                 >
                     حفظ الإعدادات
-                </button>
-            </div>
-        </div>
-    );
-
-    const DeleteSection = () => (
-        <div className="bg-white rounded-2xl shadow-lg p-8 min-w-[620px]">
-            <div className="flex items-center mb-6 pb-4 border-b border-gray-100">
-                <div className="w-10 h-10 bg-red-600 text-white rounded-full flex items-center justify-center ml-4">
-                    <Trash2 className="w-5 h-5" />
-                </div>
-                <h2 className="text-2xl font-bold">حذف الحساب</h2>
-            </div>
-            <p className="text-gray-600 mb-8">حذف حسابك بشكل دائم من المنصة</p>
-
-            <div className="bg-red-50 border border-red-200 rounded-xl p-6 mb-8">
-                <h3 className="flex items-center gap-2 text-red-600 font-bold text-lg mb-4">
-
-                    تحذير: هذا الإجراء نهائي ولا يمكن التراجع عنه
-                </h3>
-                <p className="text-gray-700 mb-4">عند حذف حسابك:</p>
-                <ul className="text-gray-700 space-y-2 mb-6 pr-4">
-                    <li className="flex items-start gap-2">
-                        <span className="text-red-500 mt-1">•</span>
-                        سيتم إزالة جميع بياناتك الشخصية بشكل دائم
-                    </li>
-                    <li className="flex items-start gap-2">
-                        <span className="text-red-500 mt-1">•</span>
-                        ستتوقف جميع المنتجات النشطة في متجرك
-                    </li>
-                    <li className="flex items-start gap-2">
-                        <span className="text-red-500 mt-1">•</span>
-                        سيتم إلغاء جميع الطلبات غير المكتملة
-                    </li>
-                    <li className="flex items-start gap-2">
-                        <span className="text-red-500 mt-1">•</span>
-                        لن تتمكن من الوصول إلى سجل تبرعاتك
-                    </li>
-                </ul>
-                <p className="text-gray-700">نوصي بتصدير بياناتك قبل المتابعة في حذف الحساب.</p>
-            </div>
-
-            <div className="mb-6">
-
-                <label className="block text-gray-700 font-semibold mb-3">اكتب "حذف حسابي" للتأكيد *</label>
-                <input
-                    type="text"
-                    value={deleteValue}
-                    onChange={(e) => setDeleteValue(e.target.value)}
-                    placeholder="حذف حسابي"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-red-500 focus:ring-3 focus:ring-red-100"
-                />
-            </div>
-
-            <div className="flex justify-start">
-                <button
-                    onClick={handleDeleteAccount}
-                    disabled={isLoading}
-                    className="flex items-center gap-2 px-8 py-3 bg-red-600 text-white rounded-full hover:bg-red-700 transition-all disabled:opacity-50"
-                >
-                    حذف حسابي بشكل دائم
                 </button>
             </div>
         </div>
@@ -686,7 +376,7 @@ const ProfilePage = () => {
             case 'store': return <StoreSection />;
             case 'donation': return <DonationSection />;
             case 'language': return <LanguageSection />;
-            case 'delete': return <DeleteSection />;
+            case 'delete': return <DeleteSection isLoading = {isLoading} setIsLoading = {setIsLoading} setUser = {setUser} />;
             default: return <ProfileSection />;
         }
     };
