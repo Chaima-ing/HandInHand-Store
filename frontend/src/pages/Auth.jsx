@@ -54,13 +54,15 @@ const Auth = () => {
             return;
         }
 
-        try{
-            const response = await handleLogin({email, password});
-            console.log(response.data);
-            navigate("/dashboard");
-
-        }catch(error){
-            setError("Server error: "+ error.message);
+        try {
+            const result = await handleLogin({ email, password });
+            if (result.success) {
+                navigate("/"); // or wherever you want
+            } else {
+                setError(result.message || "Invalid credentials");
+            }
+        } catch (error) {
+            setError("Server error: " + error.message);
         }
     };
 

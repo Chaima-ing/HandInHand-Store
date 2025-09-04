@@ -10,19 +10,17 @@ export const AuthProvider = ({children}) => {
 
     const handleLogin = async (credentials) => {
         try {
-            const response = await loginUser(credentials.email, credentials.password); // API call
-            if (response.data === true) {
-                // placeholder user
-                const email = credentials.email;
-                const user = { id: Date.now(), email }; // temporary id
-                setUser(user);
+            const response = await loginUser(credentials.email, credentials.password);
+            const user = response.data; // ✅ backend returns User object directly
 
-                localStorage.setItem("userId", user.id); // ✅ match with useEffect
-                localStorage.setItem("userEmail", email);
-
-                return { success: true };
+            if (user && user.id) {
+                setUser(user); // update context
+                localStorage.setItem("userId", user.id);
+                localStorage.setItem("userEmail", user.email);
+                return { success: true, user };
             }
-            return { success: false, message: response.data.message };
+
+            return { success: false, message: "Invalid credentials" };
         } catch (error) {
             return {
                 success: false,

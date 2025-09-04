@@ -39,3 +39,7 @@ export const verifyCode = async (code,email) => {
         return { success: false, message: error.response?.data?.message || "Server error" };
     }
 };
+
+export const deleteUser = async (userId) => {
+    return client.delete(`/deleteUser/${userId}`);
+};
