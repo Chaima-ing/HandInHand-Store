@@ -1,5 +1,6 @@
 package handinhandstore.demo.controller;
 
+import handinhandstore.demo.dto.ChangePasswordRequestDTO;
 import handinhandstore.demo.dto.UpdateUserProfileRequestDTO;
 import handinhandstore.demo.model.entity.User;
 import handinhandstore.demo.service.UserProfileImageService;
@@ -66,6 +67,18 @@ public class UserProfileController {
             return ResponseEntity.ok("Profile image deleted successfully");
         } catch (IOException e) {
             return ResponseEntity.status(500).body("Delete failed: " + e.getMessage());
+        }
+    }
+
+    @PatchMapping("/{userId}/change-password")
+    public ResponseEntity<?> changePassword(
+            @PathVariable Long userId,
+            @RequestBody ChangePasswordRequestDTO dto) {
+        try {
+            userProfileService.changePassword(userId, dto);
+            return ResponseEntity.ok("Password updated successfully");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
     

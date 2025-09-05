@@ -1,5 +1,6 @@
 package handinhandstore.demo.service;
 
+import handinhandstore.demo.dto.ChangePasswordRequestDTO;
 import handinhandstore.demo.dto.UpdateUserProfileRequestDTO;
 import handinhandstore.demo.model.entity.User;
 import handinhandstore.demo.repository.UserRepository;
@@ -35,5 +36,24 @@ public class UserProfileService {
         user.setUpdatedAt(LocalDateTime.now());
 
         return userRepository.save(user);
+    }
+    
+    public void changePassword(Long userId, ChangePasswordRequestDTO dto) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // 1. Check current password matches (plain text comparison)
+        if (!dto.getCurrentPassword().equals(user.getPassword())) {
+            throw new RuntimeException("Current password is incorrect");
+        }
+
+        // 2. Check new password & confirmation match
+        if (!dto.getNewPassword().equals(dto.getConfirmNewPassword())) {
+            throw new RuntimeException("New passwords do not match");
+        }
+
+        // 3. Update password
+        user.setPassword(dto.getNewPassword());
+        userRepository.save(user);
     }
 }
