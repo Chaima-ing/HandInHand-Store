@@ -4,26 +4,26 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 import handinhandstore.demo.model.entity.User;
-import handinhandstore.demo.repository.AuthenticationRepository;
+import handinhandstore.demo.repository.UserRepository;
 import handinhandstore.demo.repository.PasswordResetTokenRepository;
 import jakarta.transaction.Transactional;
 
 @Service
 public class AuthenticationService {
-    private final AuthenticationRepository authRepo;
+    private final UserRepository userRepo;
     private final PasswordResetTokenRepository tokenRepo;
 
-    public AuthenticationService(AuthenticationRepository authRepo, PasswordResetTokenRepository tokenRepo) {
-        this.authRepo = authRepo;
+    public AuthenticationService(UserRepository userRepo, PasswordResetTokenRepository tokenRepo) {
+        this.userRepo = userRepo;
         this.tokenRepo = tokenRepo;
     }
 
     public User userRegisteration(User user) {
-        return authRepo.save(user);
+        return userRepo.save(user);
     }
 
     public User getById(Long id) {
-        Optional<User> userOptional = authRepo.findById(id);
+        Optional<User> userOptional = userRepo.findById(id);
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
@@ -36,17 +36,17 @@ public class AuthenticationService {
     }
 
     public User login(String email, String password) {
-        Optional<User> userOptional = authRepo.findUserByEmailAndPassword(email, password);
+        Optional<User> userOptional = userRepo.findUserByEmailAndPassword(email, password);
         return userOptional.orElse(null);
     }
 
     @Transactional
     public void updatePassword(String email, String newPassword) {
-        Optional<User> optUser = authRepo.findByEmail(email);
+        Optional<User> optUser = userRepo.findByEmail(email);
         if (optUser.isPresent()) {
             User user = optUser.get();
             user.setPassword(newPassword);
-            authRepo.save(user);
+            userRepo.save(user);
         }
         tokenRepo.deleteByEmail(email);
     }

@@ -14,7 +14,7 @@ import handinhandstore.demo.service.AuthenticationService;
 import handinhandstore.demo.dto.UserLoginRequest;
 import handinhandstore.demo.service.EmailService;
 import handinhandstore.demo.service.PasswordResetService;
-import handinhandstore.demo.repository.AuthenticationRepository;
+import handinhandstore.demo.repository.UserRepository;
 import handinhandstore.demo.repository.PasswordResetTokenRepository;
 import handinhandstore.demo.dto.ResetPasswordRequest;
 import handinhandstore.demo.dto.VerifyCodeRequest;
@@ -29,7 +29,7 @@ public class AuthenticationController {
     private EmailService emailService;
 
     @Autowired
-    private AuthenticationRepository authRepo;
+    private UserRepository userRepo;
 
     @Autowired
     private PasswordResetTokenRepository tokenRepo;
@@ -69,7 +69,7 @@ public class AuthenticationController {
         String code = emailService.sendResetCode(email);
 
         // Check that the user with the email exist
-        Optional<User> optUser = authRepo.findByEmail(email);
+        Optional<User> optUser = userRepo.findByEmail(email);
         if (optUser.isEmpty()){
             return "No user found with this email: " + email;
         }
