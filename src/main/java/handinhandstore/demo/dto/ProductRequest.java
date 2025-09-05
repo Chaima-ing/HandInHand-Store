@@ -1,5 +1,6 @@
 package handinhandstore.demo.dto;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import handinhandstore.demo.model.enums.PriceType;
@@ -11,8 +12,8 @@ public class ProductRequest {
     private String description;
     private PriceType priceType; // FIXED or AUCTION
     private Double fixedPrice;
-    private String category;
     private ProductStatus status; // AVAILABLE, SOLD, REMOVED
+    private BigDecimal donationPercentage;
     private List<Long> categories_ids;
 
     public Long getSellerId() {
@@ -55,20 +56,20 @@ public class ProductRequest {
         this.fixedPrice = fixedPrice;
     }
 
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
     public ProductStatus getStatus() {
         return status;
     }
 
     public void setStatus(ProductStatus status) {
         this.status = status;
+    }
+
+    public BigDecimal getDonationPercentage() {
+        return donationPercentage;
+    }
+
+    public void setDonationPercentage(BigDecimal donationPercentage) {
+        this.donationPercentage = donationPercentage;
     }
 
     public List<Long> getCategories_ids() {
