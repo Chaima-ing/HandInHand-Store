@@ -1,9 +1,10 @@
 import React, {useContext, useState} from 'react';
-import {User, Shield, Bell, Store, Heart, Globe, Trash2, Home, Package, PlusCircle, BarChart3, ShoppingCart, Upload, InfoIcon} from 'lucide-react';
+import {User, Shield, Bell, Store, Heart, Globe, Trash2, Upload, InfoIcon} from 'lucide-react';
 import AuthContext from "../context/AuthContext";
 import DeleteSection from "../components/DeleteSection.jsx";
 import ProfileSection from "../components/ProfileSection.jsx";
 import SecuritySection from "../components/SecuritySection.jsx";
+import SidebarComponent from "../components/SidebarComponent.jsx";
 
 const ProfilePage = () => {
     const [activeSection, setActiveSection] = useState('profile');
@@ -26,44 +27,6 @@ const ProfilePage = () => {
             [key]: !prev[key]
         }));
     };
-
-    const Sidebar = () => (
-        <aside className="w-64 bg-black text-white min-h-screen fixed top-0 right-0 flex flex-col shadow-xl z-50">
-            <div className="text-center py-6 border-b border-white/10 mb-5">
-                <h1 className="text-xl font-bold mb-1">متجر غزة للجميع</h1>
-                <p className="text-gray-400 text-sm">كل التبرعات لدعم أهالي غزة</p>
-            </div>
-
-            <nav className="flex-1">
-                <ul className="space-y-1">
-                    <li><a href="/" className="flex items-center px-6 py-4 hover:bg-white/5 transition-colors border-r-4 border-transparent">
-                        <Home className="ml-3 w-5 h-5" />
-                        <span>الرئيسية</span>
-                    </a></li>
-                    <li><a href="/ShoppingPage" className="flex items-center px-6 py-4 hover:bg-white/5 transition-colors border-r-4 border-transparent">
-                        <Package className="ml-3 w-5 h-5" />
-                        <span>المنتجات</span>
-                    </a></li>
-                    <li><a href="#" className="flex items-center px-6 py-4 hover:bg-white/5 transition-colors border-r-4 border-transparent">
-                        <PlusCircle className="ml-3 w-5 h-5" />
-                        <span>إضافة منتج</span>
-                    </a></li>
-                    <li><a href="#" className="flex items-center px-6 py-4 hover:bg-white/5 transition-colors border-r-4 border-transparent">
-                        <BarChart3 className="ml-3 w-5 h-5" />
-                        <span>لوحة التحكم</span>
-                    </a></li>
-                    <li><a href="#" className="flex items-center px-6 py-4 hover:bg-white/5 transition-colors border-r-4 border-transparent">
-                        <ShoppingCart className="ml-3 w-5 h-5" />
-                        <span>الطلبات</span>
-                    </a></li>
-                    <li><a href="#" className="flex items-center px-6 py-4 hover:bg-white/5 transition-colors border-r-4 border-transparent">
-                        <Heart className="ml-3 w-5 h-5" />
-                        <span>تبرعاتي</span>
-                    </a></li>
-                </ul>
-            </nav>
-        </aside>
-    );
 
     const SettingsNav = () => {
         const navItems = [
@@ -383,7 +346,7 @@ const ProfilePage = () => {
 
     return (
         <div className="min-h-screen bg-gray-50 flex" dir="rtl">
-            <Sidebar />
+            <SidebarComponent />
 
             {/* Main Content */}
             <main className="flex-1 mr-64 p-8">

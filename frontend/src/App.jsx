@@ -12,6 +12,8 @@ import CartPage from "./pages/CartPage.jsx";
 import ShoppingPage from "./pages/ShoppingPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import CheckoutPage from "./pages/checkoutPage.jsx";
+import AddProduct from "./pages/AddProduct.jsx";
+import ProductsPage from "./pages/ProductsPage.jsx";
 
 
 function App() {
@@ -34,6 +36,8 @@ function App() {
                           <Route path="/shoppingPage" element={<ShoppingPage />} />
                           <Route path="/profilePage" element={<ProfilePage />} />
                           <Route path="/checkoutPage" element={<CheckoutPage />} />
+                          <Route path="/AddProduct" element={<AddProduct />} />
+                          <Route path="/ProductsPage" element={<ProductsPage />} />
 
                           {/* Redirect unknown paths to home */}
                           <Route path="*" element={<Navigate to="/" replace />} />
