@@ -8,25 +8,30 @@ const SecuritySection = () => {
     const [confirmPassword, setConfirmPassword] = useState("");
 
     const handleSecurity = async () => {
-        if(newPassword !== confirmPassword){
+        if (newPassword !== confirmPassword) {
             alert("كلمة المرور الجديدة وتأكيدها غير متطابقين");
             return;
         }
-        try{
-            const email = localStorage.getItem('email');
-            const res = client.post("userSecurity",{
-                email,
-                newPassword,
-                confirmPassword
+
+        try {
+            const userId = localStorage.getItem('userId');
+
+            const res = await client.patch(`api/users/${userId}/change-password`, {
+                currentPassword: oldPassword,      // ✅ matches backend DTO
+                newPassword: newPassword,          // ✅ matches backend DTO
+                confirmNewPassword: confirmPassword // ✅ must match field name in DTO
             });
-            alert(res.data); //display a message to the user from the backend
+
+            alert(res.data); // "Password updated successfully"
             setOldPassword("");
             setNewPassword("");
             setConfirmPassword("");
-        }catch(err){
+        } catch (err) {
             alert(err.response?.data || "فشل في تغيير كلمة المرور");
         }
-    }
+    };
+
+
 
 
     return(
