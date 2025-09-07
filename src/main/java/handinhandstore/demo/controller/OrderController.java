@@ -134,7 +134,6 @@ public class OrderController {
         }
     }
 
-
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<OrderResponse>> getOrdersByUser(@PathVariable Long userId) {
         List<Order> orders = orderService.getOrdersByBuyer(userId);
@@ -154,6 +153,26 @@ public class OrderController {
         
         OrderResponse response = convertToResponse(orderOptional.get());
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<OrderResponse>> getAllOrders() {
+        List<Order> orders = orderService.getAllOrders();
+        List<OrderResponse> responses = orders.stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
+    
+        return ResponseEntity.ok(responses);
+    }
+
+    @GetMapping("/status/{status}")
+    public ResponseEntity<List<OrderResponse>> getOrdersByStatus(@PathVariable OrderStatus status) {
+        List<Order> orders = orderService.getOrdersByStatus(status);
+        List<OrderResponse> responses = orders.stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
+    
+        return ResponseEntity.ok(responses);
     }
 
     private OrderResponse convertToResponse(Order order) {
