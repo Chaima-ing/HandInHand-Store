@@ -88,5 +88,6 @@ public class UserProfileController {
     public List<Product> getUserProducts(@PathVariable Long userId) {
         return userProfileService.findBySellerId(userId);
     }
-
+    
 }
+
