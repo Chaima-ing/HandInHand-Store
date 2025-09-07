@@ -2,7 +2,7 @@ package handinhandstore.demo.dto;
 
 import java.math.BigDecimal;
 
-class OrderItemResponse {
+public class OrderItemResponse {
     private Long productId;
     private String productName;
     private int quantity;

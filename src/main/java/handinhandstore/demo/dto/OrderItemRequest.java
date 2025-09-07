@@ -1,6 +1,6 @@
 package handinhandstore.demo.dto;
 
-class OrderItemRequest {
+public class OrderItemRequest {
     private Long productId;
     private int quantity;
 
