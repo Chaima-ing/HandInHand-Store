@@ -127,6 +127,49 @@ public class OrderService {
         return orderRepository.save(existingOrder);
     }
 
+    @Transactional
+    public void cancelOrder(Long orderId) {
+        Optional<Order> orderOptional = orderRepository.findById(orderId);
+        if (!orderOptional.isPresent()) {
+            throw new NoSuchElementException("Order not found with ID: " + orderId);
+        }
+    
+        Order order = orderOptional.get();
+    
+        // Only allow cancellation if order is still pending
+        if (order.getStatus() != OrderStatus.PENDING) {
+            throw new IllegalStateException("Cannot cancel order with status: " + order.getStatus());
+        }
+    
+        // Restore product status to available
+        for (OrderItem item : order.getItems()) {
+            Product product = item.getProduct();
+            product.setStatus(ProductStatus.AVAILABLE);
+            productRepository.save(product);
+        }
+    
+        order.setStatus(OrderStatus.CANCELLED);
+        orderRepository.save(order);
+    }
+
+    @Transactional
+    public void deleteOrder(Long orderId) {
+        Optional<Order> orderOptional = orderRepository.findById(orderId);
+        if (!orderOptional.isPresent()) {
+            throw new NoSuchElementException("Order not found with ID: " + orderId);
+        }
+    
+        Order order = orderOptional.get();
+    
+        // Only allow deletion of cancelled orders
+        if (order.getStatus() != OrderStatus.CANCELLED) {
+            throw new IllegalStateException("Cannot delete order with status: " + 
+                order.getStatus() + ". Cancel the order first.");
+        }   
+    
+        orderRepository.delete(order);
+    }
+
     public List<Order> getOrdersByBuyer(Long buyerId) {
         return orderRepository.findByBuyerId(buyerId);
     }

@@ -106,6 +106,35 @@ public class OrderController {
         }
     }
 
+    @PatchMapping("/{orderId}/cancel")
+    public ResponseEntity<?> cancelOrder(@PathVariable Long orderId) {
+        try {
+            orderService.cancelOrder(orderId);
+            return ResponseEntity.ok().body("Order cancelled successfully");
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        } catch (IllegalStateException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error cancelling order: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{orderId}")
+    public ResponseEntity<?> deleteOrder(@PathVariable Long orderId) {
+        try {
+            orderService.deleteOrder(orderId);
+            return ResponseEntity.ok().body("Order deleted successfully");
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        } catch (IllegalStateException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error deleting order: " + e.getMessage());
+        }
+    }
+
+
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<OrderResponse>> getOrdersByUser(@PathVariable Long userId) {
         List<Order> orders = orderService.getOrdersByBuyer(userId);
