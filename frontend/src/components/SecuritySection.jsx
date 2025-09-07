@@ -18,12 +18,12 @@ const SecuritySection = () => {
             const userId = localStorage.getItem('userId');
 
             const res = await client.patch(`api/users/${userId}/change-password`, {
-                currentPassword: oldPassword,      // ✅ matches backend DTO
-                newPassword: newPassword,          // ✅ matches backend DTO
-                confirmNewPassword: confirmPassword // ✅ must match field name in DTO
+                currentPassword: oldPassword,
+                newPassword: newPassword,
+                confirmNewPassword: confirmPassword
             });
 
-            alert(res.data); // "Password updated successfully"
+            alert(res.data);
             setLastupdated(res.data.lastUpdated);
             setOldPassword("");
             setNewPassword("");
@@ -32,8 +32,6 @@ const SecuritySection = () => {
             alert(err.response?.data || "فشل في تغيير كلمة المرور");
         }
     };
-
-
 
 
     return(

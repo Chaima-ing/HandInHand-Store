@@ -20,7 +20,7 @@ const SidebarComponent = () => {
                         </a>
                     </li>
                     <li>
-                        <a href="/ProductsPage" className="flex items-center px-6 py-4 hover:bg-white/5 transition-colors border-r-4 border-transparent">
+                        <a href="/ProductsDashboard" className="flex items-center px-6 py-4 hover:bg-white/5 transition-colors border-r-4 border-transparent">
                             <Package className="ml-3 w-5 h-5" />
                             <span>المنتجات</span>
                         </a>

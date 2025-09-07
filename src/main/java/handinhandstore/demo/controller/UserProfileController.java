@@ -13,18 +13,63 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-
 @RestController
 @RequestMapping("/api/users")
 public class UserProfileController {
 
     private final UserProfileService userProfileService;
-    private final UserRepository userRepository;
 
-    public UserProfileController(UserProfileService userProfileService, UserRepository userRepository) {
+    @Autowired
+    private UserProfileImageService userProfileImageService;
+
+    public UserProfileController(UserProfileService userProfileService) {
         this.userProfileService = userProfileService;
-        this.userRepository = userRepository;
     }
+
+    @PutMapping("/update-info/{id}")
+    public ResponseEntity<User> updateUserProfile(
+            @PathVariable Long id,
+            @RequestBody UpdateUserProfileRequestDTO dto) {
+
+        User updatedUser = userProfileService.updateUserProfile(id, dto);
+        return ResponseEntity.ok(updatedUser);
+    }
+
+    @PostMapping("/{userId}/upload-profile-image")
+    public ResponseEntity<?> uploadProfileImage(
+            @PathVariable Long userId,
+            @RequestParam("file") MultipartFile file) {
+        try {
+            String imageUrl = userProfileImageService.uploadProfileImage(userId, file);
+            return ResponseEntity.ok(imageUrl);
+        } catch (IOException e) {
+            return ResponseEntity.status(500).body("Upload failed: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/{userId}/change-profile-image")
+    public ResponseEntity<?> changeProfileImage(
+            @PathVariable Long userId,
+            @RequestParam("file") MultipartFile newFile) {
+        try {
+            String newImageUrl = userProfileImageService.changeProfileImage(userId, newFile);
+            return ResponseEntity.ok(newImageUrl);
+        } catch (IOException e) {
+            return ResponseEntity.status(500).body("Change failed: " + e.getMessage());
+        }
+    }
+
+
+    @DeleteMapping("/{userId}/delete-profile-image")
+    public ResponseEntity<?> deleteProfileImage(@PathVariable Long userId) {
+        try {
+            userProfileImageService.deleteProfileImage(userId);
+            return ResponseEntity.ok("Profile image deleted successfully");
+        } catch (IOException e) {
+            return ResponseEntity.status(500).body("Delete failed: " + e.getMessage());
+        }
+    }
+
 
     @PatchMapping("/{userId}/change-password")
     public ResponseEntity<?> changePassword(

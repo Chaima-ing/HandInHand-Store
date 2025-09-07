@@ -1,6 +1,7 @@
-import React, { useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {User,Trash2,Upload} from 'lucide-react';
 import client from "../apiServices/api.js";
+import AuthContext from "../context/AuthContext.jsx";
 
 const ProfileSection = () => {
     const [fullName, setFullName] = useState("");
@@ -8,18 +9,18 @@ const ProfileSection = () => {
     const [phone, setPhone] = useState("");
     const [address, setAddress] = useState("");
     const [bio, setBio] = useState("");
-    const [selectedFile, setSelectedFile] = useState(null);
     const [profileImg, setProfileImg] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
+    const { user } = useContext(AuthContext);
+
     useEffect(() => {
+        console.log("Profile see user:", user);
+
         const fetchUserProfile = async () => {
             try {
-                const userId = localStorage.getItem("userId");
-                const response = await client.get(`/api/users/${userId}`);
-                // assuming backend returns a "profileImageUrl" field
-                if (response.data.profileImageUrl) {
-                    setProfileImg(response.data.profileImageUrl);
+                if (user) {
+                    setProfileImg(user.profileImageUrl);
                 }
             } catch (error) {
                 console.error("Error fetching user profile:", error);
@@ -27,7 +28,7 @@ const ProfileSection = () => {
         };
 
         fetchUserProfile();
-    }, []);
+    }, [user]);
 
     const handleSave = async () => {
         setIsLoading(true);
@@ -59,15 +60,15 @@ const ProfileSection = () => {
 
 
     const handleUploadImg = async (event) =>{
-        setSelectedFile(event.target.files[0]);
 
-        if(!selectedFile) return;
+        const file = event.target.files[0];
 
         setIsLoading(true);
         try{
+            console.log("**********")
             const userId = localStorage.getItem('userId');
             const formData = new FormData();
-            formData.append('file', selectedFile);
+            formData.append('file', file);
             const response = await client.post(`api/users/${userId}/upload-profile-image`,
                 formData,
                 {
@@ -76,6 +77,7 @@ const ProfileSection = () => {
                 },
             }
             );
+
             console.log("Image uploaded: ",response.data);
             setProfileImg(response.data);
 
