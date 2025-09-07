@@ -67,6 +67,27 @@ public class OrderController {
         }
     }
 
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<OrderResponse>> getOrdersByUser(@PathVariable Long userId) {
+        List<Order> orders = orderService.getOrdersByBuyer(userId);
+        List<OrderResponse> responses = orders.stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
+        
+        return ResponseEntity.ok(responses);
+    }
+
+    @GetMapping("/{orderId}")
+    public ResponseEntity<?> getOrderById(@PathVariable Long orderId) {
+        Optional<Order> orderOptional = orderService.getOrderById(orderId);
+        if (!orderOptional.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        OrderResponse response = convertToResponse(orderOptional.get());
+        return ResponseEntity.ok(response);
+    }
+
     private OrderResponse convertToResponse(Order order) {
         OrderResponse response = new OrderResponse();
         response.setId(order.getId());

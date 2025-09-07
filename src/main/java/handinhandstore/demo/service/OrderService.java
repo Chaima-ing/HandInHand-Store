@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -79,5 +80,13 @@ public class OrderService {
         order.setDonationAmount(totalDonation);
         
         return orderRepository.save(order);
+    }
+
+    public List<Order> getOrdersByBuyer(Long buyerId) {
+        return orderRepository.findByBuyerId(buyerId);
+    }
+
+    public Optional<Order> getOrderById(Long orderId) {
+        return orderRepository.findById(orderId);
     }
 }
