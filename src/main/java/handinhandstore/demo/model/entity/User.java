@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 import handinhandstore.demo.model.enums.AccountStatus;
 
 @Entity
-@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
