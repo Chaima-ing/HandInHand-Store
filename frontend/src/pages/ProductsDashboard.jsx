@@ -1,102 +1,76 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {Package, PlusCircle, Search, Filter, Eye, Edit, Trash2, ChevronLeft, Boxes, CheckCircle, Hourglass, DollarSign} from 'lucide-react';
 import SidebarComponent from "../components/SidebarComponent.jsx";
+import client from "../apiServices/api.js";
 
-const ProductsPage = () => {
+const ProductsDashboard = () => {
     // State management
     const [searchTerm, setSearchTerm] = useState('');
-    const [products, setProducts] = useState([
-        {
-            id: 1,
-            name: "ساعة ذكية ماركة سامسونج",
-            category: "إلكترونيات",
-            price: 120,
-            pricingType: "fixed",
-            status: "available",
-            date: "15/03/2024",
-            image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1999&q=80"
-        },
-        {
-            id: 2,
-            name: "سماعات لاسلكية عالية الجودة",
-            category: "إلكترونيات",
-            price: 85,
-            pricingType: "fixed",
-            status: "sold",
-            date: "10/03/2024",
-            image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-        },
-        {
-            id: 3,
-            name: "رواية الأيام الأخيرة في غزة",
-            category: "كتب",
-            price: 35,
-            pricingType: "auction",
-            status: "available",
-            date: "05/03/2024",
-            image: "https://images.unsplash.com/photo-1491637639811-60e2756cc1c7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-        },
-        {
-            id: 4,
-            name: "سجاد فلسطيني تقليدي",
-            category: "أدوات منزلية",
-            price: 250,
-            pricingType: "fixed",
-            status: "pending",
-            date: "02/03/2024",
-            image: "https://images.unsplash.com/photo-1601924994987-69e26d50dc26?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-        },
-        {
-            id: 5,
-            name: "كاميرا كانون الاحترافية",
-            category: "إلكترونيات",
-            price: 420,
-            pricingType: "auction",
-            status: "available",
-            date: "28/02/2024",
-            image: "https://images.unsplash.com/photo-1534030347209-467a5b0ad3e6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1887&q=80"
-        }
-    ]);
+    const [products, setProducts] = useState([""]);
+    const [statsVlue, setStatsValue] = useState({
+        totalProducts: 0,
+        soldProducts: 0,
+        pendingReview: 0,
+        totalDonations: 0
+    });
 
     // Stats data
     const stats = [
         {
-            value: 48,
+            value: statsVlue.totalProducts,
             label: "المنتجات الكلية",
             icon: <Boxes className="w-6 h-6" />,
             color: "green"
         },
         {
-            value: 32,
+            value: statsVlue.soldProducts,
             label: "المنتجات المباعة",
             icon: <CheckCircle className="w-6 h-6" />,
             color: "red"
         },
         {
-            value: 12,
+            value: statsVlue.pendingReview,
             label: "في انتظار المراجعة",
             icon: <Hourglass className="w-6 h-6" />,
             color: "yellow"
         },
         {
-            value: "$1,850",
+            value: statsVlue.totalDonations,
             label: "إجمالي التبرعات",
             icon: <DollarSign className="w-6 h-6" />,
             color: "blue"
         }
     ];
 
-    // Filter products based on search term
+    useEffect(async () => {
+
+            try{
+                await client.get("/products/get");
+            }catch (e) {
+                console.log(e);
+            }
+        }
+    )
+
+    /*
     const filteredProducts = products.filter(product =>
         product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         product.category.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    );*/
 
     // Handle product deletion
-    const handleDeleteProduct = (id) => {
+    const handleDeleteProduct = async (id) => {
+
         if (window.confirm('هل أنت متأكد من حذف هذا المنتج؟ لا يمكن التراجع عن هذا الإجراء.')) {
-            setProducts(products.filter(product => product.id !== id));
-            alert('تم حذف المنتج بنجاح!');
+            try{
+                const res = await client.delete(`Delete-Product/${id}`);
+                setProducts(res.data);
+                alert('تم حذف المنتج بنجاح!');
+            }catch (e) {
+                console.error('Error deleting product:', e);
+                alert('حدث خطأ أثناء حذف المنتج.');
+            }
+
         }
     };
 
@@ -303,4 +277,4 @@ const ProductsPage = () => {
     );
 };
 
-export default ProductsPage;
+export default ProductsDashboard;

@@ -13,17 +13,6 @@ function Header() {
 
     const { user } = useContext(AuthContext);
     console.log("Header sees user:", user);
-    {/*
-
-    const changeLanguage = (lng) => {
-        i18n.changeLanguage(lng).then(() => {
-            console.log("Language changed");
-        });
-        setLanguage(lng);
-        localStorage.setItem('language', lng);
-        document.documentElement.setAttribute('dir', lng === "ar" ? 'rtl' : 'ltr');
-    };
-    */}
 
     useEffect(() => {
         document.documentElement.setAttribute('dir', language === "ar" ? 'rtl' : 'ltr');

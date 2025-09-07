@@ -49,7 +49,7 @@ public class UserProfileController {
         }
     }
 
-    @PatchMapping("/{userId}/change-profile-image")
+    @PostMapping("/{userId}/change-profile-image")
     public ResponseEntity<?> changeProfileImage(
             @PathVariable Long userId,
             @RequestParam("file") MultipartFile newFile) {
@@ -72,21 +72,34 @@ public class UserProfileController {
         }
     }
 
+
     @PatchMapping("/{userId}/change-password")
     public ResponseEntity<?> changePassword(
             @PathVariable Long userId,
             @RequestBody ChangePasswordRequestDTO dto) {
         try {
             userProfileService.changePassword(userId, dto);
-            return ResponseEntity.ok("Password updated successfully");
+
+            User updatedUser = userRepository.findById(userId).orElseThrow();
+            updatedUser.setPasswordUpdatedAt(LocalDateTime.now());
+            userRepository.save(updatedUser);
+
+            return ResponseEntity.ok(Map.of(
+                "message", "Password updated successfully",
+                "lastUpdated", updatedUser.getPasswordUpdatedAt()
+            ));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+}
+
 
     @GetMapping("/{userId}/products")
     public List<Product> getUserProducts(@PathVariable Long userId) {
         return userProfileService.findBySellerId(userId);
     }
     
+
 }

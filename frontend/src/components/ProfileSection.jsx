@@ -1,28 +1,49 @@
-import React, { useState} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {User,Trash2,Upload} from 'lucide-react';
 import client from "../apiServices/api.js";
+import AuthContext from "../context/AuthContext.jsx";
 
 const ProfileSection = () => {
-    const [fullName, setFullName] = useState("محمد أحمد");
-    const [email, setEmail] = useState("mohamed@example.com");
-    const [phone, setPhone] = useState("+970 59 123 4567");
-    const [address, setAddress] = useState("غزة، فلسطين");
-    const [bio, setBio] = useState("أنا بائع في متجر غزة للجميع...");
+    const [fullName, setFullName] = useState("");
+    const [email, setEmail] = useState("");
+    const [phone, setPhone] = useState("");
+    const [address, setAddress] = useState("");
+    const [bio, setBio] = useState("");
+    const [profileImg, setProfileImg] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
+    const { user } = useContext(AuthContext);
 
+    useEffect(() => {
+        console.log("Profile see user:", user);
+
+        const fetchUserProfile = async () => {
+            try {
+                if (user) {
+                    setProfileImg(user.profileImageUrl);
+                }
+            } catch (error) {
+                console.error("Error fetching user profile:", error);
+            }
+        };
+
+        fetchUserProfile();
+    }, [user]);
 
     const handleSave = async () => {
         setIsLoading(true);
+
         try{
             const userId = localStorage.getItem('userId');
-            const response = await client.put(`/users/${userId}`, {
+
+            const response = await client.put(`api/users/update-info/${userId}`, {
                 fullName,
                 email,
-                phoneNumber : phone,
+                phoneNumber: phone,
                 address,
-                bio
+                bio,
             });
+
             setFullName(response.data.fullName);
             setEmail(response.data.email);
             setPhone(response.data.phoneNumber);
@@ -37,6 +58,43 @@ const ProfileSection = () => {
         }
     };
 
+
+    const handleUploadImg = async (event) =>{
+
+        const file = event.target.files[0];
+
+        setIsLoading(true);
+        try{
+            console.log("**********")
+            const userId = localStorage.getItem('userId');
+            const formData = new FormData();
+            formData.append('file', file);
+            const response = await client.post(`api/users/${userId}/upload-profile-image`,
+                formData,
+                {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            }
+            );
+
+            console.log("Image uploaded: ",response.data);
+            setProfileImg(response.data);
+
+        }catch(error){
+            console.error("Error uploading image:", error);
+            alert("Failed in uploading image");
+        }finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleRemoveImg = async () => {
+        setProfileImg("https://via.placeholder.com/150");
+
+    };
+
+
     return(
         <div className="bg-white rounded-2xl shadow-lg p-8 min-w-[620px]">
             <div className="flex items-center mb-6 pb-4 border-b border-gray-100">
@@ -50,27 +108,45 @@ const ProfileSection = () => {
             <div className="flex items-center gap-8 mb-8">
                 <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-green-600">
                     <img
-                        src="https://randomuser.me/api/portraits/men/32.jpg"
+                        src={profileImg}
                         alt="صورة المستخدم"
                         className="w-full h-full object-cover"
                     />
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleUploadImg}
+                        className="hidden"
+                        id="upload-img"
+                    />
                 </div>
                 <div className="flex flex-col gap-3">
-                    <button className="flex items-center gap-2 px-6 py-2 border-2 border-green-600 text-green-600 rounded-full hover:bg-green-600 hover:text-white transition-colors">
+                    <button
+                        className="flex items-center gap-2 px-6 py-2 border-2 border-green-600 text-green-600 rounded-full hover:bg-green-600 hover:text-white transition-colors"
+                        onClick={() => document.getElementById("upload-img").click() }
+                        disabled={isLoading}
+                    >
                         <Upload className="w-4 h-4" />
-                        تغيير الصورة
+                        رفع الصورة
                     </button>
-                    <button className="flex items-center gap-2 px-6 py-2 border-2 border-red-500 text-red-500 rounded-full hover:bg-red-500 hover:text-white transition-colors">
+                    <button
+                        className="flex items-center gap-2 px-6 py-2 border-2 border-red-500 text-red-500 rounded-full hover:bg-red-500 hover:text-white transition-colors"
+                        onClick={handleRemoveImg}
+                        disabled={isLoading}
+                    >
                         <Trash2 className="w-4 h-4" />
                         إزالة الصورة
                     </button>
                     <p className="text-sm text-gray-500 mt-3">يجب أن تكون الصورة بحجم أقل من 2MB</p>
                 </div>
             </div>
-            <form onSubmit={(e) => {e.preventDefault();}}>
+            <form onSubmit={(e) => {
+                e.preventDefault();
+                handleSave();
+            }}>
                 <div className="grid md:grid-cols-2 gap-6 mb-6">
                     <div>
-                        <label className="block text-gray-700 font-semibold mb-3">الاسم الكامل *</label>
+                        <label className="block text-gray-700 font-semibold mb-3">الاسم الكامل</label>
                         <input
                             type="text"
                             value={fullName}
@@ -122,7 +198,7 @@ const ProfileSection = () => {
                         إلغاء
                     </button>
                     <button
-                        onClick={() => handleSave('profile')}
+                        type="submit"
                         disabled={isLoading}
                         className="flex items-center gap-2 px-8 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-all transform hover:-translate-y-1 hover:shadow-lg disabled:opacity-50"
                     >

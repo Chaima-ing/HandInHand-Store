@@ -6,27 +6,32 @@ const SecuritySection = () => {
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [lastupdated, setLastupdated] = useState("");
 
     const handleSecurity = async () => {
-        if(newPassword !== confirmPassword){
+        if (newPassword !== confirmPassword) {
             alert("كلمة المرور الجديدة وتأكيدها غير متطابقين");
             return;
         }
-        try{
-            const email = localStorage.getItem('email');
-            const res = client.post("userSecurity",{
-                email,
-                newPassword,
-                confirmPassword
+
+        try {
+            const userId = localStorage.getItem('userId');
+
+            const res = await client.patch(`api/users/${userId}/change-password`, {
+                currentPassword: oldPassword,
+                newPassword: newPassword,
+                confirmNewPassword: confirmPassword
             });
-            alert(res.data); //display a message to the user from the backend
+
+            alert(res.data);
+            setLastupdated(res.data.lastUpdated);
             setOldPassword("");
             setNewPassword("");
             setConfirmPassword("");
-        }catch(err){
+        } catch (err) {
             alert(err.response?.data || "فشل في تغيير كلمة المرور");
         }
-    }
+    };
 
 
     return(
@@ -41,9 +46,17 @@ const SecuritySection = () => {
 
             <div className="flex items-center p-4 bg-green-50 rounded-xl mb-8">
                 <Check className="w-6 h-6 text-green-600 ml-4" />
-                <p className="font-medium text-gray-700">
-                    حالة أمان حسابك: <span className="text-green-600 font-bold">جيدة</span> • آخر تحديث: ١٠ نوفمبر ٢٠٢٣
-                </p>
+                {lastupdated && (
+                    <p>
+                        حالة أمان حسابك: جيدة • آخر تحديث:{" "}
+                        {new Date(lastupdated).toLocaleDateString("ar-EG", {
+                            day: "numeric",
+                            month: "long",
+                            year: "numeric"
+                        })}
+                    </p>
+                )}
+
             </div>
 
             <div className="space-y-6 mb-8">
@@ -88,7 +101,6 @@ const SecuritySection = () => {
                 </button>
             </div>
         </div>
-
 );
 }
 export default SecuritySection;
