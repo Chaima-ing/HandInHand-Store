@@ -2,16 +2,20 @@ package handinhandstore.demo.controller;
 
 import handinhandstore.demo.dto.OrderRequest;
 import handinhandstore.demo.dto.OrderResponse;
+import handinhandstore.demo.dto.UpdateOrderRequest;
 import handinhandstore.demo.dto.OrderItemRequest;
 import handinhandstore.demo.dto.OrderItemResponse;
 import handinhandstore.demo.model.entity.Order;
 import handinhandstore.demo.model.entity.OrderItem;
+import handinhandstore.demo.model.enums.OrderStatus;
 import handinhandstore.demo.model.entity.Product;
 import handinhandstore.demo.service.OrderService;
 import handinhandstore.demo.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.NoSuchElementException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +68,41 @@ public class OrderController {
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error creating order: " + e.getMessage());
+        }
+    }
+
+    @PatchMapping("/{orderId}/status")
+    public ResponseEntity<?> updateOrderStatus(@PathVariable Long orderId, 
+                                          @RequestParam OrderStatus newStatus) {
+        try {
+            Order updatedOrder = orderService.updateOrderStatus(orderId, newStatus);
+            OrderResponse response = convertToResponse(updatedOrder);
+            return ResponseEntity.ok(response);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error updating order status: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/{orderId}")
+    public ResponseEntity<?> updateOrder(@PathVariable Long orderId, 
+                                    @RequestBody UpdateOrderRequest updateRequest) {
+        try {
+            // Convert UpdateOrderRequest to Order entity
+            Order orderUpdates = new Order();
+            orderUpdates.setShippingAddress(updateRequest.getShippingAddress());
+            orderUpdates.setPaymentMethod(updateRequest.getPaymentMethod());
+            orderUpdates.setPaymentStatus(updateRequest.getPaymentStatus());
+            orderUpdates.setStatus(updateRequest.getStatus());
+        
+            Order updatedOrder = orderService.updateOrder(orderId, orderUpdates);
+            OrderResponse response = convertToResponse(updatedOrder);
+            return ResponseEntity.ok(response);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error updating order: " + e.getMessage());
         }
     }
 

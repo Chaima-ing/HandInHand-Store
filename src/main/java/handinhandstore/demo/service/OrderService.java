@@ -5,9 +5,12 @@ import handinhandstore.demo.model.enums.ProductStatus;
 import handinhandstore.demo.repository.OrderRepository;
 import handinhandstore.demo.repository.ProductRepository;
 import handinhandstore.demo.repository.UserRepository;
+import handinhandstore.demo.model.enums.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.NoSuchElementException;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -80,6 +83,48 @@ public class OrderService {
         order.setDonationAmount(totalDonation);
         
         return orderRepository.save(order);
+    }
+
+    @Transactional
+    public Order updateOrderStatus(Long orderId, OrderStatus newStatus) {
+        Optional<Order> orderOptional = orderRepository.findById(orderId);
+        if (!orderOptional.isPresent()) {
+            throw new NoSuchElementException("Order not found with ID: " + orderId);
+        }
+    
+        Order order = orderOptional.get();
+        order.setStatus(newStatus);
+    
+        return orderRepository.save(order);
+    }
+
+    @Transactional
+    public Order updateOrder(Long orderId, Order updatedOrder) {
+        Optional<Order> existingOrderOptional = orderRepository.findById(orderId);
+        if (!existingOrderOptional.isPresent()) {
+            throw new NoSuchElementException("Order not found with ID: " + orderId);
+        }
+    
+        Order existingOrder = existingOrderOptional.get();
+    
+        // Update fields that can be modified
+        if (updatedOrder.getShippingAddress() != null) {
+            existingOrder.setShippingAddress(updatedOrder.getShippingAddress());
+        }
+    
+        if (updatedOrder.getPaymentMethod() != null) {
+            existingOrder.setPaymentMethod(updatedOrder.getPaymentMethod());
+        }
+    
+        if (updatedOrder.getPaymentStatus() != null) {
+            existingOrder.setPaymentStatus(updatedOrder.getPaymentStatus());
+        }
+    
+        if (updatedOrder.getStatus() != null) {
+            existingOrder.setStatus(updatedOrder.getStatus());
+        }
+    
+        return orderRepository.save(existingOrder);
     }
 
     public List<Order> getOrdersByBuyer(Long buyerId) {
