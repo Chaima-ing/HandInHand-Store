@@ -93,13 +93,10 @@ public class UserProfileController {
         }
     }
 
-}
-
 
     @GetMapping("/{userId}/products")
     public List<Product> getUserProducts(@PathVariable Long userId) {
         return userProfileService.findBySellerId(userId);
     }
-    
 
 }
