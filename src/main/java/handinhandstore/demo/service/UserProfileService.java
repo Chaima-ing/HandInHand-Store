@@ -2,21 +2,26 @@ package handinhandstore.demo.service;
 
 import handinhandstore.demo.dto.ChangePasswordRequestDTO;
 import handinhandstore.demo.dto.UpdateUserProfileRequestDTO;
+import handinhandstore.demo.model.entity.Product;
 import handinhandstore.demo.model.entity.User;
+import handinhandstore.demo.repository.ProductRepository;
 import handinhandstore.demo.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class UserProfileService {
 
     private final UserRepository userRepository;
+    private final ProductRepository productRepository;
 
-    public UserProfileService(UserRepository userRepository) {
+    public UserProfileService(UserRepository userRepository, ProductRepository productRepository) {
         this.userRepository = userRepository;
+        this.productRepository = productRepository;
     }
 
     @Transactional
@@ -55,5 +60,9 @@ public class UserProfileService {
         // 3. Update password
         user.setPassword(dto.getNewPassword());
         userRepository.save(user);
+    }
+
+    public List<Product> findBySellerId(Long userId){
+        return productRepository.findBySellerId(userId);
     }
 }
