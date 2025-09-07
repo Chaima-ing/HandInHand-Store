@@ -11,10 +11,10 @@ export const AuthProvider = ({children}) => {
     const handleLogin = async (credentials) => {
         try {
             const response = await loginUser(credentials.email, credentials.password);
-            const user = response.data; // ✅ backend returns User object directly
+            const user = response.data;
 
             if (user && user.id) {
-                setUser(user); // update context
+                setUser(user);
                 localStorage.setItem("userId", user.id);
                 localStorage.setItem("userEmail", user.email);
                 return { success: true, user };

@@ -42,21 +42,23 @@ const ProductsDashboard = () => {
         }
     ];
 
-    useEffect(async () => {
+    useEffect(getProducts);
 
-            try{
-                await client.get("/products/get");
-            }catch (e) {
-                console.log(e);
-            }
+    async function getProducts() {
+        const userId = localStorage.getItem('userId');
+
+        try {
+            const res = await client.get(`/products/getByUser=${userId}`);
+            setProducts(res.data);
+        } catch (e) {
+            console.log(e);
         }
-    )
+    }
 
-    /*
     const filteredProducts = products.filter(product =>
         product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         product.category.toLowerCase().includes(searchTerm.toLowerCase())
-    );*/
+    );
 
     // Handle product deletion
     const handleDeleteProduct = async (id) => {
@@ -74,19 +76,14 @@ const ProductsDashboard = () => {
         }
     };
 
-    // Handle view product
     const handleViewProduct = (id) => {
-        // Navigate to product page (would use react-router in a real app)
-        console.log(`View product ${id}`);
+
     };
 
-    // Handle edit product
     const handleEditProduct = (id) => {
-        // Navigate to edit product page (would use react-router in a real app)
-        console.log(`Edit product ${id}`);
+
     };
 
-    // Status badge component
     const StatusBadge = ({ status }) => {
         const statusConfig = {
             available: {
