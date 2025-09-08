@@ -14,6 +14,7 @@ import ProfilePage from "./pages/ProfilePage.jsx";
 import CheckoutPage from "./pages/checkoutPage.jsx";
 import AddProduct from "./pages/AddProduct.jsx";
 import ProductsDashboard from "./pages/ProductsDashboard.jsx";
+import Donations from './pages/Donations.jsx';
 
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
                           <Route path="/checkoutPage" element={<CheckoutPage />} />
                           <Route path="/AddProduct" element={<AddProduct />} />
                           <Route path="/ProductsDashboard" element={<ProductsDashboard />} />
+                          <Route path="/donations" element={<Donations />} />
 
                           {/* Redirect unknown paths to home */}
                           <Route path="*" element={<Navigate to="/" replace />} />
