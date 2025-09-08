@@ -49,7 +49,7 @@ public class ProductService {
         return productRepository.findAllByOrderByDonationPercentageDesc(pageable);
     }
 
-     public Product findById(Long id) {
+    public Product findById(Long id) {
         Optional<Product> productOptional = productRepository.findById(id);
 
         if (productOptional.isPresent()) {
@@ -58,6 +58,10 @@ public class ProductService {
         } else {
             return null; // or throw a custom exception
         }
+    }
+
+    public Optional<Product> getProductById(Long id){
+        return productRepository.findById(id);
     }
 
     public  List<Product> findAllProducts (){
