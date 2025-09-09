@@ -174,7 +174,7 @@ const Donations = () => {
 
   const formatDate = (dateString) => {
     try {
-      return new Date(dateString).toLocaleDateString('ar-EG');
+      return new Date(dateString).toLocaleDateString('ar-DZ');
     } catch (e) {
       return 'تاريخ غير معروف';
     }
