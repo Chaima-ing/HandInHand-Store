@@ -53,13 +53,53 @@ const Donations = () => {
       );
     
       setDonations(allDonations);
+      console.log("all donations: ",allDonations);
     } catch (err) {
       console.error("Error fetching donations:", err);
       setError('Failed to fetch donations. Please try again later.');
     
       // Set mock data for development
       setDonations([
-        // ... your mock data
+        {
+          id: 1,
+          amount: 25.00,
+          status: 'COMPLETED',
+          donationDate: '2023-05-15T10:30:00',
+          order: { id: 101 },
+          charityName: 'Gaza Relief Fund'
+        },
+        {
+          id: 2,
+          amount: 12.50,
+          status: 'COMPLETED',
+          donationDate: '2023-05-15T10:30:00',
+          order: { id: 101 },
+          charityName: 'Medical Aid Palestine'
+        },
+        {
+          id: 3,
+          amount: 24.10,
+          status: 'COMPLETED',
+          donationDate: '2023-05-16T14:22:00',
+          order: { id: 102 },
+          charityName: 'Gaza Relief Fund'
+        },
+        {
+          id: 4,
+          amount: 15.00,
+          status: 'PENDING',
+          donationDate: '2023-05-17T09:15:00',
+          order: { id: 103 },
+          charityName: 'Children of Gaza'
+        },
+        {
+          id: 5,
+          amount: 60.00,
+          status: 'PENDING',
+          donationDate: '2023-05-18T16:45:00',
+          order: { id: 104 },
+          charityName: 'Gaza Relief Fund'
+        }
       ]);
     } finally {
       setLoading(false);
@@ -126,9 +166,9 @@ const Donations = () => {
     if (typeof amount !== 'number') {
       amount = parseFloat(amount) || 0;
     }
-    return new Intl.NumberFormat('ar-EG', {
+    return new Intl.NumberFormat('ar-DZ', {
       style: 'currency',
-      currency: 'EGP'
+      currency: 'DZD'
     }).format(amount);
   };
 
@@ -272,11 +312,9 @@ const Donations = () => {
                   <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                     الجهة المستفيدة
                   </th>
-                  {user && user.role === 'SELLER' && (
-                    <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      الإجراءات
-                    </th>
-                  )}
+                  <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    الإجراءات
+                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -303,21 +341,21 @@ const Donations = () => {
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {donation.charityName || 'غير محدد'}
                       </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                          {donation.status === 'PENDING' && (
-                            <button 
-                              className="text-blue-600 hover:text-blue-900"
-                              onClick={() => markAsTransferred(donation.id)}
-                            >
-                              تحويل
-                            </button>
-                          )}
-                        </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        {donation.status === 'PENDING' && (
+                          <button 
+                            className="text-blue-600 hover:text-blue-900"
+                            onClick={() => markAsTransferred(donation.id)}
+                          >
+                            تحويل
+                          </button>
+                        )}
+                      </td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={user && user.role === 'SELLER' ? 7 : 6} className="px-6 py-4 text-center text-sm text-gray-500">
+                    <td colSpan={7} className="px-6 py-4 text-center text-sm text-gray-500">
                       لا توجد تبرعات لعرضها
                     </td>
                   </tr>
@@ -335,19 +373,19 @@ const Donations = () => {
           </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div>
-              <div className="text-2xl font-bold">٥٠٠+</div>
+              <div className="text-2xl font-bold">500+</div>
               <div className="text-sm">عائلة مستفيدة</div>
             </div>
             <div>
-              <div className="text-2xl font-bold">١٬٢٠٠+</div>
+              <div className="text-2xl font-bold">1,200+</div>
               <div className="text-sm">وجبة طعام</div>
             </div>
             <div>
-              <div className="text-2xl font-bold">٣٥٠+</div>
+              <div className="text-2xl font-bold">350+</div>
               <div className="text-sm">طفل يحصلون على التعليم</div>
             </div>
             <div>
-              <div className="text-2xl font-bold">٢٥٠+</div>
+              <div className="text-2xl font-bold">250+</div>
               <div className="text-sm">حالة طبية تم علاجها</div>
             </div>
           </div>
