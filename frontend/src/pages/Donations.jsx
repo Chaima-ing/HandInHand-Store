@@ -53,7 +53,7 @@ const Donations = () => {
       );
     
       setDonations(allDonations);
-      console.log("all donations: ",allDonations);
+      console.log("all donations: ", JSON.stringify(allDonations, null, 2));
     } catch (err) {
       console.error("Error fetching donations:", err);
       setError('Failed to fetch donations. Please try again later.');
