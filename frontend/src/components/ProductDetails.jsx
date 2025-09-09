@@ -4,7 +4,7 @@ import { Plus, Minus, ShoppingCart, Heart, Share2, Star } from "lucide-react";
 import { useCart } from "../context/CartContext";
 
 const ProductDetails = ({ product }) => {
-  const { addToCart, isInCart, getItemQuantity } = useCart();
+  const {addToCart, isInCart, getItemQuantity} = useCart();
   const [selectedQuantity, setSelectedQuantity] = useState(1);
 
   if (!product) return null; // safeguard
