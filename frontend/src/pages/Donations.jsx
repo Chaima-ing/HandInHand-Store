@@ -35,79 +35,31 @@ const Donations = () => {
   const fetchDonations = async () => {
     try {
       setLoading(true);
-      let endpoint = '';
-      
-      // Determine endpoint based on user role
-      if (user.role === 'SELLER') {
-        endpoint = `/api/donations/seller/${user.id}`;
-      } else if (user.role === 'BUYER') {
-        endpoint = `/api/donations/buyer/${user.id}`;
-      } else {
-        // For admin roles, we might want all donations
-        // But your API doesn't have a general /api/donations endpoint
-        // So we'll default to an empty array
-        setDonations([]);
-        setLoading(false);
-        return;
-      }
-      
-      console.log("Fetching donations from:", endpoint);
-      const response = await client.get(endpoint);
-      
-      // Your API returns a direct array of donations
-      if (Array.isArray(response.data)) {
-        setDonations(response.data);
-      } else {
-        console.error("Unexpected API response format:", response.data);
-        setError("Unexpected data format received from server");
-        setDonations([]);
-      }
+    
+      // Since users can be both buyers and sellers, we need to fetch both
+      const endpoints = [
+        `/api/donations/buyer/${user.id}`,
+        `/api/donations/seller/${user.id}`
+      ];
+    
+      console.log("Fetching donations from:", endpoints);
+      const responses = await Promise.all(
+        endpoints.map(endpoint => client.get(endpoint))
+      );
+    
+      // Combine results from both endpoints
+      const allDonations = responses.flatMap(response => 
+        Array.isArray(response.data) ? response.data : []
+      );
+    
+      setDonations(allDonations);
     } catch (err) {
       console.error("Error fetching donations:", err);
       setError('Failed to fetch donations. Please try again later.');
-      
+    
       // Set mock data for development
       setDonations([
-        {
-          id: 1,
-          amount: 25.00,
-          status: 'COMPLETED',
-          donationDate: '2023-05-15T10:30:00',
-          order: { id: 101 },
-          charityName: 'Gaza Relief Fund'
-        },
-        {
-          id: 2,
-          amount: 12.50,
-          status: 'COMPLETED',
-          donationDate: '2023-05-15T10:30:00',
-          order: { id: 101 },
-          charityName: 'Medical Aid Palestine'
-        },
-        {
-          id: 3,
-          amount: 24.10,
-          status: 'COMPLETED',
-          donationDate: '2023-05-16T14:22:00',
-          order: { id: 102 },
-          charityName: 'Gaza Relief Fund'
-        },
-        {
-          id: 4,
-          amount: 15.00,
-          status: 'PENDING',
-          donationDate: '2023-05-17T09:15:00',
-          order: { id: 103 },
-          charityName: 'Children of Gaza'
-        },
-        {
-          id: 5,
-          amount: 60.00,
-          status: 'PENDING',
-          donationDate: '2023-05-18T16:45:00',
-          order: { id: 104 },
-          charityName: 'Gaza Relief Fund'
-        }
+        // ... your mock data
       ]);
     } finally {
       setLoading(false);
@@ -116,27 +68,20 @@ const Donations = () => {
 
   const fetchStats = async () => {
     try {
-      let totalEndpoint = '';
-      
-      if (user.role === 'SELLER') {
-        totalEndpoint = `/api/donations/total/seller/${user.id}`;
-      } else if (user.role === 'BUYER') {
-        totalEndpoint = `/api/donations/total/buyer/${user.id}`;
-      } else {
-        // For admin roles, use the general total endpoint
-        totalEndpoint = '/api/donations/total';
-      }
-      
-      const [totalRes, pendingRes] = await Promise.all([
-        client.get(totalEndpoint),
+      // Fetch stats for both buyer and seller roles
+      const [buyerTotalRes, sellerTotalRes, pendingRes] = await Promise.all([
+        client.get(`/api/donations/total/buyer/${user.id}`),
+        client.get(`/api/donations/total/seller/${user.id}`),
         client.get('/api/donations/total/pending')
       ]);
-      
-      // Your API returns BigDecimal values directly
+    
+      // Combine buyer and seller totals
+      const total = parseFloat(buyerTotalRes.data) + parseFloat(sellerTotalRes.data);
+    
       setStats({
-        total: totalRes.data,
+        total: total,
         pending: pendingRes.data,
-        completed: totalRes.data - pendingRes.data
+        completed: total - pendingRes.data
       });
     } catch (err) {
       console.error("Error fetching stats:", err);
@@ -358,7 +303,6 @@ const Donations = () => {
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {donation.charityName || 'غير محدد'}
                       </td>
-                      {user && user.role === 'SELLER' && (
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                           {donation.status === 'PENDING' && (
                             <button 
@@ -369,7 +313,6 @@ const Donations = () => {
                             </button>
                           )}
                         </td>
-                      )}
                     </tr>
                   ))
                 ) : (
