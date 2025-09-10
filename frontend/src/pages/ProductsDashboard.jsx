@@ -169,14 +169,8 @@ const ProductsDashboard = () => {
                                 />
                                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                             </div>
-
-                            <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-colors flex items-center gap-2">
-                                <Filter className="w-4 h-4" />
-                                <span>تصفية</span>
-                            </button>
-
                             <a
-                                href="/add-product"
+                                href="/AddProduct"
                                 className="px-4 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700 transition-colors flex items-center gap-2"
                             >
                                 <PlusCircle className="w-4 h-4" />
