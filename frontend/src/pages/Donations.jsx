@@ -1,10 +1,6 @@
+// src/pages/Donations.jsx
 import { useState, useEffect, useContext } from 'react';
-import {
-  getBuyerDonations,
-  getSellerDonations,
-  getTotalPendingDonations,
-  markDonationAsTransferred
-} from '../apiServices/donationService.js'; // Adjust path as needed
+import client from '../apiServices/api.js';
 import AuthContext from "../context/AuthContext";
 import SidebarComponent from "../components/SidebarComponent.jsx";
 
@@ -19,7 +15,8 @@ const Donations = () => {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [rawResponses, setRawResponses] = useState(null); // Store raw responses
+  
+  // Get user data from your auth context
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
@@ -27,52 +24,41 @@ const Donations = () => {
       fetchDonations();
       fetchStats();
     } else {
-      setError('No user is logged in.');
       setLoading(false);
     }
   }, [user]);
 
   useEffect(() => {
     filterDonations();
-  }, );
-
-  const isHTMLResponse = (data) => {
-    return typeof data === 'string' && data.trim().startsWith('<!doctype html');
-  };
+  }, [donations, selectedFilter]);
 
   const fetchDonations = async () => {
     try {
       setLoading(true);
-      const responses = await Promise.all([
-        getBuyerDonations(user.id),
-        getSellerDonations(user.id)
-      ]);
-
-      // Log raw responses
-      console.log('Backend Response - Buyer Donations:', JSON.stringify(responses[0], null, 2));
-      console.log('Backend Response - Seller Donations:', JSON.stringify(responses[1], null, 2));
-
-      // Store raw responses
-      const rawData = {
-        buyerDonations: responses[0].data,
-        sellerDonations: responses[1].data
-      };
-      setRawResponses(prev => ({ ...prev, donations: rawData }));
-
-      // Validate responses
-      if (isHTMLResponse(responses[0].data) || isHTMLResponse(responses[1].data)) {
-        throw new Error('Invalid response: Received HTML instead of JSON');
-      }
-      if (!Array.isArray(responses[0].data) || !Array.isArray(responses[1].data)) {
-        throw new Error('Invalid response format: Expected JSON arrays for donations');
-      }
-
-      const allDonations = responses.flatMap(response => response.data);
+    
+      // Since users can be both buyers and sellers, we need to fetch both
+      const endpoints = [
+        `/api/donations/buyer/${user.id}`,
+        `/api/donations/seller/${user.id}`
+      ];
+    
+      console.log("Fetching donations from:", endpoints);
+      const responses = await Promise.all(
+        endpoints.map(endpoint => client.get(endpoint))
+      );
+    
+      // Combine results from both endpoints
+      const allDonations = responses.flatMap(response => 
+        Array.isArray(response.data) ? response.data : []
+      );
+    
       setDonations(allDonations);
-      console.log("Processed Donations:", JSON.stringify(allDonations, null, 2));
+      console.log("all donations: ", JSON.stringify(allDonations, null, 2));
     } catch (err) {
       console.error("Error fetching donations:", err);
-      setError(`Failed to fetch donations: ${err.message}`);
+      setError('Failed to fetch donations. Please try again later.');
+    
+      // Set mock data for development
       setDonations([
         {
           id: 1,
@@ -115,10 +101,6 @@ const Donations = () => {
           charityName: 'Gaza Relief Fund'
         }
       ]);
-      setRawResponses(prev => ({
-        ...prev,
-        donations: { buyerDonations: 'Error: Invalid response', sellerDonations: 'Error: Invalid response' }
-      }));
     } finally {
       setLoading(false);
     }
@@ -126,45 +108,29 @@ const Donations = () => {
 
   const fetchStats = async () => {
     try {
-      const [buyerRes, sellerRes, pendingRes] = await Promise.all([
-        getBuyerDonations(user.id),
-        getSellerDonations(user.id),
-        getTotalPendingDonations()
+      // Fetch stats for both buyer and seller roles
+      const [buyerTotalRes, sellerTotalRes, pendingRes] = await Promise.all([
+        client.get(`/api/donations/total/buyer/${user.id}`),
+        client.get(`/api/donations/total/seller/${user.id}`),
+        client.get('/api/donations/total/pending')
       ]);
-
-      // Extract donations arrays
-      const buyerDonations = buyerRes.data || [];
-      const sellerDonations = sellerRes.data || [];
-      const pendingDonations = pendingRes.data || [];
-
-      // Sum the amounts
-      const buyerTotal = buyerDonations.reduce((sum, d) => sum + (parseFloat(d.amount) || 0), 0);
-      const sellerTotal = sellerDonations.reduce((sum, d) => sum + (parseFloat(d.amount) || 0), 0);
-      const pendingTotal = pendingDonations.reduce((sum, d) => sum + (parseFloat(d.amount) || 0), 0);
-
-      const total = buyerTotal + sellerTotal;
-
+    
+      // Combine buyer and seller totals
+      const total = parseFloat(buyerTotalRes.data) + parseFloat(sellerTotalRes.data);
+    
       setStats({
-        total,
-        pending: pendingTotal,
-        completed: total - pendingTotal
+        total: total,
+        pending: pendingRes.data,
+        completed: total - pendingRes.data
       });
     } catch (err) {
       console.error("Error fetching stats:", err);
-      setError(`Failed to fetch stats: ${err.message}`);
+      // Set mock stats for development
       setStats({
         total: 136.60,
         pending: 75.00,
         completed: 61.60
       });
-      setRawResponses(prev => ({
-        ...prev,
-        stats: {
-          buyerTotal: 'Error: Invalid response',
-          sellerTotal: 'Error: Invalid response',
-          pendingTotal: 'Error: Invalid response'
-        }
-      }));
     }
   };
 
@@ -173,6 +139,7 @@ const Donations = () => {
       setFilteredDonations([]);
       return;
     }
+    
     if (selectedFilter === 'all') {
       setFilteredDonations(donations);
     } else {
@@ -180,13 +147,18 @@ const Donations = () => {
     }
   };
 
+  const handleFilterChange = (filter) => {
+    setSelectedFilter(filter);
+  };
+
   const markAsTransferred = async (donationId) => {
     try {
-      await markDonationAsTransferred(donationId);
+      await client.patch(`/api/donations/${donationId}/transfer`);
+      // Refresh donations list
       fetchDonations();
       fetchStats();
     } catch (err) {
-      setError(`Failed to update donation: ${err.response?.data?.message || err.message}`);
+      setError('Failed to update donation: ' + (err.response?.data?.message || err.message));
     }
   };
 
@@ -236,78 +208,91 @@ const Donations = () => {
 
   if (loading) {
     return (
-        <div className="min-h-screen bg-gray-50 flex" dir="rtl">
-          <SidebarComponent />
-          <div className="flex-1 mr-64 p-8 flex justify-center items-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand"></div>
-          </div>
+      <div className="min-h-screen bg-gray-50 flex" dir="rtl">
+        <SidebarComponent />
+        <div className="flex-1 mr-64 p-8 flex justify-center items-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand"></div>
         </div>
+      </div>
     );
   }
 
   return (
-      <div className="min-h-screen bg-gray-50 flex" dir="rtl">
-        <SidebarComponent />
-        <main className="flex-1 mr-64 p-8">
-
-          <div className="text-center mb-12">
-            <h1 className="text-3xl font-bold text-gray-800 mb-4">تبرعاتي</h1>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              تتبع تبرعاتك وتأثيرها في دعم أهالي غزة. كل تبرع يساهم في صنع فرق حقيقي.
-            </p>
+    <div className="min-h-screen bg-gray-50 flex" dir="rtl">
+      <SidebarComponent />
+      
+      {/* Main Content */}
+      <main className="flex-1 mr-64 p-8">
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6" role="alert">
+            <strong className="font-bold">خطأ! </strong>
+            <span className="block sm:inline">{error}</span>
+            <button onClick={() => setError(null)} className="absolute top-0 bottom-0 right-0 px-4 py-3">
+              <span className="text-2xl">&times;</span>
+            </button>
           </div>
+        )}
+        
+        <div className="text-center mb-12">
+          <h1 className="text-3xl font-bold text-gray-800 mb-4">تبرعاتي</h1>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            تتبع تبرعاتك وتأثيرها في دعم أهالي غزة. كل تبرع يساهم في صنع فرق حقيقي.
+          </p>
+        </div>
 
-          {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div className="bg-white rounded-lg shadow-md p-6 text-center">
-              <div className="text-2xl font-bold text-brand mb-2">{formatCurrency(stats.total)}</div>
-              <div className="text-gray-600">إجمالي التبرعات</div>
-            </div>
-            <div className="bg-white rounded-lg shadow-md p-6 text-center">
-              <div className="text-2xl font-bold text-yellow-600 mb-2">{formatCurrency(stats.pending)}</div>
-              <div className="text-gray-600">تبرعات قيد الانتظار</div>
-            </div>
-            <div className="bg-white rounded-lg shadow-md p-6 text-center">
-              <div className="text-2xl font-bold text-blue-600 mb-2">{formatCurrency(stats.completed)}</div>
-              <div className="text-gray-600">تبرعات مكتملة</div>
-            </div>
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="bg-white rounded-lg shadow-md p-6 text-center">
+            <div className="text-2xl font-bold text-brand mb-2">{formatCurrency(stats.total)}</div>
+            <div className="text-gray-600">إجمالي التبرعات</div>
           </div>
-
-          {/* Filters */}
-          <div className="bg-white rounded-lg shadow-md p-4 mb-6">
-            <div className="flex flex-wrap gap-2">
-              <button
-                  className={`px-4 py-2 rounded-full ${selectedFilter === 'all' ? 'bg-gray-800 text-white' : 'bg-gray-200 text-gray-700'}`}
-                  onClick={() => filterDonations('all')}
-              >
-                الكل
-              </button>
-              <button
-                  className={`px-4 py-2 rounded-full ${selectedFilter === 'completed' ? 'bg-gray-800 text-white' : 'bg-gray-200 text-gray-700'}`}
-                  onClick={() => handleFilterChange('completed')}
-              >
-                مكتمل
-              </button>
-              <button
-                  className={`px-4 py-2 rounded-full ${selectedFilter === 'pending' ? 'bg-gray-800 text-white' : 'bg-gray-200 text-gray-700'}`}
-                  onClick={() => handleFilterChange('pending')}
-              >
-                قيد الانتظار
-              </button>
-              <button
-                  className={`px-4 py-2 rounded-full ${selectedFilter === 'failed' ? 'bg-gray-800 text-white' : 'bg-gray-200 text-gray-700'}`}
-                  onClick={() => handleFilterChange('failed')}
-              >
-                فاشل
-              </button>
-            </div>
+          
+          <div className="bg-white rounded-lg shadow-md p-6 text-center">
+            <div className="text-2xl font-bold text-yellow-600 mb-2">{formatCurrency(stats.pending)}</div>
+            <div className="text-gray-600">تبرعات قيد الانتظار</div>
           </div>
+          
+          <div className="bg-white rounded-lg shadow-md p-6 text-center">
+            <div className="text-2xl font-bold text-blue-600 mb-2">{formatCurrency(stats.completed)}</div>
+            <div className="text-gray-600">تبرعات مكتملة</div>
+          </div>
+        </div>
 
-          {/* Donations Table */}
-          <div className="bg-white rounded-lg shadow-md overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+        {/* Filters */}
+        <div className="bg-white rounded-lg shadow-md p-4 mb-6">
+          <div className="flex flex-wrap gap-2">
+            <button
+              className={`px-4 py-2 rounded-full ${selectedFilter === 'all' ? 'bg-brand text-white' : 'bg-gray-200 text-gray-700'}`}
+              onClick={() => handleFilterChange('all')}
+            >
+              الكل
+            </button>
+            <button
+              className={`px-4 py-2 rounded-full ${selectedFilter === 'completed' ? 'bg-brand text-white' : 'bg-gray-200 text-gray-700'}`}
+              onClick={() => handleFilterChange('completed')}
+            >
+              مكتمل
+            </button>
+            <button
+              className={`px-4 py-2 rounded-full ${selectedFilter === 'pending' ? 'bg-brand text-white' : 'bg-gray-200 text-gray-700'}`}
+              onClick={() => handleFilterChange('pending')}
+            >
+              قيد الانتظار
+            </button>
+            <button
+              className={`px-4 py-2 rounded-full ${selectedFilter === 'failed' ? 'bg-brand text-white' : 'bg-gray-200 text-gray-700'}`}
+              onClick={() => handleFilterChange('failed')}
+            >
+              فاشل
+            </button>
+          </div>
+        </div>
+
+        {/* Donations Table */}
+        <div className="bg-white rounded-lg shadow-md overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
                 <tr>
                   <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                     رقم التبرع
@@ -331,82 +316,82 @@ const Donations = () => {
                     الإجراءات
                   </th>
                 </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
                 {Array.isArray(filteredDonations) && filteredDonations.length > 0 ? (
-                    filteredDonations.map((donation) => (
-                        <tr key={donation.id}>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                            #{donation.id}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {formatDate(donation.donationDate || donation.createdAt)}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {formatCurrency(donation.amount)}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
+                  filteredDonations.map((donation) => (
+                    <tr key={donation.id}>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        #{donation.id}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {formatDate(donation.donationDate || donation.createdAt)}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {formatCurrency(donation.amount)}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusBadgeClass(donation.status)}`}>
                           {translateStatus(donation.status)}
                         </span>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            #{donation.order?.id || 'N/A'}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {donation.charityName || 'غير محدد'}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            {donation.status === 'PENDING' && (
-                                <button
-                                    className="text-blue-600 hover:text-blue-900"
-                                    onClick={() => markAsTransferred(donation.id)}
-                                >
-                                  تحويل
-                                </button>
-                            )}
-                          </td>
-                        </tr>
-                    ))
-                ) : (
-                    <tr>
-                      <td colSpan={7} className="px-6 py-4 text-center text-sm text-gray-500">
-                        لا توجد تبرعات لعرضها
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        #{donation.order?.id || 'N/A'}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {donation.charityName || 'غير محدد'}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        {donation.status === 'PENDING' && (
+                          <button 
+                            className="text-blue-600 hover:text-blue-900"
+                            onClick={() => markAsTransferred(donation.id)}
+                          >
+                            تحويل
+                          </button>
+                        )}
                       </td>
                     </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={7} className="px-6 py-4 text-center text-sm text-gray-500">
+                      لا توجد تبرعات لعرضها
+                    </td>
+                  </tr>
                 )}
-                </tbody>
-              </table>
-            </div>
+              </tbody>
+            </table>
           </div>
+        </div>
 
-          {/* Impact Section */}
-          <div className="bg-gradient-to-r from-gray-900 to-green-700 rounded-lg shadow-md p-8 mt-12 text-white text-center">
-            <h2 className="text-2xl font-bold mb-4">تأثير تبرعاتك</h2>
-            <p className="mb-6">
-              بفضل تبرعاتك السخية، استطعنا تقديم المساعدة للعديد من العائلات في غزة.
-            </p>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div>
-                <div className="text-2xl font-bold">500+</div>
-                <div className="text-sm">عائلة مستفيدة</div>
-              </div>
-              <div>
-                <div className="text-2xl font-bold">1,200+</div>
-                <div className="text-sm">وجبة طعام</div>
-              </div>
-              <div>
-                <div className="text-2xl font-bold">350+</div>
-                <div className="text-sm">طفل يحصلون على التعليم</div>
-              </div>
-              <div>
-                <div className="text-2xl font-bold">250+</div>
-                <div className="text-sm">حالة طبية تم علاجها</div>
-              </div>
+        {/* Impact Section */}
+        <div className="bg-gradient-to-r from-brand to-green-700 rounded-lg shadow-md p-8 mt-12 text-white text-center">
+          <h2 className="text-2xl font-bold mb-4">تأثير تبرعاتك</h2>
+          <p className="mb-6">
+            بفضل تبرعاتك السخية، استطعنا تقديم المساعدة للعديد من العائلات في غزة.
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div>
+              <div className="text-2xl font-bold">500+</div>
+              <div className="text-sm">عائلة مستفيدة</div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold">1,200+</div>
+              <div className="text-sm">وجبة طعام</div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold">350+</div>
+              <div className="text-sm">طفل يحصلون على التعليم</div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold">250+</div>
+              <div className="text-sm">حالة طبية تم علاجها</div>
             </div>
           </div>
-        </main>
-      </div>
+        </div>
+      </main>
+    </div>
   );
 };
 
