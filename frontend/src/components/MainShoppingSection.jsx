@@ -3,23 +3,22 @@ import { ChevronLeft, ChevronRight, XCircle } from 'lucide-react';
 import Sidebar from "./Sidebar.jsx";
 import ProductCard from "./Product-Card.jsx";
 import axios from "axios";
-import { searchProduct, getAllCategories } from "../apiServices/searchServices.js";
+import {searchProduct, getAllCategories, getProductsByCategory} from "../apiServices/searchServices.js";
 
 const MainShoppingSection = forwardRef(({
                                             onCategoryChange = () => {},
                                             onAddToCart = () => {},
                                             onDisplayDetails = () => {}
                                         }, ref) => {
-    const [selectedCategory, setSelectedCategory] = useState(null); // ✅ will store category.id
+    const [selectedCategory, setSelectedCategory] = useState(null); // Stores category.id
     const [currentPage, setCurrentPage] = useState(1);
     const productsPerPage = 9;
     const [products, setProducts] = useState([]);
-    const [categories, setCategories] = useState([]); // ✅ state only (no prop anymore)
+    const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [results, setResults] = useState([]);
 
-    // ✅ Expose search + clear to parent
     useImperativeHandle(ref, () => ({
         handleSearch: async (query) => {
             try {
@@ -37,12 +36,11 @@ const MainShoppingSection = forwardRef(({
         }
     }));
 
-    // ✅ Fetch categories from backend
     useEffect(() => {
         const fetchCategories = async () => {
             try {
                 const response = await getAllCategories();
-                console.log("Fetched categories:", response.data); // ✅ log here
+                console.log("Fetched categories:", JSON.stringify(response.data, null, 2));
                 setCategories(response.data);
             } catch (error) {
                 console.error("Error fetching categories:", error);
@@ -51,7 +49,6 @@ const MainShoppingSection = forwardRef(({
         fetchCategories();
     }, []);
 
-    // ✅ Fetch products from backend
     useEffect(() => {
         const fetchProducts = async () => {
             try {
@@ -69,35 +66,40 @@ const MainShoppingSection = forwardRef(({
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">Error: {error}</p>;
 
-    // ✅ If search results exist → show them, else → show products
     const activeProducts = results.length > 0 ? results : products;
 
-    // ✅ Pagination
     const totalPages = Math.ceil(activeProducts.length / productsPerPage);
     const indexOfLastProduct = currentPage * productsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
     const currentProducts = activeProducts.slice(indexOfFirstProduct, indexOfLastProduct);
 
-    const handleCategoryChange = async (categoryIndex) => {
-        setSelectedCategory(categoryIndex);
-        const category = categories[categoryIndex];
+    const handleCategoryChange = async (categoryId) => {
+        console.log("Selected category ID:", categoryId);
+        setSelectedCategory(categoryId);
 
-        if (category && category.id) {
+        if (categoryId) {
             try {
-                const res = await getProductsByCategory(category.id);
+                const res = await getProductsByCategory(categoryId);
+                console.log("Fetched products for category:", res.data);
                 setProducts(res.data);
-                setResults([]); // clear search results
+                setResults([]);
                 setCurrentPage(1);
             } catch (error) {
                 console.error("Error fetching products by category:", error);
+                setError("Failed to load products for category");
             }
         } else {
-            // fallback: fetch all products
-            const res = await axios.get("http://localhost:8080/products/get");
-            setProducts(res.data);
+            try {
+                const res = await axios.get("http://localhost:8080/products/get");
+                setProducts(res.data);
+                setResults([]);
+                setCurrentPage(1);
+            } catch (error) {
+                console.error("Error fetching all products:", error);
+                setError("Failed to load all products");
+            }
         }
     };
-
 
     const handlePageChange = (page) => {
         if (page >= 1 && page <= totalPages) {
@@ -131,8 +133,7 @@ const MainShoppingSection = forwardRef(({
 
                 {/* Main Content */}
                 <main className="flex flex-col items-start justify-start w-full ml-30 overflow-y-auto">
-
-                    {/* ✅ Show "Clear Search" if results are active */}
+                    {/* Show "Clear Search" if results are active */}
                     {results.length > 0 && (
                         <div className="flex justify-between items-center w-full mb-6 px-2">
                             <p className="text-gray-600">
@@ -160,7 +161,6 @@ const MainShoppingSection = forwardRef(({
                         ))}
                     </div>
 
-                    {/* Pagination (hidden when search results are showing) */}
                     {results.length === 0 && (
                         <div className="flex items-center justify-between mb-12">
                             <button
