@@ -1,7 +1,5 @@
 import React from "react";
-import {BarChart3, Heart, Home, Package, PlusCircle, Settings, ShoppingCart} from "lucide-react";
-
-
+import { Heart, Home, Package, PlusCircle, Settings, ShoppingCart} from "lucide-react";
 
 const SidebarComponent = () => {
     return (

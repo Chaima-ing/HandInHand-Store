@@ -14,12 +14,10 @@ import ProfilePage from "./pages/ProfilePage.jsx";
 import CheckoutPage from "./pages/checkoutPage.jsx";
 import AddProduct from "./pages/AddProduct.jsx";
 import ProductsDashboard from "./pages/ProductsDashboard.jsx";
-
 import Donations from './pages/Donations.jsx';
-
 import DisplayProduct from "./pages/DisplayProduct.jsx";
 import UpdateProductPage from "./pages/UpdateProductPage.jsx";
-import Donates from "./pages/Donates.jsx";
+
 
 
 

@@ -29,6 +29,10 @@ export const resetPassword = (email, newPassword) => {
     return client.post("/reset-password", { email, newPassword });
 };
 
+export const logOutUser = (email,password) => {
+    return client.post("/LogOut", {email,password});
+};
+
 export const loginAdmin = (email, password) => {
     return client.post("/LoginAdmin", { email, password });
 };
