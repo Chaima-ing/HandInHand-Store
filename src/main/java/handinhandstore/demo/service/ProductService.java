@@ -1,20 +1,28 @@
 package handinhandstore.demo.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import handinhandstore.demo.repository.CategoryRepository;
 import handinhandstore.demo.repository.ProductRepository;
+import handinhandstore.demo.dto.ProductUpdateRequest;
+import handinhandstore.demo.model.entity.Category;
 import handinhandstore.demo.model.entity.Product;
 
 @Service
 public class ProductService {
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     public void saveProduct(Product product) {
         productRepository.save(product);
@@ -24,24 +32,28 @@ public class ProductService {
        productRepository.deleteById(id);
     }
 
-     public Product updateProduct(Long id, Product updatedProduct) {
-        Optional<Product> existingProductOpt = productRepository.findById(id);
+    public Product updateProduct(Long id, ProductUpdateRequest req) {
+        Product product = productRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Product not found"));
 
-        if (existingProductOpt.isEmpty()) {
-            throw new RuntimeException("Product not found with id: " + id);
+        product.setTitle(req.getTitle());
+        product.setDescription(req.getDescription());
+        product.setPriceType(req.getPriceType());
+        product.setFixedPrice(req.getFixedPrice());
+        product.setStatus(req.getStatus());
+        product.setDonationPercentage(req.getDonationPercentage());
+
+        if (req.getCategoriesIds() != null) {
+            Set<Category> categories = new HashSet<>();
+            for (Long categoryId : req.getCategoriesIds()) {
+                Category category = categoryRepository.findById(categoryId)
+                    .orElseThrow(() -> new RuntimeException("Category not found"));
+                categories.add(category);
+            }
+            product.setCategories(categories);
         }
 
-        Product existingProduct = existingProductOpt.get();
-
-        // Update fields
-        existingProduct.setTitle(updatedProduct.getTitle());
-        existingProduct.setDescription(updatedProduct.getDescription());
-        existingProduct.setPriceType(updatedProduct.getPriceType());
-        existingProduct.setFixedPrice(updatedProduct.getFixedPrice());
-        existingProduct.setCategories(updatedProduct.getCategories());
-        existingProduct.setStatus(updatedProduct.getStatus());
-
-        return productRepository.save(existingProduct);
+        return productRepository.save(product);
     }
 
     public List<Product> getMostFeaturedDonationProducts(int limit) {

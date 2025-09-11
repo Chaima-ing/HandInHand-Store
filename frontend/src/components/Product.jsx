@@ -13,11 +13,12 @@ function Product (){
    useEffect(() => {
        axios.get("http://localhost:8080/products/get/featured-donation")
            .then((res) => {
-               console.log("API response:", res.data);  // ✅ check structure
-               setProducts(res.data.slice(0,10)); //takes first 10
+               console.log("API response:", res.data);
+               setProducts(res.data.slice(0,10));
                setLoading(false);
            })
            .catch((error)=>{
+               console.log("API response:",error);
                setError("An error occured")+(error.message ? error.message : "");
                setLoading(false);
            });

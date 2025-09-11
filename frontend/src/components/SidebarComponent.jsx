@@ -32,12 +32,6 @@ const SidebarComponent = () => {
                         </a>
                     </li>
                     <li>
-                        <a href="/dashboard" className="flex items-center px-6 py-4 hover:bg-white/5 transition-colors border-r-4 border-transparent">
-                            <BarChart3 className="ml-3 w-5 h-5" />
-                            <span>لوحة التحكم</span>
-                        </a>
-                    </li>
-                    <li>
                         <a href="/orders" className="flex items-center px-6 py-4 hover:bg-white/5 transition-colors border-r-4 border-transparent">
                             <ShoppingCart className="ml-3 w-5 h-5" />
                             <span>الطلبات</span>

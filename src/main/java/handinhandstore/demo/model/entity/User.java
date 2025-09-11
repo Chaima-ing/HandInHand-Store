@@ -39,7 +39,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     private AccountStatus status = AccountStatus.ACTIVE;
 
-    // ✅ جديد: لتتبع آخر تحديث لكلمة المرور
     private LocalDateTime passwordUpdatedAt;
 
     @PrePersist

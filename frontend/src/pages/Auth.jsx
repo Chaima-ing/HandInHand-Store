@@ -55,7 +55,10 @@ const Auth = () => {
         }
 
         try {
+            console.log("Attempting login with:", { email, password });
             const result = await handleLogin({ email, password });
+            console.log("Login result:", result);
+
             if (result.success) {
                 navigate("/"); // or wherever you want
             } else {

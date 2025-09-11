@@ -22,6 +22,7 @@ import java.util.Collections; // Add this import at the top
 
 import handinhandstore.demo.service.ProductService;
 import handinhandstore.demo.dto.ProductRequest;
+import handinhandstore.demo.dto.ProductUpdateRequest;
 import handinhandstore.demo.model.entity.Product;
 import handinhandstore.demo.model.entity.User;
 import handinhandstore.demo.model.enums.PriceType;
@@ -94,9 +95,9 @@ public class ProductController {
     @PutMapping("Update-Product/{id_Product}")
     public ResponseEntity<Product> updateProduct(
             @PathVariable Long id_Product,
-            @RequestBody Product updatedProduct
+            @RequestBody ProductUpdateRequest updatedRequest
     ) {
-        Product product = productService.updateProduct(id_Product, updatedProduct);
+        Product product = productService.updateProduct(id_Product, updatedRequest);
         return ResponseEntity.ok(product);
     }
 

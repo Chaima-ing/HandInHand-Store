@@ -14,6 +14,8 @@ import ProfilePage from "./pages/ProfilePage.jsx";
 import CheckoutPage from "./pages/checkoutPage.jsx";
 import AddProduct from "./pages/AddProduct.jsx";
 import ProductsDashboard from "./pages/ProductsDashboard.jsx";
+import DisplayProduct from "./pages/DisplayProduct.jsx";
+import UpdateProductPage from "./pages/UpdateProductPage.jsx";
 
 
 function App() {
@@ -38,6 +40,8 @@ function App() {
                           <Route path="/checkoutPage" element={<CheckoutPage />} />
                           <Route path="/AddProduct" element={<AddProduct />} />
                           <Route path="/ProductsDashboard" element={<ProductsDashboard />} />
+                          <Route path="/DisplayProduct/:productId" element={<DisplayProduct />} />
+                          <Route path="/UpdateProductPage/:productId" element={<UpdateProductPage />} />
 
                           {/* Redirect unknown paths to home */}
                           <Route path="*" element={<Navigate to="/" replace />} />
