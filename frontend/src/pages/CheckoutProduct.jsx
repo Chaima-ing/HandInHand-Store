@@ -17,8 +17,8 @@ const CheckoutProduct = () => {
         axios
         .get("http://localhost:8080/products/getById", { params: { id: productId } })
             .then((response) => {
-                console.log("✅ API Response:", response);          // log the whole response
-                console.log("✅ Response Data:", response.data);    // log only the product object
+                console.log("✅ API Response:", response);
+                console.log("✅ Response Data:", response.data);
 
                 setProduct(response.data);
                 setIsLoading(false);

@@ -4,7 +4,6 @@ import MainShoppingSection from "../components/MainShoppingSection.jsx";
 import ShoppingHero from "../components/ShoppingHero.jsx";
 import {useCart}  from '../context/CartContext';
 import {useNavigate} from 'react-router-dom';
-import ImageUpload from "../components/ImageUpload.jsx";
 import {useRef} from "react";
 
 const ShoppingPage = () => {
@@ -27,7 +26,7 @@ const ShoppingPage = () => {
                           subtitle="Give All You Need"
                           onSearch={(query) => mainRef.current?.handleSearch(query)}
             />
-            {/*<ImageUpload productId={5}/>*/}
+
             <MainShoppingSection
                 onAddToCart={onAddToCart}
                 onDisplayDetails={onDisplayDetails}

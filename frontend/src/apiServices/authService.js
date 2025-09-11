@@ -4,6 +4,12 @@ export const loginUser = (email, password) => {
     return client.post("/UserLogin", {
         email: email,
         password: password
+    }).then(response => {
+        console.log("Login response:", response.data);
+        return response;
+    }).catch(error => {
+        console.error("Login error:", error.response?.data);
+        throw error;
     });
 };
 
