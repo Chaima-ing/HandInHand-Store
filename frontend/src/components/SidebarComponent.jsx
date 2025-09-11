@@ -1,7 +1,17 @@
-import React from "react";
-import { Heart, Home, Package, PlusCircle, Settings, ShoppingCart} from "lucide-react";
+import React, { useContext } from "react";
+import { Heart, Home, Package, PlusCircle, Settings, ShoppingCart, LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import AuthContext from "../context/AuthContext";
 
 const SidebarComponent = () => {
+    const { handlLogOut } = useContext(AuthContext);
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        handlLogOut();
+        navigate("/"); // redirect to login page after logout
+    };
+
     return (
         <aside className="w-64 bg-black text-white min-h-screen fixed top-0 right-0 flex flex-col shadow-xl z-10">
             <div className="text-center py-6 border-b border-white/10 mb-5">
@@ -9,14 +19,9 @@ const SidebarComponent = () => {
                 <p className="text-gray-400 text-sm">كل التبرعات لدعم أهالي غزة</p>
             </div>
 
+            {/* Main nav */}
             <nav className="flex-1">
                 <ul className="space-y-1">
-                    <li>
-                        <a href="/" className="flex items-center px-6 py-4 hover:bg-white/5 transition-colors border-r-4 border-transparent">
-                            <Home className="ml-3 w-5 h-5" />
-                            <span>الرئيسية</span>
-                        </a>
-                    </li>
                     <li>
                         <a href="/ProductsDashboard" className="flex items-center px-6 py-4 hover:bg-white/5 transition-colors border-r-4 border-transparent">
                             <Package className="ml-3 w-5 h-5" />
@@ -50,8 +55,23 @@ const SidebarComponent = () => {
                 </ul>
             </nav>
 
+            {/* Footer nav (homepage + logout) */}
+            <div className="border-t border-white/10">
+                <button
+                    onClick={() => navigate("/")}
+                    className="w-full flex items-center px-6 py-4 hover:bg-white/5 transition-colors text-left"
+                >
+                    <Home className="ml-3 w-5 h-5" />
+                </button>
+                <button
+                    onClick={handleLogout}
+                    className="w-full flex items-center px-6 py-4 hover:bg-white/5 transition-colors text-left text-red-400"
+                >
+                    <LogOut className="ml-3 w-5 h-5" />
+                </button>
+            </div>
         </aside>
     );
-}
+};
 
 export default SidebarComponent;

@@ -262,25 +262,25 @@ const Donations = () => {
         <div className="bg-white rounded-lg shadow-md p-4 mb-6">
           <div className="flex flex-wrap gap-2">
             <button
-              className={`px-4 py-2 rounded-full ${selectedFilter === 'all' ? 'bg-brand text-white' : 'bg-gray-200 text-gray-700'}`}
+              className={`px-4 py-2 rounded-full ${selectedFilter === 'all' ? 'bg-black text-white' : 'bg-gray-200 text-gray-700'}`}
               onClick={() => handleFilterChange('all')}
             >
               الكل
             </button>
             <button
-              className={`px-4 py-2 rounded-full ${selectedFilter === 'completed' ? 'bg-brand text-white' : 'bg-gray-200 text-gray-700'}`}
+              className={`px-4 py-2 rounded-full ${selectedFilter === 'completed' ? 'bg-black text-white' : 'bg-gray-200 text-gray-700'}`}
               onClick={() => handleFilterChange('completed')}
             >
               مكتمل
             </button>
             <button
-              className={`px-4 py-2 rounded-full ${selectedFilter === 'pending' ? 'bg-brand text-white' : 'bg-gray-200 text-gray-700'}`}
+              className={`px-4 py-2 rounded-full ${selectedFilter === 'pending' ? 'bg-black text-white' : 'bg-gray-200 text-gray-700'}`}
               onClick={() => handleFilterChange('pending')}
             >
               قيد الانتظار
             </button>
             <button
-              className={`px-4 py-2 rounded-full ${selectedFilter === 'failed' ? 'bg-brand text-white' : 'bg-gray-200 text-gray-700'}`}
+              className={`px-4 py-2 rounded-full ${selectedFilter === 'failed' ? 'bg-black text-white' : 'bg-gray-200 text-gray-700'}`}
               onClick={() => handleFilterChange('failed')}
             >
               فاشل
@@ -366,7 +366,7 @@ const Donations = () => {
         </div>
 
         {/* Impact Section */}
-        <div className="bg-gradient-to-r from-brand to-green-700 rounded-lg shadow-md p-8 mt-12 text-white text-center">
+        <div className="bg-gradient-to-r from-gray-900 to-green-700 rounded-lg shadow-md p-8 mt-12 text-white text-center">
           <h2 className="text-2xl font-bold mb-4">تأثير تبرعاتك</h2>
           <p className="mb-6">
             بفضل تبرعاتك السخية، استطعنا تقديم المساعدة للعديد من العائلات في غزة.
