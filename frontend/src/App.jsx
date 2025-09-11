@@ -16,6 +16,7 @@ import AddProduct from "./pages/AddProduct.jsx";
 import ProductsDashboard from "./pages/ProductsDashboard.jsx";
 import DisplayProduct from "./pages/DisplayProduct.jsx";
 import UpdateProductPage from "./pages/UpdateProductPage.jsx";
+import Donates from "./pages/Donates.jsx";
 
 
 function App() {
