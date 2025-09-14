@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import client from "../apiServices/api.js";
+import { useTranslation } from "react-i18next";
 
 const UpdateProduct = () => {
+    const { t, i18n } = useTranslation();
     const { state } = useLocation();
     const { productId } = useParams();
     const navigate = useNavigate();
@@ -25,16 +27,17 @@ const UpdateProduct = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const res = await client.get("/api/categories/get/all");
-                setCategories(res.data);
-            } catch (err) {
-                console.error("Error fetching categories:", err);
-                setError("Failed to load categories");
+                const response = await client.get("/api/categories/get/all");
+                console.log("Fetched categories:", JSON.stringify(response.data, null, 2));
+                setCategories(response.data);
+            } catch (error) {
+                console.error("Error fetching categories:", error);
+                setError(t("updateProduct.error.categoriesLoadFailed"));
             }
         };
 
         fetchCategories();
-    }, []);
+    }, [t]);
 
     useEffect(() => {
         if (state?.product) {
@@ -53,12 +56,13 @@ const UpdateProduct = () => {
                         donationPercentage: res.data.donationPercentage || 0,
                     });
                 } catch (err) {
-                    console.error("❌ Failed to fetch product", err)
+                    console.error("❌ Failed to fetch product", err);
+                    setError(t("updateProduct.error.productFetchFailed"));
                 }
             };
             fetchProduct();
         }
-    }, [productId, state?.product]);
+    }, [productId, state?.product, t]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -71,60 +75,39 @@ const UpdateProduct = () => {
 
         // Basic validation
         if (!formValues.title) {
-            setError("Product title is required");
+            setError(t("updateProduct.validation.titleRequired"));
             return;
         }
         if (!formValues.status) {
-            setError("Product status is required");
+            setError(t("updateProduct.validation.statusRequired"));
             return;
         }
         if (!formValues.categories.length) {
-            setError("At least one category is required");
+            setError(t("updateProduct.validation.categoryRequired"));
             return;
         }
 
         try {
-            const payload = {
-                title: formValues.title,
-                description: formValues.description,
-                priceType: formValues.priceType,
-                fixedPrice: formValues.priceType === "FIXED" ? parseFloat(formValues.fixedPrice) : null,
-                status: formValues.status,
-                donationPercentage: parseFloat(formValues.donationPercentage) || 0,
-                categoriesIds: formValues.categories.map((cat) => cat.id),
-            };
-
-            console.log("Payload:", JSON.stringify(payload, null, 2));
-
-            await client.put(`/Update-Product/${productId}`, payload, {
-                headers: { "Content-Type": "application/json" },
-            });
-
-            alert("✅ Product updated successfully!");
+            const res = await client.put(`/api/products/update/${productId}`, formValues);
+            alert(t("updateProduct.successMessage"));
             navigate("/ProductsDashboard");
         } catch (err) {
-            console.error("❌ Error updating product:", err);
-            const errorMessage = err.response?.data?.error || "حدث خطأ أثناء تعديل المنتج";
-            setError(errorMessage);
+            console.error("❌ Failed to update product", err);
+            setError(t("updateProduct.error.updateFailed"));
         }
     };
 
     return (
-        <div className="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md mt-10" dir="rtl">
-            <h1 className="text-2xl font-bold mb-6 text-green-700">تعديل المنتج</h1>
+        <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md" dir={i18n.language === 'ar' ? 'rtl' : 'ltr'}>
+            <h1 className="text-2xl font-bold mb-6">{t("updateProduct.title")}</h1>
 
-            {error && (
-                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-                    {error}
-                </div>
-            )}
+            {error && <p className="text-red-500 mb-4">{error}</p>}
 
             <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Title */}
                 <div>
-                    <label className="block font-medium mb-1">اسم المنتج</label>
+                    <label className="block font-medium mb-1">{t("updateProduct.form.titleLabel")}</label>
                     <input
-                        type="text"
                         name="title"
                         value={formValues.title}
                         onChange={handleChange}
@@ -135,53 +118,35 @@ const UpdateProduct = () => {
 
                 {/* Price */}
                 <div>
-                    <label className="block font-medium mb-1">السعر</label>
+                    <label className="block font-medium mb-1">{t("updateProduct.form.priceLabel")}</label>
                     <input
-                        type="number"
                         name="fixedPrice"
+                        type="number"
                         value={formValues.fixedPrice}
                         onChange={handleChange}
                         className="w-full border px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
                         min="0"
                         step="0.01"
+                        required
                     />
                 </div>
 
-                {/* Price Type */}
+                {/* Category */}
                 <div>
-                    <label className="block font-medium mb-1">نوع السعر</label>
+                    <label className="block font-medium mb-1">{t("updateProduct.form.categoryLabel")}</label>
                     <select
-                        name="priceType"
-                        value={formValues.priceType}
-                        onChange={handleChange}
-                        className="w-full border px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
-                    >
-                        <option value="FIXED">ثابت</option>
-                        <option value="AUCTION">مزاد</option>
-                    </select>
-                </div>
-
-                {/* Categories */}
-                <div>
-                    <label className="block font-medium mb-1">التصنيف</label>
-                    <select
-                        name="categories"
-                        multiple
-                        value={formValues.categories.map((cat) => cat.id)}
+                        name="categoryId"
+                        value={formValues.categories[0]?.id || ""}
                         onChange={(e) =>
                             setFormValues((prev) => ({
                                 ...prev,
-                                categories: Array.from(e.target.selectedOptions).map((option) => ({
-                                    id: parseInt(option.value, 10),
-                                })),
+                                categories: [{ id: e.target.value }],
                             }))
                         }
                         className="w-full border px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
                         required
                     >
-                        <option value="" disabled>
-                            اختر تصنيف المنتج
-                        </option>
+                        <option value="">{t("updateProduct.form.categoryPlaceholder")}</option>
                         {categories.map((cat) => (
                             <option key={cat.id} value={cat.id}>
                                 {cat.name}
@@ -192,7 +157,7 @@ const UpdateProduct = () => {
 
                 {/* Status */}
                 <div>
-                    <label className="block font-medium mb-1">الحالة</label>
+                    <label className="block font-medium mb-1">{t("updateProduct.form.statusLabel")}</label>
                     <select
                         name="status"
                         value={formValues.status}
@@ -200,15 +165,15 @@ const UpdateProduct = () => {
                         className="w-full border px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
                         required
                     >
-                        <option value="AVAILABLE">متاح</option>
-                        <option value="PENDING">في انتظار المراجعة</option>
-                        <option value="SOLD">مباع</option>
+                        <option value="AVAILABLE">{t("updateProduct.form.status.available")}</option>
+                        <option value="PENDING">{t("updateProduct.form.status.pending")}</option>
+                        <option value="SOLD">{t("updateProduct.form.status.sold")}</option>
                     </select>
                 </div>
 
                 {/* Donation Percentage */}
                 <div>
-                    <label className="block font-medium mb-1">نسبة التبرع</label>
+                    <label className="block font-medium mb-1">{t("updateProduct.form.donationPercentageLabel")}</label>
                     <input
                         type="number"
                         name="donationPercentage"
@@ -223,7 +188,7 @@ const UpdateProduct = () => {
 
                 {/* Description */}
                 <div>
-                    <label className="block font-medium mb-1">الوصف</label>
+                    <label className="block font-medium mb-1">{t("updateProduct.form.descriptionLabel")}</label>
                     <textarea
                         name="description"
                         value={formValues.description}
@@ -238,7 +203,7 @@ const UpdateProduct = () => {
                     type="submit"
                     className="w-full bg-green-700 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-800 transition-colors"
                 >
-                    حفظ التعديلات
+                    {t("updateProduct.form.submitButton")}
                 </button>
             </form>
         </div>

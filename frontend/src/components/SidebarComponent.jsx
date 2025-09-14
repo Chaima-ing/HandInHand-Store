@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Heart, Home, Package, PlusCircle, Settings, ShoppingCart, LogOut } from "lucide-react";
+import { Heart, Home, Package, PlusCircle, Settings, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import { useTranslation } from "react-i18next";
@@ -34,12 +34,6 @@ const SidebarComponent = () => {
                         <a href="/AddProduct" className="flex items-center px-6 py-4 hover:bg-white/5 transition-colors border-r-4 border-transparent">
                             <PlusCircle className="ml-3 w-5 h-5 mx-3" />
                             <span>{t('sidebar.nav.addProduct')}</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/orders" className="flex items-center px-6 py-4 hover:bg-white/5 transition-colors border-r-4 border-transparent">
-                            <ShoppingCart className="ml-3 w-5 h-5 mx-3" />
-                            <span>{t('sidebar.nav.orders')}</span>
                         </a>
                     </li>
                     <li>
