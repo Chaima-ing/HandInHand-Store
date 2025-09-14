@@ -26,11 +26,11 @@ function Hero(){
         <section className="hero">
             <div className="hero-overlay">
                 <div className="hero-content">
-                    <h1>{t("hero_h1")}</h1>
-                    <p>{t("hero_p")}</p>
+                    <h1>{t("hero.title")}</h1>
+                    <p>{t("hero.description")}</p>
                         <div className="hero-buttons">
-                            <button className="btn-outline">{t("button_outline")}</button>
-                            <button className="btn-green" onClick={() => {navigate("/shoppingPage")}}>{t("browse_button")}</button>
+                            <button className="btn-outline">{t("hero.contactButton")}</button>
+                            <button className="btn-green" onClick={() => {navigate("/shoppingPage")}}>{t("hero.browseButton")}</button>
                         </div>
                     <button className="circle-btn floating-btn"><FaMessage className="circle-icon"/></button>
                 </div>

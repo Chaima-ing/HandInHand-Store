@@ -6,7 +6,6 @@ import ForgotPassword from "./pages/ForgotPassword.jsx";
 import Login from "./pages/Login.jsx";
 import Homepage from "./pages/Homepage.jsx";
 import CheckoutProduct from "./pages/CheckoutProduct.jsx";
-import ProductPage from "./pages/ProductPage.jsx";
 import VerifyCode from "./pages/VerifyCode.jsx";
 import CartPage from "./pages/CartPage.jsx";
 import ShoppingPage from "./pages/ShoppingPage.jsx";
@@ -36,7 +35,6 @@ function App() {
 
                           <Route path="/" element={<Homepage />} />
                           <Route path="/checkoutProduct/:productId" element={<CheckoutProduct />} />
-                          <Route path="/productPage" element={<ProductPage />} />
                           <Route path="/shopingCart" element={<CartPage />}/>
                           <Route path="/shoppingPage" element={<ShoppingPage />} />
                           <Route path="/profilePage" element={<ProfilePage />} />

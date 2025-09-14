@@ -54,11 +54,11 @@ const AddProduct = () => {
         };
 
         try {
-            // 1️⃣ Save product
+
             const res = await client.post("/Add-Product", productData);
             const productId = res.data.productId;
 
-            // 2️⃣ Upload each image
+
             for (let file of images) {
                 const formData = new FormData();
                 formData.append("file", file);
@@ -80,7 +80,7 @@ const AddProduct = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 flex" dir="rtl">
+        <div className="min-h-screen bg-gray-50 flex w-screen" dir="rtl">
             <SidebarComponent />
 
             <main className="flex-1 mr-64 p-8">

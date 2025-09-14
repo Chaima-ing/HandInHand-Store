@@ -1,11 +1,13 @@
-// components/Sidebar.jsx
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const Sidebar = ({ categories = [], selectedCategory, onCategoryChange }) => {
+    const { t, i18n } = useTranslation();
+
     return (
-        <aside className="w-64 flex-shrink-0 h-[calc(100vh-4rem)] h-fit sticky top-6 self-start shadow">
+        <aside className="w-64 flex-shrink-0 h-[calc(100vh-4rem)] h-fit sticky top-6 self-start shadow" dir={i18n.language === 'ar' ? 'rtl' : 'ltr'}>
             <div className="bg-black rounded-lg p-6 shadow-sm">
-                <h3 className="font-semibold text-white mb-4">Category</h3>
+                <h3 className="font-semibold text-white mb-4">{t("shoppingSidebar.categoryTitle")}</h3>
                 <div className="space-y-4 space-x-6">
                     <div className="flex items-center justify-between">
                         <label className="flex items-center cursor-pointer">
@@ -24,7 +26,7 @@ const Sidebar = ({ categories = [], selectedCategory, onCategoryChange }) => {
                                         : "text-white"
                                 }`}
                             >
-                                All Categories
+                                {t("shoppingSidebar.allCategories")}
                             </span>
                         </label>
                     </div>

@@ -1,35 +1,36 @@
 import "./styles/Product.css";
 import { Link } from "react-router-dom";
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
-function Product (){
+function Product() {
+    const { t, i18n } = useTranslation();
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [err, setError] = useState("");
 
+    useEffect(() => {
+        axios.get("http://localhost:8080/products/get/featured-donation")
+            .then((res) => {
+                console.log("API response:", res.data);
+                setProducts(res.data.slice(0, 10));
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.log("API response:", error);
+                setError(t("product.errorMessage") + (error.message ? `: ${error.message}` : ""));
+                setLoading(false);
+            });
+    } );
 
-   const [products, setProducts] = useState([]);
-   const [loading, setLoading] = useState(true);
-   const [err, setError] = useState("");
+    if (loading) return <p>{t("product.loadingMessage")}</p>;
+    if (err) return <p className="text-red-600">{err}</p>;
 
-   useEffect(() => {
-       axios.get("http://localhost:8080/products/get/featured-donation")
-           .then((res) => {
-               console.log("API response:", res.data);
-               setProducts(res.data.slice(0,10));
-               setLoading(false);
-           })
-           .catch((error)=>{
-               console.log("API response:",error);
-               setError("An error occured")+(error.message ? error.message : "");
-               setLoading(false);
-           });
-   }, []);
-   if (loading) return <p>Loading</p>;
-    if(err) return <p className="text-red-600">{err}</p>;
-
-    return(
-        <section className="donation-section">
-            <h2 className="text-2xl font-bold text-black">Featured Products</h2>
-            <p className="text-lg text-gray-800 mt-4">Top 10 products with high donation precentage</p>
+    return (
+        <section className="donation-section" dir={i18n.language === 'ar' ? 'rtl' : 'ltr'}>
+            <h2 className="text-2xl font-bold text-black">{t("product.title")}</h2>
+            <p className="text-lg text-gray-800 mt-4">{t("product.description")}</p>
             <div className="flex justify-center flex-wrap gap-6 w-full max-w-6xl mx-auto px-4 mt-5">
                 {products.map((p) => (
                     <Link
@@ -37,7 +38,7 @@ function Product (){
                         key={p.id}
                         className="group bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 w-full sm:w-64 lg:w-56 xl:w-52 max-w-xs flex-shrink-0"
                     >
-                        {/* Product Image */}
+
                         <div className="relative overflow-hidden">
                             {p.images && p.images.length > 0 ? (
                                 <img
@@ -53,15 +54,13 @@ function Product (){
                                 </div>
                             )}
 
-                            {/* Donation Badge */}
                             {p.donationPercentage && (
                                 <div className="absolute top-3 right-3 bg-red-600 text-white text-xs px-2 py-1 rounded-full font-medium">
-                                    % {p.donationPercentage} For Donation
+                                    {t("product.donationBadge", { percentage: p.donationPercentage })}
                                 </div>
                             )}
                         </div>
 
-                        {/* Product Details */}
                         <div className="p-3">
                             <h2 className="text-base font-semibold text-gray-800 mb-2 line-clamp-2 group-hover:text-red-600 transition-colors">
                                 {p.title}
@@ -72,12 +71,11 @@ function Product (){
                             </p>
 
                             <div className="flex items-center justify-between">
-                                  <span className="text-lg font-bold text-red-700">
+                                <span className="text-lg font-bold text-red-700">
                                     ${p.fixedPrice}
-                                  </span>
-
+                                </span>
                                 <div className="bg-black text-white px-3 py-1 rounded-lg text-md font-medium group-hover:bg-green-700 transition-colors">
-                                    Buy Now
+                                    {t("product.buyNowButton")}
                                 </div>
                             </div>
                         </div>
@@ -88,4 +86,4 @@ function Product (){
     );
 }
 
-export default Product
+export default Product;

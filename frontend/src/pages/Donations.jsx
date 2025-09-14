@@ -218,7 +218,7 @@ const Donations = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex" dir="rtl">
+    <div className="min-h-screen bg-gray-50 flex w-screen" dir="rtl">
       <SidebarComponent />
       
       {/* Main Content */}

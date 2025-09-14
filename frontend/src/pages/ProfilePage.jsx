@@ -1,12 +1,15 @@
-import React, {useContext, useState} from 'react';
-import {User, Shield, Bell, Store, Heart, Globe, Trash2, Upload, InfoIcon} from 'lucide-react';
+import React, { useContext, useState } from 'react';
+import { User, Shield, Bell, Store, Heart, Globe, Trash2, Upload, InfoIcon } from 'lucide-react';
 import AuthContext from "../context/AuthContext";
 import DeleteSection from "../components/DeleteSection.jsx";
 import ProfileSection from "../components/ProfileSection.jsx";
 import SecuritySection from "../components/SecuritySection.jsx";
 import SidebarComponent from "../components/SidebarComponent.jsx";
+import LanguageSection from "../components/LanguageSection.jsx";
+import { useTranslation } from "react-i18next";
 
 const ProfilePage = () => {
+    const { t, i18n } = useTranslation();
     const [activeSection, setActiveSection] = useState('profile');
     const [donationPercent, setDonationPercent] = useState(100);
     const [notifications, setNotifications] = useState({
@@ -18,7 +21,6 @@ const ProfilePage = () => {
     });
 
     const [isLoading, setIsLoading] = useState(false);
-
     const { setUser } = useContext(AuthContext);
 
     const toggleNotification = (key) => {
@@ -30,13 +32,13 @@ const ProfilePage = () => {
 
     const SettingsNav = () => {
         const navItems = [
-            { id: 'profile', icon: User, label: 'الملف الشخصي' },
-            { id: 'security', icon: Shield, label: 'الأمان' },
-            { id: 'notifications', icon: Bell, label: 'الإشعارات' },
-            { id: 'store', icon: Store, label: 'إعدادات المتجر' },
-            { id: 'donation', icon: Heart, label: 'تفضيلات التبرع' },
-            { id: 'language', icon: Globe, label: 'اللغة والمنطقة' },
-            { id: 'delete', icon: Trash2, label: 'حذف الحساب' }
+            { id: 'profile', icon: User, label: t('profilePage.nav.profile') },
+            { id: 'security', icon: Shield, label: t('profilePage.nav.security') },
+            { id: 'notifications', icon: Bell, label: t('profilePage.nav.notifications') },
+            { id: 'store', icon: Store, label: t('profilePage.nav.store') },
+            { id: 'donation', icon: Heart, label: t('profilePage.nav.donation') },
+            { id: 'language', icon: Globe, label: t('profilePage.nav.language') },
+            { id: 'delete', icon: Trash2, label: t('profilePage.nav.delete') }
         ];
 
         return (
@@ -85,41 +87,41 @@ const ProfilePage = () => {
     const NotificationsSection = () => (
         <div className="bg-white rounded-2xl shadow-lg p-8 min-w-[620px]">
             <div className="flex items-center mb-6 pb-4 border-b border-gray-100">
-                <div className="w-10 h-10 bg-green-600 text-white rounded-full flex items-center justify-center ml-4">
+                <div className="w-10 h-10 bg-green-600 text-white rounded-full flex items-center justify-center ml-4 mx-4">
                     <Bell className="w-5 h-5" />
                 </div>
-                <h2 className="text-2xl font-bold">الإشعارات</h2>
+                <h2 className="text-2xl font-bold">{t('profilePage.notifications.title')}</h2>
             </div>
-            <p className="text-gray-600 mb-8">إدارة تفضيلات الإشعارات والاتصالات</p>
+            <p className="text-gray-600 mb-8">{t('profilePage.notifications.description')}</p>
 
             <div className="space-y-1 mb-8">
                 <NotificationToggle
-                    label="الإشعارات عبر البريد الإلكتروني"
-                    description="تلقي تحديثات مهمة عبر البريد الإلكتروني"
+                    label={t('profilePage.notifications.emailLabel')}
+                    description={t('profilePage.notifications.emailDescription')}
                     checked={notifications.email}
                     onChange={() => toggleNotification('email')}
                 />
                 <NotificationToggle
-                    label="الإشعارات داخل التطبيق"
-                    description="تلقي إشعارات داخل المتجر عند حدوث تحديثات"
+                    label={t('profilePage.notifications.inAppLabel')}
+                    description={t('profilePage.notifications.inAppDescription')}
                     checked={notifications.inApp}
                     onChange={() => toggleNotification('inApp')}
                 />
                 <NotificationToggle
-                    label="إشعارات الطلبات الجديدة"
-                    description="تلقي إشعار عند استلام طلبات جديدة"
+                    label={t('profilePage.notifications.newOrdersLabel')}
+                    description={t('profilePage.notifications.newOrdersDescription')}
                     checked={notifications.newOrders}
                     onChange={() => toggleNotification('newOrders')}
                 />
                 <NotificationToggle
-                    label="إشعارات التبرعات"
-                    description="تلقي تحديثات حول تأثير تبرعاتك في غزة"
+                    label={t('profilePage.notifications.donationsLabel')}
+                    description={t('profilePage.notifications.donationsDescription')}
                     checked={notifications.donations}
                     onChange={() => toggleNotification('donations')}
                 />
                 <NotificationToggle
-                    label="عروض وتحديثات المتجر"
-                    description="تلقي عروض خاصة وتحديثات من المتجر"
+                    label={t('profilePage.notifications.offersLabel')}
+                    description={t('profilePage.notifications.offersDescription')}
                     checked={notifications.offers}
                     onChange={() => toggleNotification('offers')}
                 />
@@ -129,7 +131,7 @@ const ProfilePage = () => {
                 <button
                     className="px-8 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-all transform hover:-translate-y-1 hover:shadow-lg"
                 >
-                    حفظ التغييرات
+                    {t('profilePage.notifications.saveButton')}
                 </button>
             </div>
         </div>
@@ -138,50 +140,50 @@ const ProfilePage = () => {
     const StoreSection = () => (
         <div className="bg-white rounded-2xl shadow-lg p-8 min-w-[620px]">
             <div className="flex items-center mb-6 pb-4 border-b border-gray-100">
-                <div className="w-10 h-10 bg-green-600 text-white rounded-full flex items-center justify-center ml-4">
+                <div className="w-10 h-10 bg-green-600 text-white rounded-full flex items-center justify-center mx-4">
                     <Store className="w-5 h-5" />
                 </div>
-                <h2 className="text-2xl font-bold">إعدادات المتجر</h2>
+                <h2 className="text-2xl font-bold">{t('profilePage.store.title')}</h2>
             </div>
-            <p className="text-gray-600 mb-8">إدارة إعدادات متجرك الخاص</p>
+            <p className="text-gray-600 mb-8">{t('profilePage.store.description')}</p>
 
             <div className="space-y-6 mb-8">
                 <div>
-                    <label className="block text-gray-700 font-semibold mb-3">اسم المتجر *</label>
+                    <label className="block text-gray-700 font-semibold mb-3">{t('profilePage.store.storeNameLabel')}</label>
                     <input
                         type="text"
-                        defaultValue="متجر غزة للجميع"
+                        defaultValue={t('profilePage.store.storeNameDefault')}
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-green-600 focus:ring-3 focus:ring-green-100"
                     />
                 </div>
                 <div>
-                    <label className="block text-gray-700 font-semibold mb-3">وصف المتجر</label>
+                    <label className="block text-gray-700 font-semibold mb-3">{t('profilePage.store.storeDescriptionLabel')}</label>
                     <textarea
                         rows="4"
-                        defaultValue="متجر غزة للجميع هو منصة لبيع المنتعات وتوجيه جميع الأرباح لدعم العائلات المحتاجة في غزة. نسعى لتقديم أفضل المنتجات مع أكبر فائدة لأهلنا في غزة."
+                        defaultValue={t('profilePage.store.storeDescriptionDefault')}
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-green-600 focus:ring-3 focus:ring-green-100"
                     />
                 </div>
                 <div>
-                    <label className="block text-gray-700 font-semibold mb-3">عنوان المتجر</label>
+                    <label className="block text-gray-700 font-semibold mb-3">{t('profilePage.store.storeAddressLabel')}</label>
                     <input
                         type="text"
-                        defaultValue="شارع عمر المختار، غزة"
+                        defaultValue={t('profilePage.store.storeAddressDefault')}
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-green-600 focus:ring-3 focus:ring-green-100"
                     />
                 </div>
                 <div>
-                    <label className="block text-gray-700 font-semibold mb-3">شعار المتجر</label>
+                    <label className="block text-gray-700 font-semibold mb-3">{t('profilePage.store.storeLogoLabel')}</label>
                     <div className="flex items-center gap-6">
                         <div className="w-24 h-24 border-2 border-dashed border-gray-300 rounded-xl flex items-center justify-center">
-                            <img src="https://via.placeholder.com/80" alt="شعار المتجر" className="max-w-full max-h-full" />
+                            <img src="https://via.placeholder.com/80" alt={t('profilePage.store.storeLogoAlt')} className="max-w-full max-h-full" />
                         </div>
                         <div>
                             <button className="flex items-center gap-2 px-4 py-2 text-sm border-2 border-green-600 text-green-600 rounded-full hover:bg-green-600 hover:text-white transition-colors">
                                 <Upload className="w-4 h-4" />
-                                تغيير الشعار
+                                {t('profilePage.store.changeLogoButton')}
                             </button>
-                            <p className="text-xs text-gray-500 mt-2">يجب أن يكون الشعار بحجم 300×300 بكسل كحد أقصى</p>
+                            <p className="text-xs text-gray-500 mt-2">{t('profilePage.store.logoSizeHint')}</p>
                         </div>
                     </div>
                 </div>
@@ -189,12 +191,12 @@ const ProfilePage = () => {
 
             <div className="flex gap-4">
                 <button className="px-8 py-3 bg-gray-200 text-gray-600 rounded-full hover:bg-gray-300 transition-colors">
-                    إلغاء
+                    {t('profilePage.store.cancelButton')}
                 </button>
                 <button
                     className="px-8 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-all transform hover:-translate-y-1 hover:shadow-lg"
                 >
-                    حفظ التغييرات
+                    {t('profilePage.store.saveButton')}
                 </button>
             </div>
         </div>
@@ -203,15 +205,15 @@ const ProfilePage = () => {
     const DonationSection = () => (
         <div className="bg-white rounded-2xl shadow-lg p-8 min-w-[620px]">
             <div className="flex items-center mb-6 pb-4 border-b border-gray-100">
-                <div className="w-10 h-10 bg-green-600 text-white rounded-full flex items-center justify-center ml-4">
+                <div className="w-10 h-10 bg-green-600 text-white rounded-full flex items-center justify-center mx-4">
                     <Heart className="w-5 h-5" />
                 </div>
-                <h2 className="text-2xl font-bold">تفضيلات التبرع</h2>
+                <h2 className="text-2xl font-bold">{t('profilePage.donation.title')}</h2>
             </div>
-            <p className="text-gray-600 mb-8">إدارة إعدادات التبرع لدعم أهالي غزة</p>
+            <p className="text-gray-600 mb-8">{t('profilePage.donation.description')}</p>
 
             <div className="mb-8">
-                <label className="block text-gray-700 font-semibold mb-4">النسبة الافتراضية للتبرع من الأرباح</label>
+                <label className="block text-gray-700 font-semibold mb-4">{t('profilePage.donation.donationPercentLabel')}</label>
                 <div className="flex items-center gap-4 mb-4">
                     <input
                         type="range"
@@ -226,42 +228,40 @@ const ProfilePage = () => {
                 <div className="flex items-center gap-2 p-4 bg-green-50 rounded-xl">
                     <InfoIcon className="w-5 h-5 text-green-600 flex-shrink-0" />
                     <p className="text-green-700 font-medium">
-                        تبرعك بنسبة {donationPercent}% يعني أن {donationPercent === '100' ? 'كل' : donationPercent + '% من'} الأرباح ستذهب لدعم أهالي غزة
+                        {t('profilePage.donation.donationPercentInfo', { percent: donationPercent })}
                     </p>
                 </div>
             </div>
 
             <div className="space-y-6 mb-8">
                 <div>
-                    <label className="block text-gray-700 font-semibold mb-3">الجهة المتبرع لها</label>
+                    <label className="block text-gray-700 font-semibold mb-3">{t('profilePage.donation.recipientLabel')}</label>
                     <select className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-green-600 focus:ring-3 focus:ring-green-100">
-                        <option value="unrwa">الأونروا - غزة</option>
-                        <option value="red-crescent">الهلال الأحمر الفلسطيني</option>
-                        <option value="medical-aid">مركز المساعدات الطبية</option>
-                        <option value="other">منظمة أخرى</option>
+                        <option value="unrwa">{t('profilePage.donation.recipientOptions.unrwa')}</option>
+                        <option value="red-crescent">{t('profilePage.donation.recipientOptions.redCrescent')}</option>
+                        <option value="medical-aid">{t('profilePage.donation.recipientOptions.medicalAid')}</option>
+                        <option value="other">{t('profilePage.donation.recipientOptions.other')}</option>
                     </select>
                 </div>
 
                 <div>
-                    <label className="block text-gray-700 font-semibold mb-4">تقرير التبرعات</label>
+                    <label className="block text-gray-700 font-semibold mb-4">{t('profilePage.donation.reportLabel')}</label>
                     <div className="flex items-center justify-between p-4 border border-gray-200 rounded-xl">
                         <div>
-                            <h3 className="font-semibold text-gray-900 mb-1">إرسال تقارير شهرية عن التبرعات</h3>
-                            <p className="text-sm text-gray-600">تلقي تقرير شهري مفصل عن تبرعاتك وأثرها</p>
+                            <h3 className="font-semibold text-gray-900 mb-1">{t('profilePage.donation.reportToggleLabel')}</h3>
+                            <p className="text-sm text-gray-600">{t('profilePage.donation.reportToggleDescription')}</p>
                         </div>
                         <label className="relative inline-flex items-center cursor-pointer">
                             <input
                                 type="checkbox"
                                 className="sr-only peer"
                             />
-                            <div className="w-14 h-8 bg-gray-300 rounded-full peer-checked:bg-green-600 transition-colors relative">
+                            <div className="w-14 h-8 bg-gray-300 rounded-full peer peer-checked:bg-green-600 transition-colors relative">
                                 <div
                                     className="absolute top-1 left-1 w-6 h-6 bg-white rounded-full transition-transform transform peer-checked:translate-x-6"
                                 ></div>
                             </div>
                         </label>
-
-
                     </div>
                 </div>
             </div>
@@ -270,62 +270,7 @@ const ProfilePage = () => {
                 <button
                     className="px-8 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-all transform hover:-translate-y-1 hover:shadow-lg"
                 >
-                    حفظ التفضيلات
-                </button>
-            </div>
-        </div>
-    );
-
-    const LanguageSection = () => (
-        <div className="bg-white rounded-2xl shadow-lg p-8 min-w-[620px]">
-            <div className="flex items-center mb-6 pb-4 border-b border-gray-100">
-                <div className="w-10 h-10 bg-green-600 text-white rounded-full flex items-center justify-center ml-4">
-                    <Globe className="w-5 h-5" />
-                </div>
-                <h2 className="text-2xl font-bold">اللغة والمنطقة</h2>
-            </div>
-            <p className="text-gray-600 mb-8">إدارة إعدادات اللغة والمنطقة الزمنية</p>
-
-            <div className="grid md:grid-cols-2 gap-6 mb-8">
-                <div>
-                    <label className="block text-gray-700 font-semibold mb-3">اللغة *</label>
-                    <select className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-green-600 focus:ring-3 focus:ring-green-100">
-                        <option value="ar">العربية</option>
-                        <option value="en">الإنجليزية</option>
-                    </select>
-                </div>
-                <div>
-                    <label className="block text-gray-700 font-semibold mb-3">المنطقة الزمنية *</label>
-                    <select className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-green-600 focus:ring-3 focus:ring-green-100">
-                        <option value="asia/gaza">(UTC+2) غزة</option>
-                        <option value="asia/amman">(UTC+2) عمّان</option>
-                        <option value="asia/beirut">(UTC+2) بيروت</option>
-                        <option value="asia/riyadh">(UTC+3) الرياض</option>
-                    </select>
-                </div>
-                <div>
-                    <label className="block text-gray-700 font-semibold mb-3">العملة *</label>
-                    <select className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-green-600 focus:ring-3 focus:ring-green-100">
-                        <option value="ils">شيكل جديد (₪)</option>
-                        <option value="usd">دولار أمريكي ($)</option>
-                        <option value="eur">يورو (€)</option>
-                    </select>
-                </div>
-                <div>
-                    <label className="block text-gray-700 font-semibold mb-3">تنسيق التاريخ</label>
-                    <select className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-green-600 focus:ring-3 focus:ring-green-100">
-                        <option value="dd/mm/yyyy">يوم/شهر/سنة (٢٧/٠٧/٢٠٢٥)</option>
-                        <option value="mm/dd/yyyy">شهر/يوم/سنة (٠٧/٢٧/٢٠٢٥)</option>
-                        <option value="yyyy-mm-dd">سنة-شهر-يوم (٢٠٢٥-٠٧-٢٧)</option>
-                    </select>
-                </div>
-            </div>
-
-            <div className="flex justify-start">
-                <button
-                    className="px-8 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-all transform hover:-translate-y-1 hover:shadow-lg"
-                >
-                    حفظ الإعدادات
+                    {t('profilePage.donation.saveButton')}
                 </button>
             </div>
         </div>
@@ -339,39 +284,31 @@ const ProfilePage = () => {
             case 'store': return <StoreSection />;
             case 'donation': return <DonationSection />;
             case 'language': return <LanguageSection />;
-            case 'delete': return <DeleteSection isLoading = {isLoading} setIsLoading = {setIsLoading} setUser = {setUser} />;
+            case 'delete': return <DeleteSection isLoading={isLoading} setIsLoading={setIsLoading} setUser={setUser} />;
             default: return <ProfileSection />;
         }
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 flex" dir="rtl">
+        <div className="min-h-screen bg-gray-50 flex w-screen" dir={i18n.language === 'ar' ? 'rtl' : 'ltr'}>
             <SidebarComponent />
-
-            {/* Main Content */}
             <main className="flex-1 mr-64 p-8">
-                {/* Page Header */}
                 <div className="text-center mb-12">
                     <h1 className="text-4xl font-bold text-gray-900 mb-4 relative inline-block">
-                        الإعدادات
+                        {t('profilePage.title')}
                         <div className="absolute -bottom-3 right-1/2 transform translate-x-1/2 w-24 h-1 bg-green-600 rounded"></div>
                     </h1>
                     <p className="text-gray-600 text-lg max-w-2xl mx-auto mt-6">
-                        إدارة إعدادات حسابك وتفضيلات المتجر لدعم أهالي غزة
+                        {t('profilePage.description')}
                     </p>
                 </div>
-
-                {/* Settings Container */}
                 <div className="flex gap-8 max-w-7xl mx-auto">
                     <SettingsNav />
-
-                    {/* Settings Content */}
                     <div className="flex-1 min-w-0">
                         {renderActiveSection()}
                     </div>
                 </div>
             </main>
-
         </div>
     );
 };

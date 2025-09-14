@@ -1,9 +1,13 @@
-import React, {useState, useEffect, useContext} from 'react';
-import {User,Trash2,Upload} from 'lucide-react';
+import React, { useState, useEffect, useContext } from 'react';
+import { User, Trash2, Upload } from 'lucide-react';
 import client from "../apiServices/api.js";
 import AuthContext from "../context/AuthContext.jsx";
+import { useTranslation } from "react-i18next";
 
 const ProfileSection = () => {
+
+    const { t, i18n } = useTranslation();
+
     const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
@@ -33,7 +37,7 @@ const ProfileSection = () => {
     const handleSave = async () => {
         setIsLoading(true);
 
-        try{
+        try {
             const userId = localStorage.getItem('userId');
 
             const response = await client.put(`api/users/update-info/${userId}`, {
@@ -49,68 +53,61 @@ const ProfileSection = () => {
             setPhone(response.data.phoneNumber);
             setAddress(response.data.address);
             setBio(response.data.bio);
-            alert("تم حفظ التغييرات بنجاح!");
+            alert(t('profileSection.successMessage'));
         } catch (error) {
             console.error("Error saving profile:", error);
-            alert("فشل حفظ التغييرات!");
+            alert(t('profileSection.errorMessage'));
         } finally {
             setIsLoading(false);
         }
     };
 
-
-    const handleUploadImg = async (event) =>{
-
+    const handleUploadImg = async (event) => {
         const file = event.target.files[0];
 
         setIsLoading(true);
-        try{
-            console.log("**********")
+        try {
             const userId = localStorage.getItem('userId');
             const formData = new FormData();
             formData.append('file', file);
             const response = await client.post(`api/users/${userId}/upload-profile-image`,
                 formData,
                 {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            }
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
             );
 
-            console.log("Image uploaded: ",response.data);
+            console.log("Image uploaded: ", response.data);
             setProfileImg(response.data);
-
-        }catch(error){
+        } catch (error) {
             console.error("Error uploading image:", error);
-            alert("Failed in uploading image");
-        }finally {
+            alert(t('profileSection.uploadErrorMessage'));
+        } finally {
             setIsLoading(false);
         }
     };
 
     const handleRemoveImg = async () => {
         setProfileImg("https://via.placeholder.com/150");
-
     };
 
-
-
-    return(
-        <div className="bg-white rounded-2xl shadow-lg p-8 min-w-[620px]">
+    return (
+        <div className="bg-white rounded-2xl shadow-lg p-8 min-w-[620px]" dir={i18n.language === 'ar' ? 'rtl' : 'ltr'}>
             <div className="flex items-center mb-6 pb-4 border-b border-gray-100">
-                <div className="w-10 h-10 bg-green-600 text-white rounded-full flex items-center justify-center ml-4">
+                <div className="w-10 h-10 bg-green-600 text-white rounded-full flex items-center justify-center mx-4">
                     <User className="w-5 h-5" />
                 </div>
-                <h2 className="text-2xl font-bold">الملف الشخصي</h2>
+                <h2 className="text-2xl font-bold">{t('profileSection.title')}</h2>
             </div>
-            <p className="text-gray-600 mb-8">إدارة معلومات حسابك الشخصية وصورة الملف الشخصي</p>
+            <p className="text-gray-600 mb-8">{t('profileSection.description')}</p>
 
             <div className="flex items-center gap-8 mb-8">
                 <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-green-600">
                     <img
                         src={profileImg}
-                        alt="صورة المستخدم"
+                        alt={t('profileSection.imageAlt')}
                         className="w-full h-full object-cover"
                     />
                     <input
@@ -124,11 +121,11 @@ const ProfileSection = () => {
                 <div className="flex flex-col gap-3">
                     <button
                         className="flex items-center gap-2 px-6 py-2 border-2 border-green-600 text-green-600 rounded-full hover:bg-green-600 hover:text-white transition-colors"
-                        onClick={() => document.getElementById("upload-img").click() }
+                        onClick={() => document.getElementById("upload-img").click()}
                         disabled={isLoading}
                     >
                         <Upload className="w-4 h-4" />
-                        رفع الصورة
+                        {t('profileSection.uploadButton')}
                     </button>
                     <button
                         className="flex items-center gap-2 px-6 py-2 border-2 border-red-500 text-red-600 rounded-full hover:bg-red-600 hover:text-white transition-colors"
@@ -136,9 +133,9 @@ const ProfileSection = () => {
                         disabled={isLoading}
                     >
                         <Trash2 className="w-4 h-4" />
-                        إزالة الصورة
+                        {t('profileSection.removeButton')}
                     </button>
-                    <p className="text-sm text-gray-500 mt-3">يجب أن تكون الصورة بحجم أقل من 2MB</p>
+                    <p className="text-sm text-gray-500 mt-3">{t('profileSection.imageSizeHint')}</p>
                 </div>
             </div>
             <form onSubmit={(e) => {
@@ -147,7 +144,7 @@ const ProfileSection = () => {
             }}>
                 <div className="grid md:grid-cols-2 gap-6 mb-6">
                     <div>
-                        <label className="block text-gray-700 font-semibold mb-3">الاسم الكامل</label>
+                        <label className="block text-gray-700 font-semibold mb-3">{t('profileSection.fullNameLabel')}</label>
                         <input
                             type="text"
                             value={fullName}
@@ -156,16 +153,16 @@ const ProfileSection = () => {
                         />
                     </div>
                     <div>
-                        <label className="block text-gray-700 font-semibold mb-3">البريد الإلكتروني *</label>
+                        <label className="block text-gray-700 font-semibold mb-3">{t('profileSection.emailLabel')}</label>
                         <input
                             type="email"
                             value={email}
-                            onChange = {(e) => setEmail(e.target.value)}
+                            onChange={(e) => setEmail(e.target.value)}
                             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-green-600 focus:ring-3 focus:ring-green-100"
                         />
                     </div>
                     <div>
-                        <label className="block text-gray-700 font-semibold mb-3">رقم الهاتف</label>
+                        <label className="block text-gray-700 font-semibold mb-3">{t('profileSection.phoneLabel')}</label>
                         <input
                             type="tel"
                             value={phone}
@@ -174,7 +171,7 @@ const ProfileSection = () => {
                         />
                     </div>
                     <div>
-                        <label className="block text-gray-700 font-semibold mb-3">الموقع</label>
+                        <label className="block text-gray-700 font-semibold mb-3">{t('profileSection.addressLabel')}</label>
                         <input
                             type="text"
                             value={address}
@@ -185,7 +182,7 @@ const ProfileSection = () => {
                 </div>
 
                 <div className="mb-8">
-                    <label className="block text-gray-700 font-semibold mb-3">نبذة عنك</label>
+                    <label className="block text-gray-700 font-semibold mb-3">{t('profileSection.bioLabel')}</label>
                     <textarea
                         rows="4"
                         value={bio}
@@ -196,18 +193,19 @@ const ProfileSection = () => {
 
                 <div className="flex gap-4">
                     <button className="px-8 py-3 bg-gray-200 text-gray-600 rounded-full hover:bg-gray-300 transition-colors">
-                        إلغاء
+                        {t('profileSection.cancelButton')}
                     </button>
                     <button
                         type="submit"
                         disabled={isLoading}
                         className="flex items-center gap-2 px-8 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-all transform hover:-translate-y-1 hover:shadow-lg disabled:opacity-50"
                     >
-                        حفظ التغييرات
+                        {t('profileSection.saveButton')}
                     </button>
                 </div>
             </form>
         </div>
     );
-}
+};
+
 export default ProfileSection;
