@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import {
-    Package, PlusCircle, Search, Filter, Eye, Edit, Trash2,
+    Package, PlusCircle, Search, Eye, Edit, Trash2,
     CheckCircle, Hourglass, DollarSign, Boxes
 } from 'lucide-react';
 import SidebarComponent from "../components/SidebarComponent.jsx";
 import client from "../apiServices/api.js";
 import {useNavigate} from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const ProductsDashboard = () => {
-    // State management
+    const { t, i18n } = useTranslation();
+
     const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState('');
     const [products, setProducts] = useState([]);
@@ -88,7 +90,6 @@ const ProductsDashboard = () => {
         }
     };
 
-    // ✅ status badge
     const StatusBadge = ({ status }) => {
         const statusConfig = {
             available: { text: "متاح", class: "bg-green-100 text-green-800" },
@@ -104,30 +105,29 @@ const ProductsDashboard = () => {
     };
 
     const stats = [
-        { label: "إجمالي المنتجات", value: statsValue.totalProducts, icon: <Boxes />, color: "blue" },
-        { label: "منتجات مباعة", value: statsValue.soldProducts, icon: <CheckCircle />, color: "green" },
-        { label: "بانتظار المراجعة", value: statsValue.pendingReview, icon: <Hourglass />, color: "yellow" },
-        { label: "إجمالي التبرعات", value: `$${statsValue.totalDonations}`, icon: <DollarSign />, color: "red" }
+        { label: t("productsDashboard.stats.totalProducts"), value: statsValue.totalProducts, icon: <Boxes />, color: "blue" },
+        { label: t("productsDashboard.stats.pendingReview"), value: statsValue.soldProducts, icon: <CheckCircle />, color: "green" },
+        { label: t("productsDashboard.stats.soldProducts"), value: statsValue.pendingReview, icon: <Hourglass />, color: "yellow" },
+        { label: t("productsDashboard.stats.totalDonations"), value: `$${statsValue.totalDonations}`, icon: <DollarSign />, color: "red" }
     ];
 
     return (
-        <div className="min-h-screen bg-gray-50 flex w-screen" dir="rtl">
+        <div className="min-h-screen bg-gray-50 flex w-screen"
+             dir={i18n.language === 'ar' ? 'rtl' : 'ltr'}>
             <SidebarComponent />
 
-            {/* Main Content */}
             <main className="flex-1 mr-64 p-8">
-                {/* Page Header */}
+
                 <div className="text-center mb-12">
                     <h1 className="text-4xl font-bold text-gray-900 mb-4 relative inline-block">
-                        قائمة المنتجات
+                        {t("productsDashboard.title")}
                         <div className="absolute -bottom-3 right-1/2 transform translate-x-1/2 w-24 h-1 bg-green-600 rounded"></div>
                     </h1>
                     <p className="text-gray-600 text-lg max-w-2xl mx-auto mt-6">
-                        إدارة جميع المنتجات التي تم إضافتها إلى متجر غزة للجميع
+                        {t("productsDashboard.subtitle")}
                     </p>
                 </div>
 
-                {/* Stats Summary */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                     {stats.map((stat, index) => (
                         <div key={index} className="bg-white rounded-2xl shadow-lg p-6 flex items-center gap-4">
@@ -147,21 +147,20 @@ const ProductsDashboard = () => {
                     ))}
                 </div>
 
-                {/* Products Table */}
                 <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
                         <div className="flex items-center gap-3">
                             <div className="w-10 h-10 bg-green-100 text-green-600 rounded-full flex items-center justify-center">
                                 <Package className="w-5 h-5" />
                             </div>
-                            <h2 className="text-2xl font-bold text-gray-900">جميع المنتجات</h2>
+                            <h2 className="text-2xl font-bold text-gray-900">{t("AllProducts")}</h2>
                         </div>
 
                         <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
                             <div className="relative">
                                 <input
                                     type="text"
-                                    placeholder="ابحث عن منتج..."
+                                    placeholder={t("productsDashboard.searchPlaceholder")}
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                     className="w-full md:w-64 px-4 py-2 pr-10 border border-gray-300 rounded-xl focus:outline-none focus:border-green-600 focus:ring-3 focus:ring-green-100"
@@ -173,7 +172,7 @@ const ProductsDashboard = () => {
                                 className="px-4 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700 transition-colors flex items-center gap-2"
                             >
                                 <PlusCircle className="w-4 h-4" />
-                                <span>إضافة منتج</span>
+                                <span>{t("productsDashboard.addProductButton")}</span>
                             </a>
                         </div>
                     </div>
@@ -182,12 +181,12 @@ const ProductsDashboard = () => {
                         <table className="w-full">
                             <thead>
                             <tr className="bg-gray-100">
-                                <th className="px-4 py-3 text-right font-semibold text-gray-700">المنتج</th>
-                                <th className="px-4 py-3 text-right font-semibold text-gray-700">التصنيف</th>
-                                <th className="px-4 py-3 text-right font-semibold text-gray-700">السعر</th>
-                                <th className="px-4 py-3 text-right font-semibold text-gray-700">الحالة</th>
-                                <th className="px-4 py-3 text-right font-semibold text-gray-700">تاريخ الإضافة</th>
-                                <th className="px-4 py-3 text-right font-semibold text-gray-700">الإجراءات</th>
+                                <th className="px-4 py-3 text-right font-semibold text-gray-700">{t("productsDashboard.tableHeaders.product")}</th>
+                                <th className="px-4 py-3 text-right font-semibold text-gray-700">{t("productsDashboard.tableHeaders.category")}</th>
+                                <th className="px-4 py-3 text-right font-semibold text-gray-700">{t("productsDashboard.tableHeaders.price")}</th>
+                                <th className="px-4 py-3 text-right font-semibold text-gray-700">{t("productsDashboard.tableHeaders.status")}</th>
+                                <th className="px-4 py-3 text-right font-semibold text-gray-700">{t("productsDashboard.tableHeaders.date")}</th>
+                                <th className="px-4 py-3 text-right font-semibold text-gray-700">{t("productsDashboard.tableHeaders.actions")}</th>
                             </tr>
                             </thead>
                             <tbody>

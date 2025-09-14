@@ -409,5 +409,175 @@
     "clearCartButton": "Clear Cart",
     "validateCartButton": "Validate Cart"
   },
-  "Shopping_Cart": "Your Shopping Cart"
+  "Shopping_Cart": "Your Shopping Cart",
+
+  "updateProduct": {
+    "title": "Update Product",
+    "error": {
+      "categoriesLoadFailed": "Failed to load categories",
+      "productFetchFailed": "Failed to fetch product",
+      "updateFailed": "Failed to update product"
+    },
+    "validation": {
+      "titleRequired": "Product title is required",
+      "statusRequired": "Product status is required",
+      "categoryRequired": "Product category is required"
+    },
+    "successMessage": "Product updated successfully!",
+    "form": {
+      "titleLabel": "Product Name",
+      "priceLabel": "Price",
+      "categoryLabel": "Category",
+      "categoryPlaceholder": "Select product category",
+      "statusLabel": "Status",
+      "status": {
+        "available": "Available",
+        "pending": "Pending Review",
+        "sold": "Sold"
+      },
+      "donationPercentageLabel": "Donation Percentage",
+      "descriptionLabel": "Description",
+      "submitButton": "Save Changes"
+    }
+  },
+  "productsDashboard": {
+    "title": "Products Dashboard",
+    "subtitle": "Manage your products and track their performance",
+    "stats": {
+      "totalProducts": "Total Products",
+      "pendingReview": "Pending Review",
+      "soldProducts": "Sold Products",
+      "totalDonations": "Total Donations"
+    },
+    "AllProducts": "All Products",
+    "searchPlaceholder": "Search by product name or category...",
+    "addProductButton": "Add New Product",
+    "tableHeaders": {
+      "product": "Product",
+      "category": "Category",
+      "price": "Price",
+      "status": "Status",
+      "actions": "Actions",
+      "date": "Adding date"
+    },
+    "noCategory": "No Category",
+    "status": {
+      "available": "Available",
+      "pending": "Pending",
+      "sold": "Sold"
+    },
+    "actions": {
+      "view": "View",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "confirmDelete": "Are you sure you want to delete this product? This action cannot be undone.",
+    "deleteSuccess": "Product deleted successfully!",
+    "deleteFailed": "Failed to delete product"
+  },
+
+  "displayProductDetails": {
+    "productNameLabel": "Product Name",
+    "priceLabel": "Price",
+    "statusLabel": "Status:",
+    "status": {
+      "available": "Available",
+      "sold": "Sold",
+      "pending": "Pending"
+    },
+    "categoryLabel": "Category:",
+    "noCategory": "Undefined",
+    "addedDateLabel": "Added Date:",
+    "editButton": "Edit Product",
+    "descriptionTitle": "Product Description",
+    "donationTitle": "Donations from Profits",
+    "donationDescription1": "All profits from selling this product will go to support the people of Gaza.",
+    "donationDescription2": "Your donation will reach directly to the needy families in the Gaza Strip."
+  },
+
+  "donations": {
+    "title": "Donations",
+    "subtitle": "Track your donations and their impact on Gaza",
+    "loading": "Loading...",
+    "error": {
+      "fetchFailed": "Failed to fetch donations. Please try again later.",
+      "transferFailed": "Failed to mark as transferred"
+    },
+    "success": {
+      "transferred": "Marked as transferred successfully!"
+    },
+    "stats": {
+      "total": "Total Donations",
+      "pending": "Pending Transfer",
+      "completed": "Completed Donations"
+    },
+    "table": {
+      "title": "Your Donations",
+      "headers": {
+        "id": "ID",
+        "productId": "Product ID",
+        "buyer": "Buyer",
+        "seller": "Seller",
+        "amount": "Amount",
+        "status": "Status",
+        "date": "Date",
+        "actions": "Actions"
+      }
+    },
+    "filters": {
+      "all": "All",
+      "pending": "Pending",
+      "completed": "Completed"
+    },
+    "status": {
+      "pending": "Pending",
+      "completed": "Completed"
+    },
+    "actions": {
+      "transfer": "Transfer"
+    },
+    "noDonations": "No donations to display",
+    "impact": {
+      "title": "Impact of Your Donations",
+      "description": "Thanks to your generous donations, we have been able to provide assistance to many families in Gaza.",
+      "families": "Benefited Families",
+      "meals": "Meals",
+      "childrenEducation": "Children Receiving Education",
+      "medicalCases": "Medical Cases Treated"
+    }
+  },
+  "addProduct": {
+    "title": "Add New Product",
+    "subtitle": "Add your product and support the people of Gaza through donations",
+    "confirmDeleteImage": "Are you sure you want to delete this image?",
+    "successMessage": "✅ Product added with images successfully!",
+    "errorMessage": "❌ Failed to add product",
+    "form": {
+      "titleLabel": "Product Name *",
+      "titlePlaceholder": "Enter product name",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Enter product description",
+      "priceLabel": "Price *",
+      "pricePlaceholder": "Enter product price",
+      "categoryLabel": "Category *",
+      "categoryPlaceholder": "Select product category",
+      "statusLabel": "Status *",
+      "status": {
+        "available": "Available",
+        "pending": "Pending Review",
+        "sold": "Sold"
+      },
+      "imagesLabel": "Product Images",
+      "imagesUploadText": "Click or drag to upload images",
+      "imagesSupportedFormats": "Supported formats: JPG, PNG, GIF (Max 5MB)",
+      "donationTitle": "Donation Percentage",
+      "donationDescription": "Choose the percentage of profits to donate to Gaza",
+      "donationPercentageLabel": "Donation Percentage",
+      "donationAllProfits": "All profits will go to support the people of Gaza",
+      "donationPercentageText": "{percent}% of profits will go to support the people of Gaza",
+      "cancelButton": "Cancel",
+      "submitButton": "Add Product",
+      "submitting": "Adding Product..."
+    }
+  }
 }

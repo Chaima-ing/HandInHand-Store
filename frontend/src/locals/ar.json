@@ -366,5 +366,175 @@
     "clearCartButton": "مسح السلة",
     "validateCartButton": "التحقق من السلة"
   },
-  "Shopping_Cart": "سلة مشترياتك"
+  "Shopping_Cart": "سلة مشترياتك",
+
+  "updateProduct": {
+    "title": "تعديل المنتج",
+    "error": {
+      "categoriesLoadFailed": "فشل تحميل التصنيفات",
+      "productFetchFailed": "فشل جلب المنتج",
+      "updateFailed": "فشل تحديث المنتج"
+    },
+    "validation": {
+      "titleRequired": "اسم المنتج مطلوب",
+      "statusRequired": "حالة المنتج مطلوبة",
+      "categoryRequired": "تصنيف المنتج مطلوب"
+    },
+    "successMessage": "تم تحديث المنتج بنجاح!",
+    "form": {
+      "titleLabel": "اسم المنتج",
+      "priceLabel": "سعر المنتج",
+      "categoryLabel": "التصنيف",
+      "categoryPlaceholder": "اختر تصنيف المنتج",
+      "statusLabel": "الحالة",
+      "status": {
+        "available": "متاح",
+        "pending": "في انتظار المراجعة",
+        "sold": "مباع"
+      },
+      "donationPercentageLabel": "نسبة التبرع",
+      "descriptionLabel": "الوصف",
+      "submitButton": "حفظ التعديلات"
+    }
+  },
+
+  "productsDashboard": {
+    "title": "لوحة المنتجات",
+    "subtitle": "إدارة منتجاتك وتتبع أدائها",
+    "stats": {
+      "totalProducts": "إجمالي المنتجات",
+      "pendingReview": "في انتظار المراجعة",
+      "soldProducts": "المنتجات المباعة",
+      "totalDonations": "إجمالي التبرعات"
+    },
+    "searchPlaceholder": "البحث حسب اسم المنتج أو التصنيف...",
+    "addProductButton": "إضافة منتج جديد",
+    "tableHeaders": {
+      "product": "المنتج",
+      "category": "التصنيف",
+      "price": "السعر",
+      "status": "الحالة",
+      "actions": "الإجراءات",
+      "date": "تاريخ الاضافة"
+    },
+    "noCategory": "لا يوجد تصنيف",
+    "status": {
+      "available": "متاح",
+      "pending": "في انتظار",
+      "sold": "مباع"
+    },
+    "actions": {
+      "view": "عرض",
+      "edit": "تعديل",
+      "delete": "حذف"
+    },
+    "confirmDelete": "هل أنت متأكد من حذف هذا المنتج؟ لا يمكن التراجع عن هذا الإجراء.",
+    "deleteSuccess": "تم حذف المنتج بنجاح!",
+    "deleteFailed": "فشل حذف المنتج"
+  },
+
+  "displayProductDetails": {
+    "productNameLabel": "Product Name",
+    "priceLabel": "Price",
+    "statusLabel": "Status:",
+    "status": {
+      "available": "Available",
+      "sold": "Sold",
+      "pending": "Pending"
+    },
+    "categoryLabel": "Category:",
+    "noCategory": "Undefined",
+    "addedDateLabel": "Added Date:",
+    "editButton": "Edit Product",
+    "descriptionTitle": "Product Description",
+    "donationTitle": "Donations from Profits",
+    "donationDescription1": "All profits from selling this product will go to support the people of Gaza.",
+    "donationDescription2": "Your donation will reach directly to the needy families in the Gaza Strip."
+  },
+
+  "donations": {
+    "title": "التبرعات",
+    "subtitle": "تتبع تبرعاتك وتأثيرها على غزة",
+    "loading": "جارٍ التحميل...",
+    "error": {
+      "fetchFailed": "فشل جلب التبرعات. يرجى المحاولة لاحقاً.",
+      "transferFailed": "فشل في وضع علامة التحويل"
+    },
+    "success": {
+      "transferred": "تم وضع علامة التحويل بنجاح!"
+    },
+    "stats": {
+      "total": "إجمالي التبرعات",
+      "pending": "في انتظار التحويل",
+      "completed": "تبرعات مكتملة"
+    },
+    "table": {
+      "title": "تبرعاتك",
+      "headers": {
+        "id": "المعرف",
+        "productId": "معرف المنتج",
+        "buyer": "المشتري",
+        "seller": "البائع",
+        "amount": "المبلغ",
+        "status": "الحالة",
+        "date": "التاريخ",
+        "actions": "الإجراءات"
+      }
+    },
+    "filters": {
+      "all": "الكل",
+      "pending": "في انتظار",
+      "completed": "مكتملة"
+    },
+    "status": {
+      "pending": "في انتظار",
+      "completed": "مكتملة"
+    },
+    "actions": {
+      "transfer": "تحويل"
+    },
+    "noDonations": "لا توجد تبرعات لعرضها",
+    "impact": {
+      "title": "تأثير تبرعاتك",
+      "description": "بفضل تبرعاتك السخية، استطعنا تقديم المساعدة للعديد من العائلات في غزة.",
+      "families": "عائلة مستفيدة",
+      "meals": "وجبة طعام",
+      "childrenEducation": "طفل يحصلون على التعليم",
+      "medicalCases": "حالة طبية تم علاجها"
+    }
+  },
+  "addProduct": {
+    "title": "إضافة منتج جديد",
+    "subtitle": "أضف منتجك وادعم أهالي غزة من خلال التبرعات",
+    "confirmDeleteImage": "هل أنت متأكد من حذف هذه الصورة؟",
+    "successMessage": "✅ تم إضافة المنتج مع الصور!",
+    "errorMessage": "❌ فشل في إضافة المنتج",
+    "form": {
+      "titleLabel": "اسم المنتج *",
+      "titlePlaceholder": "أدخل اسم المنتج",
+      "descriptionLabel": "الوصف",
+      "descriptionPlaceholder": "أدخل وصف المنتج",
+      "priceLabel": "السعر *",
+      "pricePlaceholder": "أدخل سعر المنتج",
+      "categoryLabel": "التصنيف *",
+      "categoryPlaceholder": "اختر تصنيف المنتج",
+      "statusLabel": "الحالة *",
+      "status": {
+        "available": "متاح",
+        "pending": "في انتظار المراجعة",
+        "sold": "مباع"
+      },
+      "imagesLabel": "صور المنتج",
+      "imagesUploadText": "انقر أو اسحب لتحميل الصور",
+      "imagesSupportedFormats": "الصيغ المدعومة: JPG, PNG, GIF (حجم أقصى 5MB)",
+      "donationTitle": "نسبة التبرع",
+      "donationDescription": "اختر نسبة الأرباح التي تريد التبرع بها لدعم غزة",
+      "donationPercentageLabel": "نسبة التبرع",
+      "donationAllProfits": "كل الأرباح ستذهب لدعم أهالي غزة",
+      "donationPercentageText": "{percent}% من الأرباح ستذهب لدعم أهالي غزة",
+      "cancelButton": "إلغاء",
+      "submitButton": "إضافة المنتج",
+      "submitting": "جاري إضافة المنتج..."
+    }
+  }
 }
