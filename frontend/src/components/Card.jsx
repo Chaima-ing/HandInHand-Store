@@ -3,33 +3,33 @@ import { useTranslation } from "react-i18next";
 import "./styles/Card.css";
 
 function Card() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const cards = [
         {
             icon: <FaHeart className="card-icon" />,
-            title: t("real_impact_title"),
-            description: t("real_impact_desc"),
+            title: t("card.realImpactTitle"),
+            description: t("card.realImpactDescription"),
         },
         {
             icon: <FaShieldAlt className="card-icon" />,
-            title: t("full_transparency_title"),
-            description: t("full_transparency_desc"),
+            title: t("card.fullTransparencyTitle"),
+            description: t("card.fullTransparencyDescription"),
         },
         {
             icon: <FaHandHoldingUsd className="card-icon" />,
-            title: t("percentage_title"),
-            description: t("percentage_desc"),
+            title: t("card.percentageTitle"),
+            description: t("card.percentageDescription"),
         },
     ];
 
     return (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center" dir={i18n.language === 'ar' ? 'rtl' : 'ltr'}>
             {/* Text block */}
             <div className="text-center mb-5">
-                <h2 className="text-2xl font-bold text-black">{t("how_it_works")}</h2>
+                <h2 className="text-2xl font-bold text-black">{t("card.howItWorksTitle")}</h2>
                 <div className="w-12 h-1 bg-green-600 mx-auto my-2"></div>
-                <p className="text-lg text-gray-800">{t("how_it_works_desc")}</p>
+                <p className="text-lg text-gray-800">{t("card.howItWorksDescription")}</p>
             </div>
 
             {/* Cards block */}

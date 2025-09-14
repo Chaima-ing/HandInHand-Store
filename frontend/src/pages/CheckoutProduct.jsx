@@ -1,7 +1,6 @@
 import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx";
 import ProductDetails from "../components/ProductDetails.jsx";
-import SimilarProducts from "../components/SimilarProducts.jsx";
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
@@ -37,7 +36,6 @@ const CheckoutProduct = () => {
       <div className="bg-white w-screen">
           <Header />
           <ProductDetails  product={product} />
-          <SimilarProducts />
           <Footer />
       </div>
     );

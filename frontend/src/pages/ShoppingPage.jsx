@@ -22,6 +22,7 @@ const ShoppingPage = () => {
     return (
         <div className="bg-white w-screen">
             <Header />
+
             <ShoppingHero title="Shop for Gaza"
                           subtitle="Give All You Need"
                           onSearch={(query) => mainRef.current?.handleSearch(query)}

@@ -1,4 +1,3 @@
-// src/services/translationService.js
 import axios from "axios";
 
 export const translateText = async (text, sourceLang, targetLang) => {

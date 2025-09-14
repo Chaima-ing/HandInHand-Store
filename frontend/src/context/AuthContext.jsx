@@ -38,6 +38,12 @@ export const AuthProvider = ({children}) => {
         }
     };
 
+    const handlLogOut = () => {
+      setUser(null);
+      localStorage.removeItem("user", JSON.stringify(user));
+
+    };
+
     useEffect(() => {
         const userId = localStorage.getItem("userId");
         if (userId) {
@@ -59,6 +65,7 @@ export const AuthProvider = ({children}) => {
               loading,
               handleLogin,
               handleRegister,
+              handlLogOut,
           }
       }
       >

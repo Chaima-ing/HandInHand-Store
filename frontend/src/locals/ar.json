@@ -111,26 +111,260 @@
     },
     "bottom": ".متجر غزة للجميع - جميع الحقوق محفوظة."
   },
+
+  "languageSection": {
+    "title": "اللغة والمنطقة",
+    "description": "إدارة إعدادات اللغة والمنطقة الزمنية",
+    "languageLabel": "اللغة *",
+    "arabic": "العربية",
+    "english": "الإنجليزية",
+    "currencyLabel": "العملة *",
+    "ils": "شيكل جديد (₪)",
+    "usd": "دولار أمريكي ($)",
+    "eur": "يورو (€)",
+    "dateFormatLabel": "تنسيق التاريخ",
+    "dateFormat1": "يوم/شهر/سنة (٢٧/٠٧/٢٠٢٥)",
+    "dateFormat2": "شهر/يوم/سنة (٠٧/٢٧/٢٠٢٥)",
+    "dateFormat3": "سنة-شهر-يوم (٢٠٢٥-٠٧-٢٧)",
+    "saveButton": "حفظ الإعدادات"
+  },
+
+  "profilePage": {
+    "title": "الإعدادات",
+    "description": "إدارة إعدادات حسابك وتفضيلات المتجر لدعم أهالي غزة",
+    "nav": {
+      "profile": "الملف الشخصي",
+      "security": "الأمان",
+      "notifications": "الإشعارات",
+      "store": "إعدادات المتجر",
+      "donation": "تفضيلات التبرع",
+      "language": "اللغة والمنطقة",
+      "delete": "حذف الحساب"
+    },
+    "notifications": {
+      "title": "الإشعارات",
+      "description": "إدارة تفضيلات الإشعارات والاتصالات",
+      "emailLabel": "الإشعارات عبر البريد الإلكتروني",
+      "emailDescription": "تلقي تحديثات مهمة عبر البريد الإلكتروني",
+      "inAppLabel": "الإشعارات داخل التطبيق",
+      "inAppDescription": "تلقي إشعارات داخل المتجر عند حدوث تحديثات",
+      "newOrdersLabel": "إشعارات الطلبات الجديدة",
+      "newOrdersDescription": "تلقي إشعار عند استلام طلبات جديدة",
+      "donationsLabel": "إشعارات التبرعات",
+      "donationsDescription": "تلقي تحديثات حول تأثير تبرعاتك في غزة",
+      "offersLabel": "عروض وتحديثات المتجر",
+      "offersDescription": "تلقي عروض خاصة وتحديثات من المتجر",
+      "saveButton": "حفظ التغييرات"
+    },
+    "store": {
+      "title": "إعدادات المتجر",
+      "description": "إدارة إعدادات متجرك الخاص",
+      "storeNameLabel": "اسم المتجر *",
+      "storeNameDefault": "متجر غزة للجميع",
+      "storeDescriptionLabel": "وصف المتجر",
+      "storeDescriptionDefault": "متجر غزة للجميع هو منصة لبيع المنتجات وتوجيه جميع الأرباح لدعم العائلات المحتاجة في غزة. نسعى لتقديم أفضل المنتجات مع أكبر فائدة لأهلنا في غزة.",
+      "storeAddressLabel": "عنوان المتجر",
+      "storeAddressDefault": "شارع عمر المختار، غزة",
+      "storeLogoLabel": "شعار المتجر",
+      "storeLogoAlt": "شعار المتجر",
+      "changeLogoButton": "تغيير الشعار",
+      "logoSizeHint": "يجب أن يكون الشعار بحجم 300×300 بكسل كحد أقصى",
+      "cancelButton": "إلغاء",
+      "saveButton": "حفظ التغييرات"
+    },
+    "donation": {
+      "title": "تفضيلات التبرع",
+      "description": "إدارة إعدادات التبرع لدعم أهالي غزة",
+      "donationPercentLabel": "النسبة الافتراضية للتبرع من الأرباح",
+      "donationPercentInfo": "تبرعك بنسبة {percent}% يعني أن {percent, select, 100 {كل} other {{percent}% من}} الأرباح ستذهب لدعم أهالي غزة",
+      "recipientLabel": "الجهة المتبرع لها",
+      "recipientOptions": {
+        "unrwa": "الأونروا - غزة",
+        "redCrescent": "الهلال الأحمر الفلسطيني",
+        "medicalAid": "مركز المساعدات الطبية",
+        "other": "منظمة أخرى"
+      },
+      "reportLabel": "تقرير التبرعات",
+      "reportToggleLabel": "إرسال تقارير شهرية عن التبرعات",
+      "reportToggleDescription": "تلقي تقرير شهري مفصل عن تبرعاتك وأثرها",
+      "saveButton": "حفظ التفضيلات"
+    }
+  },
+  "deleteSection": {
+    "title": "حذف الحساب",
+    "description": "حذف حسابك بشكل دائم من المنصة",
+    "warningTitle": "تحذير: هذا الإجراء نهائي ولا يمكن التراجع عنه",
+    "warningDescription": "عند حذف حسابك:",
+    "warningPoints": [
+      "سيتم إزالة جميع بياناتك الشخصية بشكل دائم",
+      "ستتوقف جميع المنتجات النشطة في متجرك",
+      "سيتم إلغاء جميع الطلبات غير المكتملة",
+      "لن تتمكن من الوصول إلى سجل تبرعاتك"
+    ],
+    "exportRecommendation": "نوصي بتصدير بياناتك قبل المتابعة في حذف الحساب.",
+    "confirmLabel": "اكتب \"حذف حسابي\" للتأكيد *",
+    "confirmPlaceholder": "حذف حسابي",
+    "confirmButton": "حذف حسابي بشكل دائم",
+    "confirmText": "حذف حسابي",
+    "confirmPrompt": "هل أنت متأكد تماماً من رغبتك في حذف حسابك بشكل دائم؟ لا يمكن التراجع عن هذا الإجراء.",
+    "successMessage": "تم حذف حسابك بنجاح. نأسف لرحيلك ونشكرك على دعمك لأهالي غزة.",
+    "errorMessage": "فشل حذف الحساب، حاول مرة أخرى.",
+    "invalidConfirmMessage": "الرجاء كتابة \"حذف حسابي\" بشكل صحيح للتأكيد."
+  },
+  "profileSection": {
+    "title": "الملف الشخصي",
+    "description": "إدارة معلومات حسابك الشخصية وصورة الملف الشخصي",
+    "fullNameLabel": "الاسم الكامل",
+    "emailLabel": "البريد الإلكتروني *",
+    "phoneLabel": "رقم الهاتف",
+    "addressLabel": "الموقع",
+    "bioLabel": "نبذة عنك",
+    "imageAlt": "صورة المستخدم",
+    "uploadButton": "رفع الصورة",
+    "removeButton": "إزالة الصورة",
+    "imageSizeHint": "يجب أن تكون الصورة بحجم أقل من 2MB",
+    "cancelButton": "إلغاء",
+    "saveButton": "حفظ التغييرات",
+    "successMessage": "تم حفظ التغييرات بنجاح!",
+    "errorMessage": "فشل حفظ التغييرات!",
+    "uploadErrorMessage": "فشل في رفع الصورة"
+  },
+  "securitySection": {
+    "title": "الأمان",
+    "description": "إدارة إعدادات أمان حسابك وكلمة المرور",
+    "statusGood": "حالة أمان حسابك: جيدة",
+    "lastUpdated": "آخر تحديث: {date}",
+    "currentPasswordLabel": "كلمة المرور الحالية *",
+    "newPasswordLabel": "كلمة المرور الجديدة *",
+    "confirmPasswordLabel": "تأكيد كلمة المرور الجديدة *",
+    "cancelButton": "إلغاء",
+    "changePasswordButton": "تغيير كلمة المرور",
+    "passwordMismatchMessage": "كلمة المرور الجديدة وتأكيدها غير متطابقين",
+    "errorMessage": "فشل في تغيير كلمة المرور"
+  },
+
+  "sidebar": {
+    "title": "متجر غزة للجميع",
+    "description": "كل التبرعات لدعم أهالي غزة",
+    "nav": {
+      "products": "المنتجات",
+      "addProduct": "إضافة منتج",
+      "orders": "الطلبات",
+      "donations": "تبرعاتي",
+      "settings": "الإعدادات",
+      "home": "الرئيسية",
+      "logout": "تسجيل الخروج"
+    }
+  },
+
+  "card": {
+    "howItWorksTitle": "كيف يعمل",
+    "howItWorksDescription": "تعرف على كيفية مساهمة مشترياتك في إحداث تغيير في غزة",
+    "realImpactTitle": "تأثير حقيقي",
+    "realImpactDescription": "مشترياتك تدعم العائلات في غزة مباشرة من خلال التبرعات.",
+    "fullTransparencyTitle": "شفافية كاملة",
+    "fullTransparencyDescription": "تتبع كل دولار يذهب إليه من خلال عملية التبرع الشفافة لدينا.",
+    "percentageTitle": "تبرع قابل للتخصيص",
+    "percentageDescription": "اختر نسبة الأرباح التي تريد التبرع بها لدعم غزة."
+  },
+
+  "hero": {
+    "title": "ادعم غزة مع كل عملية شراء",
+    "description": "تسوق في متجر غزة وساهم في إحداث تغيير ذي معنى من خلال التبرعات.",
+    "contactButton": "تواصل معنا",
+    "browseButton": "تصفح المنتجات"
+  },
   "product": {
-    "product.title": "ساعة ذكية ماركة سامسونج - الجيل الخامس",
-    "product.price": "$120",
-    "product.old_price": "$150",
-    "product.discount": "وفر $30",
-    "product.profit_title": "100% من الربح",
-    "product.profit_item1": "كل المبالغ من هذا المنتج ستذهب لجمعية خيرية",
-    "product.profit_item2": "يرجى التواصل بحسابات المتاجر لتسديد قيمة المنتج",
-    "product.description_title": "وصف المنتج",
-    "product.description_text": "ساعة ذكية جديدة من سامسونج الجيل الخامس، مقاومة للماء حتى عمق 50 متر، شاشة AMOLED عالية الدقة، بطارية تدوم حتى 7 أيام، مع إمكانية استخدام التطبيقات، الساعة مثالية للرياضة وتأتي مع حزام أنيق وسريع الوصول.",
-    "product.features_title": "المواصفات التقنية",
-    "product.feature1": "مقاومة للماء حتى 50 متر",
-    "product.feature2": "شاشة AMOLED عالية الدقة",
-    "product.feature3": "نظام تشغيل Tizen OS",
-    "product.feature4": "بطارية تدوم حتى 7 أيام",
-    "product.feature5": "متتبع للنشاط والرياضة",
-    "product.feature6": "نظام تحديد المواقع GPS",
-    "product.add_to_cart": "إضافة إلى السلة",
-    "product.buy_now": "اشتري الآن",
-    "product.main_image_alt": "المنتج",
-    "product.thumbnail_alt": "صورة مصغرة"
-  }
+    "title": "المنتجات المميزة",
+    "description": "أفضل 10 منتجات بنسبة تبرع عالية",
+    "loadingMessage": "جارٍ التحميل...",
+    "errorMessage": "حدث خطأ",
+    "donationBadge": "{percentage}% للتبرع",
+    "buyNowButton": "اشتر الآن"
+  },
+
+  "mainShoppingSection": {
+    "loadingMessage": "جارٍ التحميل...",
+    "errorPrefix": "خطأ:",
+    "errorMessage": "حدث خطأ",
+    "searchResultsFound": "تم العثور على {count} نتائج",
+    "clearSearchButton": "مسح البحث",
+    "previousButton": "السابق",
+    "nextButton": "التالي"
+  },
+  "shoppingHero": {
+    "title": "التسوق",
+    "subtitle": "أعطِ كل ما تحتاجه",
+    "searchPlaceholder": "البحث في Stufflus",
+    "searchButton": "بحث"
+  },
+  "shoppingSidebar": {
+    "categoryTitle": "الفئة",
+    "allCategories": "جميع الفئات"
+  },
+  "productCard": {
+    "addToCartButton": "إضافة إلى السلة",
+    "displayDetailsButton": "عرض التفاصيل"
+  },
+
+  "checkoutForm": {
+    "title": "الدفع",
+    "orderSummary": {
+      "title": "ملخص الطلب",
+      "subtotal": "المجموع الفرعي",
+      "shipping": "الشحن",
+      "freeShipping": "مجاني",
+      "total": "المجموع"
+    },
+    "form": {
+      "firstName": "الاسم الأول",
+      "lastName": "الاسم الأخير",
+      "email": "البريد الإلكتروني",
+      "phone": "الهاتف",
+      "address": "العنوان",
+      "addressPlaceholder": "عنوان الشارع",
+      "zipCode": "الرمز البريدي",
+      "zipCodePlaceholder": "الرمز البريدي",
+      "city": "المدينة",
+      "cityPlaceholder": "المدينة",
+      "delivery": {
+        "title": "التسليم",
+        "methodPlaceholder": "طريقة التسليم",
+        "home": "في المنزل",
+        "agency": "وكالة التسليم"
+      },
+      "payment": {
+        "title": "طريقة الدفع",
+        "baridiMob": "باريدي موب",
+        "edahabiya": "إدهابية",
+        "cardNumber": "رقم بطاقة الائتمان",
+        "cardNumberPlaceholder": "رقم بطاقة الائتمان",
+        "expirationDate": "تاريخ انتهاء صلاحية بطاقة الائتمان",
+        "expirationPlaceholder": "شهر/سنة",
+        "cvv": "رقم التحقق من بطاقة الائتمان (CVV)",
+        "cvvPlaceholder": "CVV"
+      },
+      "placeOrderButton": "تقديم الطلب"
+    },
+    "validation": {
+      "firstNameInvalid": "يجب أن يحتوي الاسم الأول على حروف فقط",
+      "lastNameInvalid": "يجب أن يحتوي الاسم الأخير على حروف فقط",
+      "emailInvalid": "صيغة البريد الإلكتروني غير صالحة",
+      "phoneInvalid": "رقم الهاتف غير صالح",
+      "paymentMethodRequired": "يرجى تحديد طريقة دفع",
+      "cartInvalid": "فشل التحقق من السلة: "
+    },
+    "error": {
+      "paymentCreationFailed": "خطأ في إنشاء الدفع. يرجى المحاولة مرة أخرى.",
+      "paymentRequestFailed": "فشل طلب الدفع"
+    }
+  },
+  "shoppingCart": {
+    "totalLabel": "المجموع",
+    "emptyCartMessage": "السلة فارغة",
+    "addProductsPrompt": "أضف بعض المنتجات للمتابعة",
+    "clearCartButton": "مسح السلة",
+    "validateCartButton": "التحقق من السلة"
+  },
+  "Shopping_Cart": "سلة مشترياتك"
 }

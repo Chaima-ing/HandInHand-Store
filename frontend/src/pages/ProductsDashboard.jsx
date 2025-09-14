@@ -103,7 +103,6 @@ const ProductsDashboard = () => {
         );
     };
 
-    // ✅ stats cards
     const stats = [
         { label: "إجمالي المنتجات", value: statsValue.totalProducts, icon: <Boxes />, color: "blue" },
         { label: "منتجات مباعة", value: statsValue.soldProducts, icon: <CheckCircle />, color: "green" },
@@ -112,7 +111,7 @@ const ProductsDashboard = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-gray-50 flex" dir="rtl">
+        <div className="min-h-screen bg-gray-50 flex w-screen" dir="rtl">
             <SidebarComponent />
 
             {/* Main Content */}

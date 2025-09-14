@@ -14,7 +14,7 @@ function Donates() {
     return (
         <section className="principle">
             <div className="flex flex-col items-center">
-                {/* Bloc texte au-dessus */}
+
                 <div className="text-center mb-5">
                     <h2 className="text-[25px] font-bold text-white">{t("donations_impact")}</h2>
                     <div className="w-[50px] h-[3px] bg-green-600 my-2 mx-auto"></div>

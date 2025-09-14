@@ -1,6 +1,5 @@
-// components/ProductDetails.jsx
 import React, { useState } from "react";
-import { Plus, Minus, ShoppingCart, Heart, Share2, Star } from "lucide-react";
+import { Plus, Minus, ShoppingCart } from "lucide-react";
 import { useCart } from "../context/CartContext";
 
 const ProductDetails = ({ product }) => {
@@ -68,29 +67,6 @@ const ProductDetails = ({ product }) => {
               </h1>
             </div>
 
-            {/* Rating
-            {product.rating && (
-                <div className="flex items-center gap-2">
-                  <div className="flex items-center">
-                    {[...Array(5)].map((_, i) => (
-                        <Star
-                            key={i}
-                            size={20}
-                            className={
-                              i < Math.floor(product.rating)
-                                  ? "text-yellow-400 fill-current"
-                                  : "text-gray-300"
-                            }
-                        />
-                    ))}
-                  </div>
-                  <span className="text-gray-600 text-sm">
-                ({product.reviewCount || 0} تقييم)
-              </span>
-                </div>
-            )}*/}
-
-            {/* Price */}
             <div className="flex items-center gap-3">
             <span className="text-3xl font-bold text-green-700">
               ${product.fixedPrice}
@@ -109,69 +85,6 @@ const ProductDetails = ({ product }) => {
               )}
             </div>
 
-            {/* Stock
-            <div className="flex items-center gap-2">
-              <div
-                  className={`w-3 h-3 rounded-full ${
-                      product.inStock ? "bg-green-500" : "bg-red-500"
-                  }`}
-              ></div>
-              <span
-                  className={
-                    product.inStock ? "text-green-600" : "text-red-600"
-                  }
-              >
-              {product.inStock
-                  ? `متوفر (${product.stockQuantity || 0} قطعة)`
-                  : "غير متوفر"}
-            </span>
-            </div>*/}
-
-            {/* Colors
-            {product.colors?.length > 0 && (
-                <div>
-                  <h3 className="text-lg font-semibold mb-2">اللون</h3>
-                  <div className="flex gap-2 flex-wrap">
-                    {product.colors.map((color) => (
-                        <button
-                            key={color}
-                            onClick={() => setSelectedColor(color)}
-                            className={`px-4 py-2 border rounded-lg transition-colors ${
-                                selectedColor === color
-                                    ? "border-green-500 bg-green-50 text-green-700"
-                                    : "border-gray-300 hover:border-gray-400"
-                            }`}
-                        >
-                          {color}
-                        </button>
-                    ))}
-                  </div>
-                </div>
-            )}
-            */}
-            {/* Sizes
-            {product.sizes?.length > 0 && (
-                <div>
-                  <h3 className="text-lg font-semibold mb-2">المقاس</h3>
-                  <div className="flex gap-2 flex-wrap">
-                    {product.sizes.map((size) => (
-                        <button
-                            key={size}
-                            onClick={() => setSelectedSize(size)}
-                            className={`px-4 py-2 border rounded-lg transition-colors ${
-                                selectedSize === size
-                                    ? "border-green-500 bg-green-50 text-green-700"
-                                    : "border-gray-300 hover:border-gray-400"
-                            }`}
-                        >
-                          {size}
-                        </button>
-                    ))}
-                  </div>
-                </div>
-            )}
-            */}
-            {/* Quantity */}
             <div>
               <h3 className="text-lg font-semibold mb-2">الكمية</h3>
               <div className="flex items-center gap-3">
@@ -237,7 +150,6 @@ const ProductDetails = ({ product }) => {
                 </div>
             )}
 
-            {/* Donation Section */}
             <div className="bg-green-50 border border-green-200 rounded-lg p-4 space-y-2">
               <h3 className="text-green-700 font-bold">% من الربح</h3>
               <p className="text-gray-700 text-sm">

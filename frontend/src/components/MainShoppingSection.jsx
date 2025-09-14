@@ -3,13 +3,15 @@ import { ChevronLeft, ChevronRight, XCircle } from 'lucide-react';
 import Sidebar from "./Sidebar.jsx";
 import ProductCard from "./Product-Card.jsx";
 import axios from "axios";
-import {searchProduct, getAllCategories, getProductsByCategory} from "../apiServices/searchServices.js";
+import { searchProduct, getAllCategories, getProductsByCategory } from "../apiServices/searchServices.js";
+import { useTranslation } from "react-i18next";
 
 const MainShoppingSection = forwardRef(({
                                             onCategoryChange = () => {},
                                             onAddToCart = () => {},
                                             onDisplayDetails = () => {}
                                         }, ref) => {
+    const { t, i18n } = useTranslation();
     const [selectedCategory, setSelectedCategory] = useState(null); // Stores category.id
     const [currentPage, setCurrentPage] = useState(1);
     const productsPerPage = 9;
@@ -56,15 +58,15 @@ const MainShoppingSection = forwardRef(({
                 setProducts(response.data);
                 setLoading(false);
             } catch (error) {
-                setError("An error occurred " + (error.message || ""));
+                setError(t("mainShoppingSection.errorMessage") + (error.message || ""));
                 setLoading(false);
             }
         };
         fetchProducts();
-    }, []);
+    }, [t]);
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p className="text-red-500">Error: {error}</p>;
+    if (loading) return <p>{t("mainShoppingSection.loadingMessage")}</p>;
+    if (error) return <p className="text-red-500">{t("mainShoppingSection.errorPrefix")} {error}</p>;
 
     const activeProducts = results.length > 0 ? results : products;
 
@@ -83,22 +85,20 @@ const MainShoppingSection = forwardRef(({
                 console.log("Fetched products for category:", res.data);
                 setProducts(res.data);
                 setResults([]);
-                setCurrentPage(1);
             } catch (error) {
                 console.error("Error fetching products by category:", error);
-                setError("Failed to load products for category");
             }
         } else {
             try {
                 const res = await axios.get("http://localhost:8080/products/get");
                 setProducts(res.data);
                 setResults([]);
-                setCurrentPage(1);
             } catch (error) {
                 console.error("Error fetching all products:", error);
-                setError("Failed to load all products");
             }
         }
+        onCategoryChange(categoryId);
+        setCurrentPage(1);
     };
 
     const handlePageChange = (page) => {
@@ -109,47 +109,57 @@ const MainShoppingSection = forwardRef(({
 
     const generatePaginationItems = () => {
         const items = [];
-        const maxVisible = 5;
+        const maxVisiblePages = 5;
 
-        if (totalPages <= maxVisible) {
-            for (let i = 1; i <= totalPages; i++) items.push(i);
+        if (totalPages <= maxVisiblePages) {
+            for (let i = 1; i <= totalPages; i++) {
+                items.push(i);
+            }
         } else {
-            if (currentPage <= 3) items.push(1, 2, 3, '...', totalPages);
-            else if (currentPage >= totalPages - 2) items.push(1, '...', totalPages - 2, totalPages - 1, totalPages);
-            else items.push(1, '...', currentPage, '...', totalPages);
+            items.push(1);
+            if (currentPage > 3) {
+                items.push('...');
+            }
+
+            const start = Math.max(2, currentPage - 1);
+            const end = Math.min(totalPages - 1, currentPage + 1);
+
+            for (let i = start; i <= end; i++) {
+                items.push(i);
+            }
+
+            if (currentPage < totalPages - 2) {
+                items.push('...');
+            }
+            items.push(totalPages);
         }
         return items;
     };
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 overflow-hidden">
-            <div className="flex gap-5 flex-row">
-                {/* Sidebar */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" dir={i18n.language === 'ar' ? 'rtl' : 'ltr'}>
+            <div className="flex gap-8">
                 <Sidebar
                     categories={categories}
                     selectedCategory={selectedCategory}
                     onCategoryChange={handleCategoryChange}
                 />
-
-                {/* Main Content */}
-                <main className="flex flex-col items-start justify-start w-full ml-30 overflow-y-auto">
-                    {/* Show "Clear Search" if results are active */}
+                <main className="flex-1">
                     {results.length > 0 && (
-                        <div className="flex justify-between items-center w-full mb-6 px-2">
+                        <div className="flex justify-between items-center mb-6">
                             <p className="text-gray-600">
-                                Showing {results.length} result{results.length !== 1 ? 's' : ''} for your search
+                                {t("mainShoppingSection.searchResultsFound", { count: results.length })}
                             </p>
                             <button
                                 onClick={() => setResults([])}
                                 className="flex items-center text-red-600 hover:text-red-800 transition"
                             >
                                 <XCircle className="w-5 h-5 mr-1" />
-                                Clear Search
+                                {t("mainShoppingSection.clearSearchButton")}
                             </button>
                         </div>
                     )}
 
-                    {/* Product Grid */}
                     <div className="grid grid-cols-3 gap-6 mb-8">
                         {currentProducts.map((product) => (
                             <ProductCard
@@ -169,7 +179,7 @@ const MainShoppingSection = forwardRef(({
                                 className="flex items-center text-gray-600 hover:text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed mr-3"
                             >
                                 <ChevronLeft className="w-4 h-4 mr-1" />
-                                Previous
+                                {t("mainShoppingSection.previousButton")}
                             </button>
 
                             <div className="flex items-center space-x-2 gap-2">
@@ -196,7 +206,7 @@ const MainShoppingSection = forwardRef(({
                                 disabled={currentPage === totalPages}
                                 className="flex items-center text-gray-600 hover:text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                Next
+                                {t("mainShoppingSection.nextButton")}
                                 <ChevronRight className="w-4 h-4 ml-1" />
                             </button>
                         </div>
