@@ -28,6 +28,9 @@ public class OrderService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private DonationService donationService;
+
     @Transactional
     public Order createOrder(Order order, Long buyerId) {
         // Validate buyer exists
@@ -93,8 +96,19 @@ public class OrderService {
         }
     
         Order order = orderOptional.get();
+        OrderStatus oldStatus = order.getStatus();
         order.setStatus(newStatus);
     
+        // Create donations when order is confirmed (after payment)
+        if (oldStatus != OrderStatus.CONFIRMED && newStatus == OrderStatus.CONFIRMED) {
+            donationService.createDonationsFromOrder(order);
+        }
+    
+        // Mark donations as transferred when order is delivered
+        if (newStatus == OrderStatus.DELIVERED) {
+            donationService.markOrderDonationsAsTransferred(orderId);
+        }
+
         return orderRepository.save(order);
     }
 
