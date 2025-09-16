@@ -54,7 +54,7 @@ cd HandInHand-Store
    spring.datasource.password=your_password
    spring.jpa.hibernate.ddl-auto=update
    spring.jpa.show-sql=true
-   jwt.secret=your_secret_key
+
    ```
 3. Run the Spring Boot app:  
    ```bash
