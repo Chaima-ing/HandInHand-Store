@@ -90,7 +90,6 @@ HandInHand-Store/
 │── frontend/       # React.js code  
 │── backend/        # Spring Boot code  
 │── database/       # SQL scripts  
-│── assets/         # Images, icons, mockups  
 │── README.md       # Project documentation  
 ```
 
