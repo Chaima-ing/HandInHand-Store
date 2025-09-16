@@ -81,7 +81,7 @@ cd HandInHand-Store
 4. The frontend will be available at:  
    [http://localhost:3000](http://localhost:3000)  
 
-```
+---
 
 ### 5. Design (Figma)
 
@@ -89,15 +89,17 @@ You can view the project design here:
 👉 [HandInHand Store – Figma Design]([https://www.figma.com/file/xxxx/HandInHand-Store](https://www.figma.com/design/BBMlDiyXBKqTJdsMWF8ZMI/HandInHand-Store?node-id=0-1&t=S44iWXMB6GQ4LmJk-1))
 
 
+---
+
+
 ### 📂 Project Structure  
 
-```
 HandInHand-Store/
 │── frontend/       # React.js code  
 │── backend/        # Spring Boot code  
 │── database/       # SQL scripts  
 │── README.md       # Project documentation  
-```
+
 
 ---
 
@@ -108,4 +110,4 @@ HandInHand-Store/
 
 ---
 
-👉 *Join Us. Hand in Hand, We Change Lives.*  
+👉 *Hand in Hand, We Change Lives.*  
