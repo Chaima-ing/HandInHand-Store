@@ -34,56 +34,52 @@ HandInHand Store is a web-based platform that allows users to explore, buy, and 
 
 ---
 
-⚙️ Setup & Installation
-1. Clone the Repository
+## ⚙️ Setup & Installation  
+
+### 1. Clone the Repository  
+```bash
 git clone https://github.com/your-username/HandInHand-Store.git
 cd HandInHand-Store
+```
 
-2. Backend (Spring Boot)
+### 2. Backend (Spring Boot)  
+1. Navigate to the backend folder:  
+   ```bash
+   cd backend
+   ```
+2. Configure `application.properties`:  
+   ```properties
+   spring.datasource.url=jdbc:mysql://localhost:3306/handinhand_db
+   spring.datasource.username=your_username
+   spring.datasource.password=your_password
+   spring.jpa.hibernate.ddl-auto=update
+   spring.jpa.show-sql=true
+   jwt.secret=your_secret_key
+   ```
+3. Run the Spring Boot app:  
+   ```bash
+   mvn spring-boot:run
+   ```
 
-Navigate to the backend folder:
+### 3. Database (MySQL)  
+- Import the SQL script from `/database/handinhand.sql` into your MySQL server.  
+- Make sure the database name matches `handinhand_db` or update it in `application.properties`.  
 
-cd backend
-
-Configure application.properties:
-
-spring.datasource.url=jdbc:mysql://localhost:3306/handinhand_db
-spring.datasource.username=your_username
-spring.datasource.password=your_password
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-jwt.secret=your_secret_key
-
-
-Run the Spring Boot app:
-
-mvn spring-boot:run
-
-3. Database (MySQL)
-
-Import the SQL script from /database/handinhand.sql into your MySQL server.
-
-Make sure the database name matches handinhand_db or update it in application.properties.
-
-4. Frontend (React)
-
-Navigate to the frontend folder:
-
-cd frontend
-
-
-Install dependencies:
-
-npm install
-
-
-Run the development server:
-
-npm start
-
-
-The frontend will be available at:
-http://localhost:3000
+### 4. Frontend (React)  
+1. Navigate to the frontend folder:  
+   ```bash
+   cd frontend
+   ```
+2. Install dependencies:  
+   ```bash
+   npm install
+   ```
+3. Run the development server:  
+   ```bash
+   npm start
+   ```
+4. The frontend will be available at:  
+   [http://localhost:3000](http://localhost:3000)  
 
 ```
 
