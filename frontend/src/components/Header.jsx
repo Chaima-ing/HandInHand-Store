@@ -24,12 +24,12 @@ function Header() {
             <div className="header-container">
                 {/* Logo */}
                 <div className="logo">
-                    <FaHandshake className="Hand-icon"/>{t("Store")}<span>{t("GAZA")}</span>
+                    <FaHandshake className="Hand-icon"/><span>{t("Store")}</span>{t("HandInHand")}
                 </div>
                     <nav className="nav">
                         <a href="/"><FaHome/> {t("home_page")}</a>
                         <a href="/shoppingPage"><FaBoxOpen/>{t("products")}</a>
-                        <a href="#"><FaHandHoldingHeart/>{t("donations")}</a>
+                        <a href="#"><FaHandHoldingHeart/>{t("donation ")}</a>
                         <a href="#"><FaInfoCircle />{t("aboutUs")}</a>
                         <a href="#"><FaPhone />{t("Communicate_with_us")}</a>
                     </nav>
