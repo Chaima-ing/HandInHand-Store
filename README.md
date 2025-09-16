@@ -83,7 +83,13 @@ cd HandInHand-Store
 
 ```
 
-## 📂 Project Structure  
+### 5. Design (Figma)
+
+You can view the project design here:  
+👉 [HandInHand Store – Figma Design]([https://www.figma.com/file/xxxx/HandInHand-Store](https://www.figma.com/design/BBMlDiyXBKqTJdsMWF8ZMI/HandInHand-Store?node-id=0-1&t=S44iWXMB6GQ4LmJk-1))
+
+
+### 📂 Project Structure  
 
 ```
 HandInHand-Store/
@@ -95,7 +101,7 @@ HandInHand-Store/
 
 ---
 
-## 👩‍💻 Contributors  
+### 👩‍💻 Contributors  
 
 - **Chaima** – Back-end development, design.
 - **Rana** - Front-end development
