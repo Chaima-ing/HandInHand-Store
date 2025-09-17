@@ -58,7 +58,7 @@ cd HandInHand-Store
    ```
 3. Run the Spring Boot app:  
    ```bash
-   mvn spring-boot:run
+   ./mvnw spring-boot:run
    ```
 
 ### 3. Database (MySQL)  
@@ -76,7 +76,7 @@ cd HandInHand-Store
    ```
 3. Run the development server:  
    ```bash
-   npm start
+   npm run dev
    ```
 4. The frontend will be available at:  
    [http://localhost:3000](http://localhost:3000)  
