@@ -79,7 +79,7 @@ cd HandInHand-Store
    npm run dev
    ```
 4. The frontend will be available at:  
-   [http://localhost:3000](http://localhost:3000)  
+   [http://localhost:5173](http://localhost:5173)  
 
 ---
 
