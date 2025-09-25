@@ -38,7 +38,7 @@ HandInHand Store is a web-based platform that allows users to explore, buy, and 
 
 ### 1. Clone the Repository  
 ```bash
-git clone https://github.com/your-username/HandInHand-Store.git
+git clone https://github.com/Chaima-ing/HandInHand-Store.git
 cd HandInHand-Store
 ```
 
